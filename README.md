@@ -6,16 +6,16 @@ Piattaforma per Factory Studios: gestione della vendita di spazi e sponsorizzazi
 
 ## Struttura del repository
 
-| Cartella | Contenuto |
-|---|---|
-| `docs/` | Documentazione di progetto |
-| `data/` | Dati forniti dal cliente |
-| `db/` | Schema dati PostgreSQL e script |
-| `api/` | REST API Java/Spring Boot |
-| `web/` | Interfacce web |
-| `power-platform/` | Soluzione Power Platform |
+| Cartella            | Contenuto                       |
+| ------------------- | ------------------------------- |
+| `docs/`           | Documentazione di progetto      |
+| `data/`           | Dati forniti dal cliente        |
+| `db/`             | Schema dati PostgreSQL e script |
+| `api/`            | REST API Java/Spring Boot       |
+| `web/`            | Interfacce web                  |
+| `power-platform/` | Soluzione Power Platform        |
 
 ## Team
 
-- BID:
-- BAD:
+- BID: Anna Digiglio, Daniel Quattrone, Yassin En Naour
+- BAD: Alessandro Terlingo, Cristian Provenzano, Lorenzo Musto, Adam Nekkouss, Durand Yenje Boum
