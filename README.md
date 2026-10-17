@@ -8,7 +8,7 @@ Piattaforma per Factory Studios: gestione della vendita di spazi e sponsorizzazi
 
 | Cartella            | Contenuto                       |
 | ------------------- | ------------------------------- |
-| `docs/`           | Documentazione di progetto      |
+| `docs/`           | Documentazione di progetto (wiki in [`docs/wiki/`](docs/wiki/README.md)) |
 | `data/`           | Dati forniti dal cliente        |
 | `db/`             | Schema dati PostgreSQL e script |
 | `api/`            | REST API Java/Spring Boot       |
