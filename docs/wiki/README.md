@@ -13,7 +13,8 @@ Wiki interna del progetto. Qui teniamo tutto quello che serve per lavorare: cosa
 
 ### Tecnica
 - [Architettura](architettura.md): componenti, flussi, punto d'incontro BID/BAD
-- [Dati del cliente](dati.md): file ricevuti, struttura, anomalie trovate
+- [Dati del cliente](dati.md): file ricevuti, struttura, anomalie trovate, numeri di controllo
+- [Schema dati](schema-dati.md): tabelle PostgreSQL, diagramma, scelte
 - [KPI](kpi.md): definizioni operative degli indicatori
 
 ### Gestione del lavoro
