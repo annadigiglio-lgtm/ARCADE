@@ -14,6 +14,20 @@ Modello:
 
 ---
 
+## 2026-10-23 — Divisione dei compiti in BID
+
+**Chi:** BID
+
+**Fatto:**
+
+- Assegnate le aree: DB ed ETL ad Anna, API a Yassin, Web a Daniel
+- Scritti in [team.md](team.md#divisione-interna-bid) i compiti di ciascuno per SAL 1, SAL 2 e finale, e i passaggi di consegna tra le aree
+
+**Prossimi passi:**
+
+- Entro il 26/10: viste concordate (Anna + Yassin) e wireframe delle pagine (Daniel)
+- Entro il 30/10: contratto OpenAPI (Yassin)
+
 ## 2026-10-23 — Prima riunione con tutto il gruppo
 
 **Chi:** BID + BAD
