@@ -61,7 +61,7 @@ SELECT i.edizione,
        i.persone,
        i.rilevato_il AS entrata,
        COALESCE(
-           lead(i.rilevato_il) OVER (PARTITION BY i.id_biglietto, i.giorno ORDER BY i.rilevato_il),
+           lead(i.rilevato_il) OVER (PARTITION BY i.id_biglietto, i.giorno ORDER BY i.rilevato_il, i.id),
            LEAST(
                i.rilevato_il + make_interval(mins => (SELECT valore::int FROM parametro
                                                        WHERE nome = 'permanenza_minuti')),

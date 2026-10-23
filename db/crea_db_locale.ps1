@@ -48,7 +48,8 @@ if ($LASTEXITCODE -ne 0) { throw 'Creazione del database non riuscita.' }
 & $psql -X -q -v ON_ERROR_STOP=1 -d $nome `
     -f (Join-Path $PSScriptRoot 'schema.sql') `
     -f (Join-Path $PSScriptRoot 'dati_base.sql') `
-    -f (Join-Path $PSScriptRoot 'viste_kpi.sql')
+    -f (Join-Path $PSScriptRoot 'viste_kpi.sql') `
+    -f (Join-Path $PSScriptRoot 'viste_api.sql')
 if ($LASTEXITCODE -ne 0) { throw 'Creazione dello schema non riuscita.' }
 
 # 3. Dati storici
