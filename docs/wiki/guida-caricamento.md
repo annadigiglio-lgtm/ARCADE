@@ -25,6 +25,23 @@ oppure, se i dati sono in un'altra cartella:
 
 Dura qualche minuto. Alla fine stampa la **tabella di verifica**: ogni riga deve avere esito `OK`.
 
+## Database locale di prova
+
+Ogni modifica a schema, viste o caricamento si prova **prima in locale**, poi si esegue sul database condiviso: su Supabase lavorano anche le API e Power BI di BAD, e il caricamento cancella e riscrive i dati.
+
+1. Copiare `.env.local.example` in `.env.local` (escluso da Git) e inserire la password dell'utente `postgres` del **PostgreSQL installato sul PC**. La porta indicata (5433) è quella di PostgreSQL 18; con una sola versione installata di solito è 5432.
+2. Dalla cartella `ARCADE`:
+
+```powershell
+.\db\crea_db_locale.ps1
+```
+
+Lo script cancella e ricrea il database locale `arcade`, esegue `schema.sql`, `dati_base.sql`, `viste_kpi.sql` e carica lo storico (stessa tabella di verifica). Rifiuta di partire se l'host non è `localhost`, quindi non può toccare il database condiviso.
+
+Per ricaricare solo i dati in locale: `.\db\caricamento\carica.ps1 -FileEnv .env.local`
+
+Versioni: Supabase usa PostgreSQL 17, in locale si usa la 18; gli script funzionano su entrambe.
+
 ## Cosa fa
 
 | Passo | File | Cosa fa |
@@ -58,4 +75,4 @@ Nel file `02_trasforma.sql`, cercando il codice dell'anomalia (es. `A17`):
 
 ## Primo caricamento
 
-Eseguito il 2026-10-23 sul database condiviso Supabase: **28 controlli su 28 OK**, nessun contratto non abbinato.
+Eseguito il 2026-10-23 sul database condiviso Supabase e sul database locale di prova: **28 controlli su 28 OK** in entrambi, nessun contratto non abbinato.

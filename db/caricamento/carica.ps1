@@ -2,34 +2,43 @@
 Carica i dati storici 2024-2025 del cliente nel database.
 
 Uso, dalla cartella ARCADE:
-    .\db\caricamento\carica.ps1
+    .\db\caricamento\carica.ps1                       # database condiviso (file .env)
+    .\db\caricamento\carica.ps1 -FileEnv .env.local   # database locale di prova
     .\db\caricamento\carica.ps1 -Dati "C:\percorso\ARCADE_Milano_dati"
 
-I dati di connessione si leggono dal file .env nella cartella ARCADE (escluso da Git),
-vedi .env.example e docs/wiki/guida-caricamento.md.
+I dati di connessione si leggono dal file indicato (escluso da Git),
+vedi .env.example, .env.local.example e docs/wiki/guida-caricamento.md.
 #>
 param(
-    [string]$Dati = (Join-Path $PSScriptRoot '..\..\..\MATERIALI CLIENTE\ARCADE_Milano_dati')
+    [string]$Dati = (Join-Path $PSScriptRoot '..\..\..\MATERIALI CLIENTE\ARCADE_Milano_dati'),
+    [string]$FileEnv = '.env'
 )
 $ErrorActionPreference = 'Stop'
 
-# --- Dati di connessione dal file .env ---
+# --- Dati di connessione dal file .env (o .env.local) ---
 $radice = (Resolve-Path (Join-Path $PSScriptRoot '..\..')).Path
-$fileEnv = Join-Path $radice '.env'
+$fileEnv = Join-Path $radice $FileEnv
 if (-not (Test-Path $fileEnv)) {
-    throw "Manca il file .env in $radice. Copiare .env.example in .env e compilarlo."
+    throw "Manca il file $FileEnv in $radice. Copiare il file .example corrispondente e compilarlo."
 }
+# Si riparte da zero: nessun valore rimasto da un'esecuzione precedente nello stesso terminale
+'DB_HOST', 'DB_PORT', 'DB_NAME', 'DB_USER', 'DB_PASSWORD', 'DB_SSLMODE' |
+    ForEach-Object { Remove-Item "env:$_" -ErrorAction SilentlyContinue }
 Get-Content $fileEnv | ForEach-Object {
     if ($_ -match '^\s*([A-Z_]+)\s*=\s*(.*?)\s*$') {
         Set-Item "env:$($Matches[1])" $Matches[2].Trim('"')
     }
 }
+# Valori predefiniti = database condiviso Supabase
+if (-not $env:DB_PORT)    { $env:DB_PORT = '5432' }
+if (-not $env:DB_NAME)    { $env:DB_NAME = 'postgres' }
+if (-not $env:DB_SSLMODE) { $env:DB_SSLMODE = 'require' }
 $env:PGHOST = $env:DB_HOST
-$env:PGPORT = '5432'
-$env:PGDATABASE = 'postgres'
+$env:PGPORT = $env:DB_PORT
+$env:PGDATABASE = $env:DB_NAME
 $env:PGUSER = $env:DB_USER
 $env:PGPASSWORD = $env:DB_PASSWORD
-$env:PGSSLMODE = 'require'
+$env:PGSSLMODE = $env:DB_SSLMODE
 $env:PGCLIENTENCODING = 'UTF8'
 
 # --- psql: dal PATH oppure dall'installazione di PostgreSQL ---
@@ -42,7 +51,7 @@ if (-not $psql) { throw 'psql non trovato: installare PostgreSQL.' }
 
 $Dati = (Resolve-Path $Dati).Path
 Write-Host "Dati del cliente: $Dati"
-Write-Host "Database: $env:PGHOST (utente $env:PGUSER)"
+Write-Host "Database: $env:PGHOST`:$env:PGPORT/$env:PGDATABASE (utente $env:PGUSER)"
 
 # --- 1. Fogli Excel -> CSV ---
 python (Join-Path $PSScriptRoot 'excel_in_csv.py') (Join-Path $Dati 'ARCADE_Commerciale.xlsx') (Join-Path $Dati 'excel_csv')

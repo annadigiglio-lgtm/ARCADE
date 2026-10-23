@@ -140,4 +140,4 @@ Se compare un **errore di certificato**: scaricare il certificato del server dal
 - **Pausa per inattività**: dopo 7 giorni senza attività il progetto va in pausa. I dati restano, ma il database è spento finché qualcuno non lo riattiva dal pannello. Attenzione nelle settimane di lavoro autonomo (16 novembre - 4 dicembre) e **controllare che sia attivo il giorno prima di ogni SAL e della demo finale**.
 - **Password**: mai su Git, nella wiki, nelle chat di gruppo. Se una password finisce in un posto sbagliato, cambiarla subito.
 - **Ricostruibile**: tutto il database deve potersi ricreare da zero con gli script in `db/` e gli script di caricamento. Così un problema su Supabase non fa perdere il lavoro.
-- **Prima in locale, poi su Supabase**: ogni modifica allo schema si prova in Docker prima di eseguirla sul database condiviso.
+- **Prima in locale, poi su Supabase**: ogni modifica allo schema si prova sul database locale di prova ([guida](guida-caricamento.md#database-locale-di-prova)) prima di eseguirla sul database condiviso.
