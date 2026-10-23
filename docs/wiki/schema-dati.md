@@ -10,7 +10,7 @@ File SQL in `db/`:
 | [`db/dati_base.sql`](../../db/dati_base.sql) | Edizioni, padiglioni, varchi, tipi biglietto, province, fasce d'età, parametri, tabelle di decodifica |
 | [`db/viste_kpi.sql`](../../db/viste_kpi.sql) | Viste dei KPI e viste per il portale espositori |
 
-> Gli script sono stati eseguiti con successo sul database condiviso Supabase il 2026-10-23: controllo superato (22 tabelle, 13 viste, dati di base completi). Le viste KPI non sono ancora state provate con dati veri: lo saranno dopo il caricamento.
+> Gli script sono stati eseguiti con successo sul database condiviso Supabase il 2026-10-23: controllo superato (22 tabelle, 13 viste, dati di base completi). Dopo il caricamento dello storico ([guida](guida-caricamento.md)) le viste KPI danno gli stessi valori dell'analisi in [kpi.md](kpi.md). Le viste delle presenze stimate (`v_kpi_picco_*`) impiegano circa 6 secondi: per il cruscotto in diretta andranno ottimizzate (es. vista materializzata per le edizioni concluse).
 
 ## Diagramma
 

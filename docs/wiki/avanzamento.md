@@ -26,6 +26,8 @@ Modello:
 - Creato il progetto Supabase, eseguiti `schema.sql`, `dati_base.sql`, `viste_kpi.sql` senza errori, creati gli utenti `bid_app` e `bad_powerbi`
 - Query di controllo superata: 22 tabelle, 13 viste, dati di base completi
 - Tutti i membri BID invitati nell'organizzazione Supabase
+- Scritti gli script di caricamento in `db/caricamento/` ([guida](guida-caricamento.md)) e caricato lo storico 2024-2025 su Supabase: **28 controlli su 28 OK**, tutti i contratti 2024 abbinati, anomalie registrate nella tabella `anomalia`
+- Viste KPI provate con i dati veri: stessi valori dell'analisi (es. saturazione 2025 70,8%, picco 2025 16.065 persone alle 11:55 di sabato)
 
 **Problemi / dubbi:**
 

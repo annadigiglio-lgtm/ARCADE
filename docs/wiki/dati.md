@@ -66,6 +66,7 @@ Tutti i file sono in UTF-8.
 ## Anomalie trovate
 
 Ogni anomalia ha una gestione proposta. Lo stato diventa `decisa` quando il team la approva (e, se serve, il cliente).
+Le gestioni proposte sono già applicate dallo script di caricamento `db/caricamento/02_trasforma.sql` ([guida](guida-caricamento.md)); le anomalie trovate a ogni caricamento sono registrate nella tabella `anomalia` del database.
 
 | # | File | Anomalia | Quanti | Gestione proposta | Stato |
 |---|---|---|---|---|---|

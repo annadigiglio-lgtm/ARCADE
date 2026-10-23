@@ -16,6 +16,7 @@ Wiki interna del progetto. Qui teniamo tutto quello che serve per lavorare: cosa
 - [Dati del cliente](dati.md): file ricevuti, struttura, anomalie trovate, numeri di controllo
 - [Schema dati](schema-dati.md): tabelle PostgreSQL, diagramma, scelte
 - [Guida Supabase](guida-supabase.md): creare e usare il database condiviso in cloud
+- [Guida caricamento](guida-caricamento.md): caricare i dati storici del cliente nel database
 - [KPI](kpi.md): definizioni operative degli indicatori
 
 ### Gestione del lavoro
