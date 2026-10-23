@@ -19,8 +19,15 @@ Aggiornare a ogni sessione. Formato: `- [ ] attività (chi) — scadenza`. Quand
 - [ ] Rivedere con BAD la bozza dello schema in [schema-dati.md](schema-dati.md) (BID + BAD)
 - [ ] Progettare tabelle di staging e script di caricamento (_da assegnare_)
 - [ ] Contratto API in OpenAPI (_da assegnare_)
-- [ ] Scegliere dove ospitare il DB condiviso (_da assegnare_)
-- [ ] Decidere come arrivano nel DB i dati commerciali da Power Apps (BID + BAD)
+- [ ] Cambiare le password di `bid_app` e `bad_powerbi` con due password diverse e robuste (responsabile DB)
+- [ ] Mandare in privato a ogni membro BID l'host e la password di `bid_app`, e a BAD quella di `bad_powerbi` (responsabile DB)
+- [ ] Installare un client (pgAdmin o DBeaver) e collegarsi con `bid_app` ([guida](guida-supabase.md#5b-collegarsi-per-la-prima-volta-ogni-membro-bid)) (ognuno)
+- [ ] Mandare a BAD i dati di connessione per Power BI, in modo sicuro (responsabile DB)
+- [ ] Scegliere la modalità di sincronizzazione Dataverse → PostgreSQL ([architettura.md](architettura.md#sincronizzazione-dataverse--postgresql)) (BID + BAD)
+- [ ] Chiedere al tutor se si può registrare un'applicazione in Entra ID per leggere Dataverse (team leader)
+- [ ] Mappatura colonne Dataverse ↔ tabelle PostgreSQL (BID + BAD)
+- [ ] Decidere come arriva lo storico commerciale 2024-2025 in Dataverse (BID + BAD)
+- [ ] Ripensare il flusso delle scansioni dell'app di BAD senza chiamate alle API (BID + BAD)
 - [ ] Preparare la presentazione del SAL 1 (tutti)
 
 ### Cliente
@@ -40,3 +47,7 @@ Aggiornare a ogni sessione. Formato: `- [ ] attività (chi) — scadenza`. Quand
 - [x] Analisi completa dei dati e registro anomalie — 2026-10-17
 - [x] Bozza schema dati PostgreSQL — 2026-10-17
 - [x] Proposta definizioni KPI con valori 2024/2025 — 2026-10-17
+- [x] Scelto dove ospitare il DB condiviso: Supabase — 2026-10-23
+- [x] Creato il progetto Supabase, eseguiti gli script in `db/` e creati gli utenti `bid_app` e `bad_powerbi` — 2026-10-23
+- [x] Query di controllo del database superata — 2026-10-23
+- [x] Membri BID invitati nell'organizzazione Supabase — 2026-10-23

@@ -14,6 +14,29 @@ Modello:
 
 ---
 
+## 2026-10-23 — Prima riunione con tutto il gruppo
+
+**Chi:** BID + BAD
+
+**Fatto:**
+
+- BAD non ha licenze Power Apps premium: niente connettori verso PostgreSQL o verso le API BID
+- Deciso: BAD crea un ambiente Power Platform per il progetto e lavora su Dataverse; i dati commerciali vengono sincronizzati verso PostgreSQL; Power BI legge PostgreSQL ([decisione 0005](decisioni/0005-dataverse-sincronizzato-con-postgresql.md))
+- Deciso: database condiviso su Supabase ([decisione 0006](decisioni/0006-supabase.md)); scritta la [guida](guida-supabase.md) per crearlo e collegarsi
+- Creato il progetto Supabase, eseguiti `schema.sql`, `dati_base.sql`, `viste_kpi.sql` senza errori, creati gli utenti `bid_app` e `bad_powerbi`
+- Query di controllo superata: 22 tabelle, 13 viste, dati di base completi
+- Tutti i membri BID invitati nell'organizzazione Supabase
+
+**Problemi / dubbi:**
+
+- Da definire chi fa la sincronizzazione e come ([architettura.md](architettura.md#sincronizzazione-dataverse--postgresql))
+- Anche l'app di scansione di BAD non può chiamare le API BID: il flusso delle scansioni va ripensato
+
+**Prossimi passi:**
+
+- Scegliere la modalità di sincronizzazione e scrivere la mappatura con BAD
+- Chiedere al tutor della registrazione dell'applicazione in Entra ID
+
 ## 2026-10-17 — Analisi dati, bozza schema e proposta KPI
 
 **Chi:** Anna

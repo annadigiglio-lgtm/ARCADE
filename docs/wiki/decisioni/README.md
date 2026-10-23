@@ -26,3 +26,5 @@ Stati: `proposta` · `accettata` · `rifiutata` · `sostituita da NNNN`
 | [0002](0002-database-condiviso.md) | PostgreSQL condiviso come punto d'incontro BID/BAD | accettata | 2026-10-17 |
 | [0003](0003-kpi-in-viste-sql.md) | KPI calcolati una sola volta in viste SQL | proposta | 2026-10-17 |
 | [0004](0004-modello-dati.md) | Modello dati: tabelle pulite, decodifiche e anomalie con flag | proposta | 2026-10-17 |
+| [0005](0005-dataverse-sincronizzato-con-postgresql.md) | Dati commerciali su Dataverse, sincronizzati verso PostgreSQL | accettata | 2026-10-23 |
+| [0006](0006-supabase.md) | Database condiviso su Supabase | accettata | 2026-10-23 |

@@ -15,6 +15,7 @@ Wiki interna del progetto. Qui teniamo tutto quello che serve per lavorare: cosa
 - [Architettura](architettura.md): componenti, flussi, punto d'incontro BID/BAD
 - [Dati del cliente](dati.md): file ricevuti, struttura, anomalie trovate, numeri di controllo
 - [Schema dati](schema-dati.md): tabelle PostgreSQL, diagramma, scelte
+- [Guida Supabase](guida-supabase.md): creare e usare il database condiviso in cloud
 - [KPI](kpi.md): definizioni operative degli indicatori
 
 ### Gestione del lavoro

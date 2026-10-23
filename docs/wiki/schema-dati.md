@@ -10,7 +10,7 @@ File SQL in `db/`:
 | [`db/dati_base.sql`](../../db/dati_base.sql) | Edizioni, padiglioni, varchi, tipi biglietto, province, fasce d'età, parametri, tabelle di decodifica |
 | [`db/viste_kpi.sql`](../../db/viste_kpi.sql) | Viste dei KPI e viste per il portale espositori |
 
-> Gli script non sono ancora stati provati su un PostgreSQL vero: vanno eseguiti e corretti appena il DB è installato.
+> Gli script sono stati eseguiti con successo sul database condiviso Supabase il 2026-10-23: controllo superato (22 tabelle, 13 viste, dati di base completi). Le viste KPI non sono ancora state provate con dati veri: lo saranno dopo il caricamento.
 
 ## Diagramma
 
