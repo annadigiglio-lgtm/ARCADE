@@ -36,7 +36,7 @@ Ogni modifica a schema, viste o caricamento si prova **prima in locale**, poi si
 .\db\crea_db_locale.ps1
 ```
 
-Lo script cancella e ricrea il database locale `arcade`, esegue `schema.sql`, `dati_base.sql`, `viste_kpi.sql` e carica lo storico (stessa tabella di verifica). Rifiuta di partire se l'host non è `localhost`, quindi non può toccare il database condiviso.
+Lo script cancella e ricrea il database locale `arcade`, esegue `schema.sql`, `dati_base.sql`, `viste_kpi.sql`, `viste_api.sql` e carica lo storico (stessa tabella di verifica). Rifiuta di partire se l'host non è `localhost`, quindi non può toccare il database condiviso.
 
 Per ricaricare solo i dati in locale: `.\db\caricamento\carica.ps1 -FileEnv .env.local`
 

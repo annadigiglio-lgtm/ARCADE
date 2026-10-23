@@ -28,3 +28,4 @@ Stati: `proposta` · `accettata` · `rifiutata` · `sostituita da NNNN`
 | [0004](0004-modello-dati.md) | Modello dati: tabelle pulite, decodifiche e anomalie con flag | proposta | 2026-10-17 |
 | [0005](0005-dataverse-sincronizzato-con-postgresql.md) | Dati commerciali su Dataverse, sincronizzati verso PostgreSQL | accettata | 2026-10-23 |
 | [0006](0006-supabase.md) | Database condiviso su Supabase | accettata | 2026-10-23 |
+| [0007](0007-convenzioni-api.md) | Convenzioni tra DB, API e web | accettata | 2026-10-23 |

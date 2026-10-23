@@ -23,10 +23,14 @@ Modello:
 - Proposta delle viste lette dalle API per cruscotto e portale, da concordare con Yassin ([viste-api.md](viste-api.md))
 - Database locale di prova sul PostgreSQL 18 del PC: `db/crea_db_locale.ps1` lo ricrea da zero con schema, viste e storico (28/28 controlli OK). `carica.ps1` ora accetta `-FileEnv .env.local` ([guida](guida-caricamento.md#database-locale-di-prova))
 
+- Concordate con Yassin le convenzioni tra DB, API e web ([decisione 0007](decisioni/0007-convenzioni-api.md)): JSON in camelCase, JWT con id espositore nel token, polling ogni 30 s, ora simulata decisa dall'API per la demo
+- Scritte e provate in locale `db/viste_api.sql`: 4 funzioni per il cruscotto (`presenze_al`, `andamento_al`, `ingressi_al`, `giornata_al`) e 4 viste per il portale; numeri coerenti con le viste KPI (0 differenze)
+- Corretto in `v_permanenza` l'ordine dei passaggi nello stesso secondo, che rendeva il risultato non deterministico
+
 **Prossimi passi:**
 
-- Riunione con Yassin (e Daniel) sulle viste entro il 26/10
-- Scrivere le viste concordate, provarle in locale, poi eseguirle su Supabase
+- Eseguire `viste_kpi.sql` e `viste_api.sql` su Supabase
+- Utenti di demo nel database
 
 ## 2026-10-23 — Divisione dei compiti in BID
 

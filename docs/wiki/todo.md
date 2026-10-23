@@ -17,8 +17,10 @@ Aggiornare a ogni sessione. Formato: `- [ ] attività (chi) — scadenza`. Quand
 - [ ] Rivedere con BAD la bozza dello schema in [schema-dati.md](schema-dati.md) (BID + BAD)
 - [ ] Rivedere in team gli script di caricamento in `db/caricamento/`: ognuno deve saperli spiegare (BID)
 - [ ] Ottimizzare le viste delle presenze stimate per il cruscotto in diretta (~6 s oggi) (Anna)
-- [ ] Concordare nomi e colonne delle viste lette dalle API, partendo dalla proposta in [viste-api.md](viste-api.md) (Anna + Yassin) — 2026-10-26
-- [ ] Scrivere e provare su Supabase le viste concordate (Anna) — dopo l'accordo
+- [ ] Eseguire su Supabase `db/viste_kpi.sql` e `db/viste_api.sql` dall'SQL Editor (Anna) — 2026-10-27
+- [ ] Utenti di demo nel DB: 1 staff e 2 espositori, password in BCrypt (Anna) — 2026-10-27
+- [ ] Verificare [viste-api.md](viste-api.md) con i wireframe di Daniel: se manca un numero, nuova vista (Anna + Daniel)
+- [ ] Chiedere al cliente la capienza dei padiglioni per gli avvisi di affollamento (team leader)
 - [ ] Wireframe di cruscotto staff e portale espositori, con i dati necessari in ogni pagina (Daniel) — 2026-10-26
 - [ ] Scegliere la tecnologia del frontend e registrarla in `decisioni/` (Daniel)
 - [ ] Contratto API in OpenAPI (Yassin) — 2026-10-30
@@ -65,4 +67,5 @@ Dettaglio per area in [team.md](team.md#divisione-interna-bid).
 - [x] Script di caricamento dello storico 2024-2025 e primo caricamento su Supabase (28/28 controlli OK) — 2026-10-23
 - [x] Viste KPI provate con i dati veri — 2026-10-23
 - [x] Database locale di prova (`db/crea_db_locale.ps1`, 28/28 controlli OK) — 2026-10-23
+- [x] Viste e funzioni per le API concordate con Yassin, scritte e provate in locale (`db/viste_api.sql`) — 2026-10-23
 - [x] Assegnate le aree BID: DB/ETL Anna, API Yassin, Web Daniel — 2026-10-23
