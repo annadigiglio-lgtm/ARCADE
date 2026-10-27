@@ -4,7 +4,7 @@ Stato: **concordato** tra DB e API il 2026-10-23 ([decisione 0007](decisioni/000
 
 SQL in [`db/viste_api.sql`](../../db/viste_api.sql). Le API non calcolano numeri: leggono queste viste e funzioni e le restituiscono ([decisione 0003](decisioni/0003-kpi-in-viste-sql.md)).
 
-La specifica HTTP è in [`api/openapi.yaml`](../../api/openapi.yaml). Endpoint, ruoli, parametri e campi delle risposte sono allineati a questa pagina; i dettagli di trasporto ancora da confermare sono elencati in fondo alla specifica.
+La specifica HTTP è in [`api/openapi.yaml`](../../api/openapi.yaml). Endpoint, ruoli, parametri e campi delle risposte sono allineati a questa pagina. L'URL locale è indicato nella specifica; l'URL di deploy si aggiungerà quando sarà disponibile.
 
 ## Regole
 
