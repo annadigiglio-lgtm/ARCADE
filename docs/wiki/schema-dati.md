@@ -17,25 +17,147 @@ File SQL in `db/`:
 
 ```mermaid
 erDiagram
-    EDIZIONE ||--o{ CONTRATTO : ""
-    EDIZIONE ||--o{ BIGLIETTO : ""
-    EDIZIONE ||--o{ PASSAGGIO_VARCO : ""
-    PADIGLIONE ||--o{ STAND : ""
-    PADIGLIONE ||--o{ VARCO : ""
-    ESPOSITORE ||--o{ CONTRATTO : firma
+    EDIZIONE ||--o{ STAND : "attiva dal"
+    EDIZIONE ||--o{ VOCE_LISTINO : "ha listino"
+    EDIZIONE ||--o{ CONTRATTO : "per"
+    EDIZIONE ||--o{ BIGLIETTO : "per"
+    EDIZIONE ||--o{ TIPO_BIGLIETTO_ALIAS : "decodifica"
+    EDIZIONE ||--o{ PASSAGGIO_VARCO : "per"
+    EDIZIONE ||--o{ SCANSIONE_STAND : "per"
+    EDIZIONE ||--o{ CONTATTO_STAND : "per"
+    PADIGLIONE ||--o{ STAND : "contiene"
+    PADIGLIONE ||--o{ VARCO : "servito da"
     ESPOSITORE ||--o{ ESPOSITORE_ALIAS : "nomi nelle fonti"
+    ESPOSITORE ||--o{ CONTRATTO : "firma"
+    ESPOSITORE ||--o{ CONTATTO_STAND : "raccoglie"
+    ESPOSITORE o|--o{ UTENTE : "account espositore"
     STAND ||--o{ CONTRATTO : "venduto in"
-    CONTRATTO ||--|{ RIGA_CONTRATTO : contiene
-    TIPO_BIGLIETTO ||--o{ BIGLIETTO : ""
-    PROVINCIA ||--o{ BIGLIETTO : ""
-    FASCIA_ETA ||--o{ BIGLIETTO : ""
+    STAND ||--o{ SCANSIONE_STAND : "riceve"
+    STAND ||--o{ CONTATTO_STAND : "raccoglie"
+    CONTRATTO ||--|{ RIGA_CONTRATTO : "contiene"
+    TIPO_BIGLIETTO ||--o{ TIPO_BIGLIETTO_ALIAS : "alias"
+    TIPO_BIGLIETTO ||--o{ BIGLIETTO : "classifica"
+    PROVINCIA ||--o{ PROVINCIA_ALIAS : "alias"
+    PROVINCIA o|--o{ BIGLIETTO : "provenienza"
+    PROVINCIA o|--o{ CONTATTO_STAND : "provenienza"
+    FASCIA_ETA o|--o{ BIGLIETTO : "fascia"
+    FASCIA_ETA o|--o{ CONTATTO_STAND : "fascia"
     BIGLIETTO ||--o{ PASSAGGIO_VARCO : "letto a"
-    VARCO ||--o{ PASSAGGIO_VARCO : ""
-    STAND ||--o{ SCANSIONE_STAND : ""
-    STAND ||--o{ CONTATTO_STAND : ""
-    ESPOSITORE ||--o{ CONTATTO_STAND : ""
-    ESPOSITORE ||--o{ UTENTE : "accesso portale"
+    VARCO ||--o{ VARCO_ALIAS : "alias"
+    VARCO ||--o{ PASSAGGIO_VARCO : "rileva"
+
+    EDIZIONE {
+        smallint anno PK
+        date data_inizio
+        date data_fine
+    }
+    PADIGLIONE {
+        varchar codice PK
+        text nome
+    }
+    STAND {
+        varchar codice_stand PK
+        varchar padiglione FK
+        numeric mq
+        varchar posizione
+        smallint attivo_dal FK
+    }
+    ESPOSITORE {
+        varchar id_espositore PK
+        text ragione_sociale
+        char partita_iva UK
+        text referente_personale
+        text email_referente_personale
+    }
+    ESPOSITORE_ALIAS {
+        text nome_origine PK
+        varchar id_espositore FK
+    }
+    VOCE_LISTINO {
+        smallint edizione PK
+        varchar codice PK
+        numeric prezzo_unitario
+    }
+    CONTRATTO {
+        varchar id_contratto PK
+        smallint edizione FK
+        varchar id_espositore FK
+        varchar codice_stand FK
+        text stato
+        numeric imponibile
+    }
+    RIGA_CONTRATTO {
+        varchar id_contratto PK,FK
+        smallint riga PK
+        numeric importo
+    }
+    TIPO_BIGLIETTO {
+        varchar codice PK
+        smallint persone
+        smallint giorni
+    }
+    TIPO_BIGLIETTO_ALIAS {
+        smallint edizione PK,FK
+        text nome_origine PK
+        varchar codice FK
+    }
+    PROVINCIA {
+        char sigla PK
+        text nome
+    }
+    PROVINCIA_ALIAS {
+        text nome_origine PK
+        char sigla FK
+    }
+    FASCIA_ETA {
+        varchar codice PK
+        boolean minorenne
+    }
+    BIGLIETTO {
+        varchar id_biglietto PK
+        smallint edizione FK
+        varchar tipo FK
+        varchar fascia_eta FK
+        char provincia FK
+    }
+    VARCO {
+        varchar codice PK
+        varchar padiglione FK
+    }
+    VARCO_ALIAS {
+        text nome_origine PK
+        varchar codice FK
+    }
+    PASSAGGIO_VARCO {
+        bigint id PK
+        smallint edizione FK
+        varchar codice_varco FK
+        varchar id_biglietto FK
+        boolean valido
+    }
+    SCANSIONE_STAND {
+        bigint id PK
+        smallint edizione FK
+        varchar codice_stand FK
+        integer quantita
+    }
+    CONTATTO_STAND {
+        varchar id_contatto PK
+        smallint edizione FK
+        varchar codice_stand FK
+        varchar id_espositore FK
+        varchar fascia_eta FK
+        char provincia FK
+    }
+    UTENTE {
+        integer id PK
+        text username UK
+        text ruolo
+        varchar id_espositore FK
+    }
 ```
+
+Il diagramma rappresenta le tabelle persistenti di `schema.sql`; staging, viste e funzioni sono oggetti tecnici e non entità del modello. Le relazioni opzionali verso `BIGLIETTO`, `PROVINCIA`, `FASCIA_ETA` e l'account espositore corrispondono a chiavi esterne ammesse a `NULL`. `RIGA_CONTRATTO` ha chiave composta (`id_contratto`, `riga`).
 
 ## Le tabelle in breve
 
