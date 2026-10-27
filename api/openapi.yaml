@@ -1,0 +1,454 @@
+openapi: 3.1.0
+info:
+  title: ARCADE Milano API
+  version: 1.0.0
+  description: >-
+    Bozza del contratto SAL 1 per autenticazione, cruscotto staff e portale espositori.
+    Le risposte espongono i dati letti dalle viste e funzioni SQL documentate in
+    docs/wiki/viste-api.md. I nomi JSON sono camelCase; gli istanti sono ISO 8601
+    con fuso orario. Prima di congelare il contratto, API e web devono confermare
+    il formato della risposta di login e degli errori, il contenitore della
+    paginazione, il comportamento quando non ci sono dati e l'URL base di deploy.
+servers:
+  - url: http://localhost:8080
+    description: Sviluppo locale
+tags:
+  - name: Autenticazione
+  - name: Cruscotto staff
+  - name: Portale espositore
+paths:
+  /auth/login:
+    post:
+      tags: [Autenticazione]
+      operationId: login
+      summary: Autentica un utente e restituisce un JWT
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/LoginRequest'
+      responses:
+        '200':
+          description: Credenziali valide
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LoginResponse'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+
+  /affluenza/padiglioni:
+    get:
+      tags: [Cruscotto staff]
+      operationId: getPresenzePadiglioni
+      summary: Presenti stimati in ogni padiglione all'istante corrente della demo o della fiera
+      x-required-role: STAFF
+      security:
+        - bearerAuth: []
+      responses:
+        '200':
+          description: Una riga per padiglione
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/PresenzaPadiglione'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+
+  /affluenza/andamento:
+    get:
+      tags: [Cruscotto staff]
+      operationId: getAndamentoAffluenza
+      summary: Andamento delle presenze ogni cinque minuti dall'apertura all'istante corrente
+      x-required-role: STAFF
+      security:
+        - bearerAuth: []
+      responses:
+        '200':
+          description: Serie temporale per padiglione
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/PuntoAndamento'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+
+  /affluenza/ingressi:
+    get:
+      tags: [Cruscotto staff]
+      operationId: getIngressi
+      summary: Ingressi validi per ora e padiglione fino all'istante corrente
+      x-required-role: STAFF
+      security:
+        - bearerAuth: []
+      responses:
+        '200':
+          description: Totali orari per padiglione
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/IngressiOra'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+
+  /affluenza/giornata:
+    get:
+      tags: [Cruscotto staff]
+      operationId: getRiepilogoGiornata
+      summary: Visitatori, ingressi e picco di presenza raggiunto fino all'istante corrente
+      x-required-role: STAFF
+      security:
+        - bearerAuth: []
+      responses:
+        '200':
+          description: Riepilogo della giornata
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RiepilogoGiornata'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+
+  /espositore/me/riepilogo:
+    get:
+      tags: [Portale espositore]
+      operationId: getRiepilogoEspositore
+      summary: Riepilogo del contratto e dei risultati dell'espositore autenticato
+      x-required-role: ESPOSITORE
+      description: L'identificativo espositore viene sempre ricavato dal JWT, mai dalla richiesta.
+      security:
+        - bearerAuth: []
+      parameters:
+        - $ref: '#/components/parameters/Edizione'
+      responses:
+        '200':
+          description: Riepilogo dell'edizione
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RiepilogoEspositore'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+
+  /espositore/me/visite:
+    get:
+      tags: [Portale espositore]
+      operationId: getVisiteEspositore
+      summary: Visite al proprio stand aggregate per giorno e ora
+      x-required-role: ESPOSITORE
+      description: L'identificativo espositore viene sempre ricavato dal JWT.
+      security:
+        - bearerAuth: []
+      parameters:
+        - $ref: '#/components/parameters/Edizione'
+      responses:
+        '200':
+          description: Serie delle visite
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/VisiteOra'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+
+  /espositore/me/contatti:
+    get:
+      tags: [Portale espositore]
+      operationId: getContattiEspositore
+      summary: Contatti raccolti dall'espositore, con i dati personali consentiti
+      x-required-role: ESPOSITORE
+      description: >-
+        L'identificativo espositore viene sempre ricavato dal JWT. L'email viene
+        restituita solo se è presente il consenso marketing e il contatto è maggiorenne.
+      security:
+        - bearerAuth: []
+      parameters:
+        - $ref: '#/components/parameters/Edizione'
+        - name: page
+          in: query
+          required: false
+          description: Indice pagina, a partire da zero.
+          schema:
+            type: integer
+            minimum: 0
+            default: 0
+        - name: size
+          in: query
+          required: false
+          description: Numero massimo di elementi per pagina.
+          schema:
+            type: integer
+            minimum: 1
+            maximum: 200
+            default: 50
+      responses:
+        '200':
+          description: Pagina dei contatti
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginaContatti'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+
+  /espositore/me/confronto:
+    get:
+      tags: [Portale espositore]
+      operationId: getConfrontoEspositore
+      summary: Confronto dei risultati dell'espositore tra le edizioni disponibili
+      x-required-role: ESPOSITORE
+      description: L'identificativo espositore viene sempre ricavato dal JWT.
+      security:
+        - bearerAuth: []
+      responses:
+        '200':
+          description: Righe di confronto per edizione
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/ConfrontoEdizione'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+
+  /espositore/me/rinnovo:
+    get:
+      tags: [Portale espositore]
+      operationId: getPropostaRinnovo
+      summary: Proposta di rinnovo sullo stesso stand
+      x-required-role: ESPOSITORE
+      description: L'identificativo espositore viene sempre ricavato dal JWT.
+      security:
+        - bearerAuth: []
+      responses:
+        '200':
+          description: Proposte disponibili
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/PropostaRinnovo'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+  parameters:
+    Edizione:
+      name: edizione
+      in: query
+      required: true
+      description: Anno dell'edizione richiesta.
+      schema:
+        type: integer
+        enum: [2024, 2025, 2026]
+  responses:
+    BadRequest:
+      description: Richiesta non valida
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Errore'
+    Unauthorized:
+      description: JWT mancante o non valido, oppure credenziali non valide
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Errore'
+    Forbidden:
+      description: Il ruolo autenticato non può accedere alla risorsa
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Errore'
+    NotFound:
+      description: Nessun contratto o risultato disponibile per l'edizione richiesta
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Errore'
+  schemas:
+    LoginRequest:
+      type: object
+      additionalProperties: false
+      required: [username, password]
+      properties:
+        username:
+          type: string
+        password:
+          type: string
+          format: password
+    LoginResponse:
+      type: object
+      additionalProperties: false
+      required: [accessToken, tokenType, ruolo]
+      properties:
+        accessToken:
+          type: string
+          description: JWT firmato; include ruolo e, per ESPOSITORE, idEspositore.
+        tokenType:
+          type: string
+          const: Bearer
+        ruolo:
+          type: string
+          enum: [ADMIN, STAFF, DIREZIONE, ESPOSITORE]
+        idEspositore:
+          type: [string, 'null']
+          description: Presente per gli utenti ESPOSITORE; null per gli altri ruoli.
+    Errore:
+      type: object
+      required: [status, message]
+      properties:
+        status:
+          type: integer
+        message:
+          type: string
+    PresenzaPadiglione:
+      type: object
+      required: [padiglione, nomePadiglione, presenti, istante]
+      properties:
+        padiglione: { type: string }
+        nomePadiglione: { type: string }
+        presenti: { type: integer, format: int64 }
+        istante: { type: string, format: date-time }
+    PuntoAndamento:
+      type: object
+      required: [istante, padiglione, presenti]
+      properties:
+        istante: { type: string, format: date-time }
+        padiglione: { type: string }
+        presenti: { type: integer, format: int64 }
+    IngressiOra:
+      type: object
+      required: [ora, padiglione, ingressi, persone]
+      properties:
+        ora: { type: string, format: date-time }
+        padiglione: { type: string }
+        ingressi: { type: integer, format: int64 }
+        persone: { type: integer, format: int64 }
+    RiepilogoGiornata:
+      type: object
+      required: [giorno, visitatori, ingressi, piccoPresenti, piccoIstante]
+      properties:
+        giorno: { type: string, format: date }
+        visitatori: { type: integer, format: int64 }
+        ingressi: { type: integer, format: int64 }
+        piccoPresenti: { type: integer, format: int64 }
+        piccoIstante: { type: [string, 'null'], format: date-time }
+    RiepilogoEspositore:
+      type: object
+      required: [edizione, ragioneSociale, codiceStand, padiglione, nomePadiglione, mq, posizione, imponibile, visite, contatti, contattiConConsenso, costoPerContatto, oraDiPunta, mediaVisitePadiglione]
+      properties:
+        edizione: { type: integer }
+        ragioneSociale: { type: string }
+        codiceStand: { type: string }
+        padiglione: { type: string }
+        nomePadiglione: { type: string }
+        mq: { type: number }
+        posizione: { type: string }
+        imponibile: { type: number }
+        visite: { type: [integer, 'null'], format: int64, description: null significa non rilevato. }
+        contatti: { type: [integer, 'null'], format: int64, description: null significa non rilevato. }
+        contattiConConsenso: { type: [integer, 'null'], format: int64, description: null significa non rilevato. }
+        costoPerContatto: { type: [number, 'null'] }
+        oraDiPunta: { type: [string, 'null'], format: date-time }
+        mediaVisitePadiglione: { type: [integer, 'null'], format: int64 }
+    VisiteOra:
+      type: object
+      required: [edizione, codiceStand, giorno, ora, scansioni]
+      properties:
+        edizione: { type: integer }
+        codiceStand: { type: string }
+        giorno: { type: string, format: date }
+        ora: { type: string, format: date-time }
+        scansioni: { type: integer, format: int64 }
+    Contatto:
+      type: object
+      required: [idContatto, edizione, codiceStand, raccoltoIl, email, fasciaEta, provincia, interesse]
+      properties:
+        idContatto: { type: string }
+        edizione: { type: integer }
+        codiceStand: { type: string }
+        raccoltoIl: { type: string, format: date-time }
+        email: { type: [string, 'null'], format: email, description: Solo se c'è consenso marketing e il contatto è maggiorenne. }
+        fasciaEta: { type: [string, 'null'] }
+        provincia: { type: [string, 'null'] }
+        interesse: { type: [string, 'null'] }
+    PaginaContatti:
+      type: object
+      required: [content, page, size, totalElements, totalPages]
+      properties:
+        content:
+          type: array
+          items: { $ref: '#/components/schemas/Contatto' }
+        page: { type: integer }
+        size: { type: integer }
+        totalElements: { type: integer, format: int64 }
+        totalPages: { type: integer }
+    ConfrontoEdizione:
+      type: object
+      required: [edizione, codiceStand, padiglione, mq, imponibile, visite, contatti, ingressiPadiglione]
+      properties:
+        edizione: { type: integer }
+        codiceStand: { type: string }
+        padiglione: { type: string }
+        mq: { type: number }
+        imponibile: { type: number }
+        visite: { type: [integer, 'null'], format: int64 }
+        contatti: { type: [integer, 'null'], format: int64 }
+        ingressiPadiglione: { type: [integer, 'null'], format: int64 }
+    PropostaRinnovo:
+      type: object
+      required: [edizioneRinnovo, codiceStand, padiglione, mq, posizione, prezzoAreaStimato, prelazioneFinoAl, giaRinnovato]
+      properties:
+        edizioneRinnovo: { type: integer }
+        codiceStand: { type: string }
+        padiglione: { type: string }
+        mq: { type: number }
+        posizione: { type: string }
+        prezzoAreaStimato: { type: number }
+        prelazioneFinoAl: { type: string, format: date }
+        giaRinnovato: { type: boolean }
