@@ -24,7 +24,8 @@ Aggiornare a ogni sessione. Formato: `- [ ] attività (chi) — scadenza`. Quand
 - [ ] Wireframe di cruscotto staff e portale espositori, con i dati necessari in ogni pagina (Daniel) — 2026-10-26
 - [ ] Scegliere la tecnologia del frontend e registrarla in `decisioni/` (Daniel)
 - [ ] Contratto API in OpenAPI (Yassin) — 2026-10-30
-- [ ] Diagramma ER dello schema per il SAL 1 (Anna)
+- [ ] Validare e congelare con API e web il contratto in `api/openapi.yaml` (ruoli, trasporto e risposte) — 2026-10-30
+- [x] Diagramma ER dello schema per il SAL 1 (Anna) - 2026-10-27
 - [ ] Cambiare le password di `bid_app` e `bad_powerbi` con due password diverse e robuste (Anna)
 - [ ] Mandare in privato a ogni membro BID l'host e la password di `bid_app`, e a BAD quella di `bad_powerbi` (Anna)
 - [ ] Installare un client (pgAdmin o DBeaver) e collegarsi con `bid_app` ([guida](guida-supabase.md#5b-collegarsi-per-la-prima-volta-ogni-membro-bid)) (ognuno)

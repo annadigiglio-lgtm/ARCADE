@@ -6,9 +6,13 @@ info:
     Bozza del contratto SAL 1 per autenticazione, cruscotto staff e portale espositori.
     Le risposte espongono i dati letti dalle viste e funzioni SQL documentate in
     docs/wiki/viste-api.md. I nomi JSON sono camelCase; gli istanti sono ISO 8601
-    con fuso orario. Prima di congelare il contratto, API e web devono confermare
-    il formato della risposta di login e degli errori, il contenitore della
-    paginazione, il comportamento quando non ci sono dati e l'URL base di deploy.
+    con fuso orario. Il login restituisce accessToken, tokenType e ruolo;
+    idEspositore è presente solo per il ruolo ESPOSITORE. Gli errori usano
+    {status, message}, senza dettagli interni. La paginazione usa un envelope
+    indipendente da Spring (content, page, size, totalElements, totalPages);
+    le collezioni vuote rispondono 200 con contenuto vuoto e una risorsa singola
+    assente risponde 404. Il server locale è documentato qui; l'URL di deploy
+    verrà aggiunto quando sarà disponibile.
 servers:
   - url: http://localhost:8080
     description: Sviluppo locale
@@ -328,7 +332,7 @@ components:
       properties:
         accessToken:
           type: string
-          description: JWT firmato; include ruolo e, per ESPOSITORE, idEspositore.
+          description: JWT firmato con ruolo e, per ESPOSITORE, idEspositore; non contiene dati personali dei visitatori.
         tokenType:
           type: string
           const: Bearer
@@ -336,10 +340,11 @@ components:
           type: string
           enum: [ADMIN, STAFF, DIREZIONE, ESPOSITORE]
         idEspositore:
-          type: [string, 'null']
-          description: Presente per gli utenti ESPOSITORE; null per gli altri ruoli.
+          type: string
+          description: Presente solo per gli utenti ESPOSITORE.
     Errore:
       type: object
+      additionalProperties: false
       required: [status, message]
       properties:
         status:
