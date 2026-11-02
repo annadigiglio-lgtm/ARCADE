@@ -14,6 +14,32 @@ Modello:
 
 ---
 
+## 2026-11-02 — Guida di installazione per Yassin e Daniel
+
+**Fatto:** aggiunta [ambiente-sviluppo.md](ambiente-sviluppo.md) con strumenti,
+clone, passaggio privato delle credenziali, avvio Docker verso Supabase,
+alternativa Java/JDK 21 per sviluppo API, aggiornamento delle pagine e controlli.
+Documentata la differenza tra i file dotenv di Compose e quelli dello script Java,
+la necessità di ricostruire il pacchetto dopo le modifiche e il deploy manuale
+per aggiornare il sito pubblico. Collegamenti aggiunti a README, indice wiki,
+team e guida API. Nessuna password aggiunta alla documentazione.
+
+**Prossimi passi:** Yassin e Daniel installano gli strumenti sul proprio PC,
+ricevono i parametri privati e verificano login e dati della propria copia.
+
+## 2026-11-02 — Servizio Render pubblicato e verificato via HTTPS
+
+**Fatto:** l'utente ha pubblicato il Blueprint su Render Free. URL confermato:
+https://arcade-milano.onrender.com. Dopo consenso esplicito all'invio delle
+credenziali demo al servizio, superata la verifica
+`node api/verifica-condiviso.mjs https://arcade-milano.onrender.com`:
+pagina/asset, tre login Supabase, quattro endpoint staff, visite e riepilogo
+espositori, rifiuto di password/token errati e isolamento dei due account.
+Non sono stati modificati dati durante la verifica.
+
+**Prossimi passi:** prova visuale del gruppo nel browser; poi proseguire con
+riepilogo completo nel portale ed export commerciale 2026 con BAD.
+
 ## 2026-11-02 — Viste Supabase pubblicate e verifica completa del container
 
 **Fatto:** l'utente ha eseguito `db/pubblica_api_supabase.sql` nello SQL Editor

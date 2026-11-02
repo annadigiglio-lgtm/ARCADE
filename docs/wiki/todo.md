@@ -1,5 +1,11 @@
 # Cose da fare
 
+## Ambiente di sviluppo del gruppo
+
+- [x] Documentare installazione e primo avvio per Yassin e Daniel in [ambiente-sviluppo.md](ambiente-sviluppo.md).
+- [ ] Installare gli strumenti, configurare i parametri privati e provare l'app sul proprio PC (Yassin).
+- [ ] Installare gli strumenti, configurare i parametri privati e provare l'app sul proprio PC (Daniel).
+
 ## Aggiornamento 2026-11-02: Docker, Supabase e accesso da casa
 
 - [x] Build del container Linux e cinque test Java superati.
@@ -9,10 +15,10 @@
 - [x] `render.yaml` predisposto con un solo servizio gratuito e senza database Render.
 - [x] Eseguire `db/pubblica_api_supabase.sql` con il proprietario dello schema.
 - [x] Eseguire la verifica completa `node api/verifica-condiviso.mjs`.
-- [ ] Autorizzare l'accesso a Render e pubblicare il codice del branch scelto.
-- [ ] Pubblicare su Render Free e verificare l'URL HTTPS.
+- [x] Pubblicare il codice su GitHub e creare il servizio tramite il pannello Render (utente).
+- [x] Pubblicare su Render Free e verificare l'URL HTTPS.
 
-Dettagli: [render.md](render.md). Nessun deploy remoto ancora eseguito.
+Dettagli: [render.md](render.md). Servizio verificato: https://arcade-milano.onrender.com.
 
 ## Aggiornamento 2026-11-02: prima applicazione locale
 

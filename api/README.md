@@ -4,7 +4,13 @@ Percorso implementato: login → cruscotto staff e login → visite del proprio 
 Java 21, Spring Boot 3.5, JDBC e PostgreSQL; la pagina web viene servita dalla stessa
 applicazione, senza richiedere un secondo server o configurazione CORS.
 
-## Avvio da PowerShell
+Per un nuovo PC di Yassin o Daniel, partire dalla
+[guida ambiente di sviluppo](../docs/wiki/ambiente-sviluppo.md): descrive l'avvio
+con il Supabase già configurato e non richiede un database PostgreSQL sul PC.
+L'avvio Java verso Supabase usa `-FileEnv .env.sviluppo.local`; gli account
+esistono già e non va eseguito `-PreparaDemo` contro il database condiviso.
+
+## Alternativa: avvio da PowerShell con database locale di prova
 
 Aprire un terminale nella cartella `ARCADE`. Servono Java 21 e il database locale già
 caricato con gli script esistenti. Questi comandi **non ricreano il database**.
@@ -35,8 +41,9 @@ la pagina richiede un nuovo login.
 `avvia.ps1` legge `.env.local` dalla radice, con i campi di `.env.local.example`.
 La connessione imposta `currentSchema=arcade`, necessario alle funzioni SQL.
 Per il solo sviluppo locale viene riusata la connessione di prova già presente.
-Per un ambiente condiviso usare un account con permessi di sola lettura, come
-`bid_app`, invece dell'amministratore, e impostare una chiave JWT persistente.
+Per un ambiente condiviso usare l'account applicativo `bid_app` invece
+dell'amministratore e impostare una chiave JWT persistente. Nell'installazione
+attuale `bid_app` ha anche permessi di scrittura per gli script di caricamento.
 
 Variabili facoltative:
 
@@ -99,7 +106,8 @@ Per riavviare senza ricompilare un pacchetto già aggiornato, aggiungere
 - Endpoint contatti, confronto e rinnovo presenti nella specifica, non implementati.
 - Export reale da Dataverse e caricamento del contratto commerciale 2026.
 - Confronto dei numeri con Power BI e capienze confermate dal cliente.
-- Configurazione dell'ambiente condiviso e demo con orologio in movimento.
+- Demo con orologio in movimento. L'ambiente condiviso è già pubblicato su Render
+  con Supabase; dettagli in [render.md](../docs/wiki/render.md).
 
 Riferimenti tecnici: [Spring Boot](https://docs.spring.io/spring-boot/3.5/system-requirements.html)
 e [Spring Security JWT](https://docs.spring.io/spring-security/reference/servlet/oauth2/resource-server/jwt.html).

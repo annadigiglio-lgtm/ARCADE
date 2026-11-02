@@ -9,7 +9,11 @@
   stesse credenziali del file privato `api/demo-accounts.local`.
 - Viste/funzioni API pubblicate dall'utente tramite SQL Editor; verifica completa
   dal container superata per i quattro endpoint staff, visite e riepilogo espositori.
-- Blueprint `render.yaml` preparato; **nessun servizio Render è stato creato**.
+- Servizio Render Free pubblicato dall'utente: **https://arcade-milano.onrender.com**.
+- Verifica HTTPS completa superata il 2026-11-02, con invio delle credenziali
+  demo esplicitamente autorizzato dall'utente: pagina/asset, tre login, quattro
+  endpoint staff, visite/riepilogo, ruoli, token/password errati e isolamento
+  dei due espositori. Verifica visuale nel browser da completare separatamente.
 
 ## 1. Completare le viste su Supabase
 

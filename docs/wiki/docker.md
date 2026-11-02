@@ -28,8 +28,9 @@ Per l'accesso da casa vedere [render.md](render.md).
 | Sviluppo individuale | Ogni membro sul proprio PC | `http://localhost:8080` su ogni PC |
 
 Docker prepara l'applicazione; per avere un URL condiviso da reti diverse
-serve anche il server che la ospita. Nessun server remoto è stato configurato
-o pubblicato con questi file.
+serve anche il server che la ospita. Il servizio del gruppo è ora pubblicato su
+**https://arcade-milano.onrender.com** (Render Free), con verifica HTTPS completa
+di login, dati e ruoli superata. Il PC locale non deve restare acceso per accedervi.
 
 ## Avvio su un PC Windows
 

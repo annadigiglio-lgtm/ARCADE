@@ -17,6 +17,10 @@ Piattaforma per Factory Studios: gestione della vendita di spazi e sponsorizzazi
 
 ## Avviare la prima demo locale
 
+**Yassin e Daniel: iniziare dalla [guida ambiente di sviluppo](docs/wiki/ambiente-sviluppo.md).**
+Include strumenti da installare, clone, configurazione privata Supabase, avvio
+con Docker o Java, lavoro su API e pagine e verifica prima della pubblicazione.
+
 API Spring Boot e pagine staff/espositore: istruzioni in [`api/README.md`](api/README.md).
 Il flusso commerciale da concordare con BAD è descritto in
 [`power-platform/README.md`](power-platform/README.md).
@@ -38,9 +42,10 @@ powershell -NoProfile -ExecutionPolicy Bypass -File avvia-docker.ps1
 powershell -NoProfile -ExecutionPolicy Bypass -File avvia-docker.ps1 -Azione stato
 ```
 
-Accesso del gruppo da casa: predisposto `render.yaml`, con un solo servizio
-**Free**. Il deploy non è ancora stato eseguito: passaggi in
-[`docs/wiki/render.md`](docs/wiki/render.md).
+Accesso del gruppo da casa: **https://arcade-milano.onrender.com**, su Render
+**Free** e database Supabase. Verifica HTTPS completata: tre login, quattro
+endpoint staff, visite e riepilogo espositori, ruoli e isolamento degli account.
+Configurazione e aggiornamenti in [`docs/wiki/render.md`](docs/wiki/render.md).
 
 ## Team
 

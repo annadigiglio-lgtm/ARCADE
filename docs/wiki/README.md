@@ -12,6 +12,9 @@ Wiki interna del progetto. Qui teniamo tutto quello che serve per lavorare: cosa
 - [Glossario](glossario.md): termini e sigle
 
 ### Tecnica
+- [Ambiente di sviluppo](ambiente-sviluppo.md): installazione e primo avvio per Yassin e Daniel, con Docker o Java e Supabase
+- [Docker](docker.md): configurazione del container e avvio sul PC
+- [Render](render.md): servizio pubblico gratuito, aggiornamenti e verifiche
 - [Architettura](architettura.md): componenti, flussi, punto d'incontro BID/BAD
 - [Dati del cliente](dati.md): file ricevuti, struttura, anomalie trovate, numeri di controllo
 - [Schema dati](schema-dati.md): tabelle PostgreSQL, diagramma, scelte

@@ -9,6 +9,9 @@
 
 Team leader: _da definire_
 
+Per installare e avviare il progetto sui PC di Yassin e Daniel:
+[guida ambiente di sviluppo](ambiente-sviluppo.md).
+
 ## Responsabilità secondo il documento di progetto
 
 ### BID: piattaforma dati e BI in codice
