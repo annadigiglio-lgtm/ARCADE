@@ -18,6 +18,8 @@ if (-not $maven) { $maven = Join-Path $radice '.tools/apache-maven-3.9.9/bin/mvn
 if (-not (Test-Path -LiteralPath $maven)) { throw 'Installare Maven oppure eseguire .\api\prepara-maven.ps1.' }
 $java = (Get-Command java -ErrorAction Stop).Source
 $env:JAVA_HOME = Split-Path (Split-Path $java -Parent) -Parent
+# Do not inherit a generic DEBUG flag from the terminal: Spring may log login responses.
+$env:DEBUG = 'false'
 if (-not $env:ARCADE_JWT_SECRET) {
     $random = New-Object byte[] 48
     $rng = [System.Security.Cryptography.RandomNumberGenerator]::Create()

@@ -1,5 +1,19 @@
 # Cose da fare
 
+## Aggiornamento 2026-11-02: prima applicazione locale
+
+- [x] Progetto Spring Boot con login, ruoli, endpoint staff, visite e riepilogo espositore.
+- [x] Pagine locali per staff ed espositori, collegate alle API.
+- [x] Tre utenti demo nel DB locale; verifica HTTP/SQL e test di isolamento superati.
+- [x] Formato commerciale proposto in `power-platform/`, da verificare con BAD.
+- [ ] Provare l'interfaccia nel browser e rivedere il codice insieme al team.
+- [ ] Ottenere un export reale Dataverse e concordare mappatura e identificativi.
+- [ ] Implementare l'importazione commerciale e provare il contratto 2026.
+- [ ] Confrontare i numeri con Power BI e preparare l'ambiente condiviso.
+
+Guida operativa: [`api/README.md`](../../api/README.md).
+Le voci precedenti sotto non certificano lo stato del database condiviso.
+
 Aggiornare a ogni sessione. Formato: `- [ ] attività (chi) — scadenza`. Quando è fatta, spuntarla e spostarla in fondo.
 
 ## Urgente (entro SAL 1, 2026-10-30)
