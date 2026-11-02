@@ -14,6 +14,32 @@ Modello:
 
 ---
 
+## 2026-11-02 — Viste Supabase pubblicate e verifica completa del container
+
+**Fatto:** l'utente ha eseguito `db/pubblica_api_supabase.sql` nello SQL Editor
+Supabase. `node api/verifica-condiviso.mjs` superato dal container su localhost:8081:
+pagina/asset, tre login, quattro endpoint staff, visite/riepilogo espositori,
+ruoli e isolamento dei due account. Il precedente blocco sulle viste è risolto.
+
+**Prossimi passi:** autorizzare Render, pubblicare il codice aggiornato nel
+repository scelto e completare il deploy Free con verifica dell'URL HTTPS.
+
+## 2026-11-02 — Docker avviato con Supabase, preparazione Render Free
+
+**Fatto:** build dell'immagine Linux riuscita con 5 test Java; container su
+localhost:8081 con limite 512 MB; tre account demo creati e verificati su Supabase
+senza sovrascrivere account esistenti. Pagina, asset, login, ruoli e credenziali
+errate provati via HTTP. Preparati `avvia-docker.ps1`, verifica dell'ambiente
+condiviso, SQL unico delle viste e Blueprint Render con un solo servizio Free.
+
+**Blocco tecnico:** `bid_app` non ha CREATE sullo schema e le viste sono di
+`postgres`. Lo SQL delle viste deve essere eseguito dal proprietario tramite
+SQL Editor o collegamento Supabase autorizzato. Non tentato alcun aumento dei permessi.
+
+**Prossimi passi:** pubblicare viste, verificare i dati dal container, autorizzare
+Render e pubblicare il repository aggiornato, poi verificare il servizio HTTPS.
+Nessun servizio Render creato. Dettagli in [render.md](render.md).
+
 ## 2026-11-02 — Prima applicazione locale staff ed espositori
 
 **Chi:** sviluppo assistito con Codex, da rivedere insieme al team.

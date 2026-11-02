@@ -1,5 +1,19 @@
 # Cose da fare
 
+## Aggiornamento 2026-11-02: Docker, Supabase e accesso da casa
+
+- [x] Build del container Linux e cinque test Java superati.
+- [x] Container avviato su localhost:8081 con limite 512 MB e DB Supabase.
+- [x] Tre utenti demo su Supabase; login e ruoli verificati dal container.
+- [x] SQL unico per le viste preparato e provato in locale con rollback.
+- [x] `render.yaml` predisposto con un solo servizio gratuito e senza database Render.
+- [x] Eseguire `db/pubblica_api_supabase.sql` con il proprietario dello schema.
+- [x] Eseguire la verifica completa `node api/verifica-condiviso.mjs`.
+- [ ] Autorizzare l'accesso a Render e pubblicare il codice del branch scelto.
+- [ ] Pubblicare su Render Free e verificare l'URL HTTPS.
+
+Dettagli: [render.md](render.md). Nessun deploy remoto ancora eseguito.
+
 ## Aggiornamento 2026-11-02: prima applicazione locale
 
 - [x] Progetto Spring Boot con login, ruoli, endpoint staff, visite e riepilogo espositore.
@@ -31,7 +45,7 @@ Aggiornare a ogni sessione. Formato: `- [ ] attività (chi) — scadenza`. Quand
 - [ ] Rivedere con BAD la bozza dello schema in [schema-dati.md](schema-dati.md) (BID + BAD)
 - [ ] Rivedere in team gli script di caricamento in `db/caricamento/`: ognuno deve saperli spiegare (BID)
 - [ ] Ottimizzare le viste delle presenze stimate per il cruscotto in diretta (~6 s oggi) (Anna)
-- [ ] Eseguire su Supabase `db/viste_kpi.sql` e `db/viste_api.sql` dall'SQL Editor (Anna) — 2026-10-27
+- [x] Eseguire su Supabase `db/viste_kpi.sql` e `db/viste_api.sql` dall'SQL Editor (Anna) — completato 2026-11-02
 - [ ] Utenti di demo nel DB: 1 staff e 2 espositori, password in BCrypt (Anna) — 2026-10-27
 - [ ] Verificare [viste-api.md](viste-api.md) con i wireframe di Daniel: se manca un numero, nuova vista (Anna + Daniel)
 - [ ] Chiedere al cliente la capienza dei padiglioni per gli avvisi di affollamento (team leader)
@@ -60,7 +74,7 @@ Dettaglio per area in [team.md](team.md#divisione-interna-bid).
 
 - [ ] Anonimizzazione: niente nomi ed email esposti, minori solo aggregati (Anna) — SAL 2
 - [ ] Caricamento dell'export commerciale da Dataverse (Anna) — SAL 2
-- [ ] API Spring Boot collegata a Supabase, endpoint principali, autenticazione e ruoli (Yassin) — SAL 2
+- [x] API Spring Boot collegata a Supabase, endpoint principali, autenticazione e ruoli — verificato 2026-11-02
 - [ ] Prima versione di cruscotto staff e portale espositori (Daniel) — SAL 2
 - [ ] Isolamento espositori lato server (id dal token) (Yassin) — finale
 - [ ] Tempo reale nel cruscotto (Yassin + Daniel) — finale
