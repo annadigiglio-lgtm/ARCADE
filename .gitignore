@@ -24,3 +24,4 @@ desktop.ini
 # Variabili d'ambiente e credenziali
 .env
 *.local
+.tools/
