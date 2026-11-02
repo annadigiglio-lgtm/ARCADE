@@ -183,8 +183,9 @@ FROM scansione_stand
 WHERE anomalia IS NULL
 GROUP BY edizione, codice_stand, date_trunc('hour', rilevato_il AT TIME ZONE 'Europe/Rome');
 
--- Contatti visibili all'espositore: l'email compare solo con consenso
--- e solo se il contatto e' sicuramente maggiorenne (tutela minori)
+-- Dettaglio dei contatti visibile all'espositore: solo contatti con consenso,
+-- email disponibile e maggiorenni con fascia d'eta' nota. I minori e i record
+-- senza consenso restano disponibili solo nei conteggi aggregati.
 CREATE OR REPLACE VIEW v_contatti_espositore AS
 SELECT k.id_contatto,
        k.edizione,
@@ -197,4 +198,7 @@ SELECT k.id_contatto,
        k.provincia,
        k.interesse
 FROM contatto_stand k
-LEFT JOIN fascia_eta f ON f.codice = k.fascia_eta;
+LEFT JOIN fascia_eta f ON f.codice = k.fascia_eta
+WHERE k.consenso_marketing
+  AND k.email IS NOT NULL
+  AND f.minorenne = false;

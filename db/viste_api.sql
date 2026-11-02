@@ -143,9 +143,17 @@ WITH visite AS (
     GROUP BY edizione, codice_stand
 ),
 contatti AS (
-    SELECT edizione, codice_stand, count(*) AS contatti, count(email) AS contatti_con_consenso
-    FROM v_contatti_espositore
-    GROUP BY edizione, codice_stand
+    SELECT k.edizione,
+           k.codice_stand,
+           count(*) AS contatti,
+           count(*) FILTER (
+               WHERE k.consenso_marketing
+                 AND k.email IS NOT NULL
+                 AND f.minorenne = false
+           ) AS contatti_con_consenso
+    FROM contatto_stand k
+    LEFT JOIN fascia_eta f ON f.codice = k.fascia_eta
+    GROUP BY k.edizione, k.codice_stand
 ),
 punta AS (
     SELECT DISTINCT ON (edizione, codice_stand) edizione, codice_stand, ora AS ora_di_punta
