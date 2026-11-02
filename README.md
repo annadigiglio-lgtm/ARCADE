@@ -15,8 +15,6 @@ Piattaforma per Factory Studios: gestione della vendita di spazi e sponsorizzazi
 | `web/`            | Interfacce web                  |
 | `power-platform/` | Soluzione Power Platform        |
 
-## Team
-
 ## Avviare la prima demo locale
 
 API Spring Boot e pagine staff/espositore: istruzioni in [`api/README.md`](api/README.md).

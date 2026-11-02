@@ -1,0 +1,19 @@
+<!doctype html>
+<html lang="it">
+<head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>ARCADE · Area riservata</title><link rel="stylesheet" href="/style.css"><script src="/app.js" defer></script></head>
+<body>
+  <header><a class="brand" href="/">ARCADE<span>MILANO</span></a><div class="header-right"><span id="identity">Area riservata</span><button id="logout" class="secondary" hidden>Esci</button></div></header>
+  <main>
+    <section id="login-panel" class="login-panel">
+      <p class="eyebrow">IL FESTIVAL, IN NUMERI</p><h1>Benvenuto<br>in ARCADE.</h1><p class="intro">Accedi al cruscotto staff o ai risultati del tuo stand.</p>
+      <form id="login-form"><label for="username">Nome utente</label><input id="username" name="username" autocomplete="username" required maxlength="100"><label for="password">Password</label><input id="password" name="password" type="password" autocomplete="current-password" required maxlength="72"><button id="login-button" type="submit">Accedi <span aria-hidden="true">↗</span></button></form>
+    </section>
+    <p id="message" role="status" aria-live="polite"></p>
+    <section id="workspace" hidden>
+      <div class="page-heading"><div><p class="eyebrow" id="area-label"></p><h1 id="page-title"></h1></div><button id="refresh" class="secondary">Aggiorna dati</button></div>
+      <p id="timestamp" class="muted"></p>
+      <section id="staff" hidden><div class="section-heading"><h2>Presenze per padiglione</h2><span class="badge">Presenze stimate</span></div><div id="pavilions" class="cards"></div><h2>La giornata</h2><div id="summary" class="cards compact"></div><h2>Andamento delle presenze</h2><p class="muted">Dall’apertura all’istante mostrato, ogni cinque minuti.</p><div id="trend" class="chart-panel"></div><h2>Ingressi per ora e padiglione</h2><div class="table-wrap"><table><thead><tr><th scope="col">Ora</th><th scope="col">Padiglione</th><th scope="col">Ingressi</th><th scope="col">Persone</th></tr></thead><tbody id="entries"></tbody></table></div></section>
+      <section id="exhibitor" hidden><div class="section-heading"><h2>Visite al tuo stand</h2><label class="edition-label" for="edition">Edizione <select id="edition"><option>2025</option><option>2024</option><option>2026</option></select></label></div><p id="empty" hidden></p><div class="table-wrap"><table><thead><tr><th scope="col">Stand</th><th scope="col">Giorno</th><th scope="col">Ora</th><th scope="col">Visite</th></tr></thead><tbody id="visits"></tbody></table></div></section>
+    </section>
+  </main><footer>ARCADE Milano · Laboratorio Integrato</footer>
+</body></html>
