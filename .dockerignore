@@ -1,0 +1,13 @@
+.git
+.tools
+.env*
+**/.env*
+**/*.local
+**/target
+**/node_modules
+**/.idea
+**/.vscode
+data
+docs
+power-platform
+*.zip

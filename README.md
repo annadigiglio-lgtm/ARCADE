@@ -21,6 +21,27 @@ API Spring Boot e pagine staff/espositore: istruzioni in [`api/README.md`](api/R
 Il flusso commerciale da concordare con BAD è descritto in
 [`power-platform/README.md`](power-platform/README.md).
 
+## Avvio e condivisione con Docker
+
+Il repository include `Dockerfile`, `compose.yaml` e un file ambiente di esempio.
+Istruzioni per avvio sul PC, accesso del gruppo e database:
+[`docs/wiki/docker.md`](docs/wiki/docker.md).
+Build Docker e cinque test Java superati. Il container di prova usa Supabase ed
+è disponibile su **http://localhost:8081**. Viste API pubblicate su Supabase;
+verificati i tre login, tutti i quattro endpoint staff, visite e riepilogo
+espositori, ruoli e isolamento tra i due account.
+
+Per avviare o controllare Docker dalla cartella `ARCADE`:
+
+```powershell
+powershell -NoProfile -ExecutionPolicy Bypass -File avvia-docker.ps1
+powershell -NoProfile -ExecutionPolicy Bypass -File avvia-docker.ps1 -Azione stato
+```
+
+Accesso del gruppo da casa: predisposto `render.yaml`, con un solo servizio
+**Free**. Il deploy non è ancora stato eseguito: passaggi in
+[`docs/wiki/render.md`](docs/wiki/render.md).
+
 ## Team
 
 - BID: Anna Digiglio, Daniel Quattrone, Yassin En Naour
