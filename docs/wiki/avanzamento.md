@@ -14,6 +14,37 @@ Modello:
 
 ---
 
+## 2026-11-02 — Prima applicazione locale staff ed espositori
+
+**Chi:** sviluppo assistito con Codex, da rivedere insieme al team.
+
+**Fatto:**
+
+- Creato il progetto Spring Boot in `api/`: login BCrypt/JWT, ruoli STAFF ed
+  ESPOSITORE, quattro endpoint staff, visite e riepilogo espositore.
+- Aggiunte le pagine in `web/`, servite dall'API: login, presenze, riepilogo,
+  andamento, ingressi orari e visite del proprio stand per edizione.
+- Configurata la connessione con schema `arcade`. Nessuna ricreazione del DB
+  e nessuna modifica applicata al database condiviso Supabase.
+- Creati nel database locale tre utenti di demo: uno staff e due espositori.
+  Password casuali nel file ignorato `api/demo-accounts.local`, hash BCrypt nel DB.
+- Compilazione e 5 test automatici superati. Verifica HTTP contro PostgreSQL
+  reale superata per pagina/asset, login, quattro endpoint staff, visite uguali
+  a SQL, ruoli e isolamento tra espositori (`api/verifica-locale.mjs`).
+- Preparato un formato CSV commerciale proposto e i punti da concordare con BAD
+  in `power-platform/README.md`. Non ancora verificato con un export Dataverse.
+
+**Limiti / prossimi passi:**
+
+- Revisione del team su implementazione e contratto OpenAPI.
+- Verifica visuale e interattiva in browser da completare.
+- Orologio demo fisso al 20/12/2025 11:55, configurabile; polling ogni 30 s.
+  Simulazione in movimento e soglie di capienza ancora da completare.
+- Richiedere a BAD un export reale di contratto 2026 e righe, concordare
+  identificativi e mappatura, implementare e verificare il caricamento.
+- Confronto con Power BI e distribuzione condivisa da completare.
+- Avvio e verifiche documentati in `api/README.md`.
+
 ## 2026-10-23 — Proposta viste per le API e database locale di prova
 
 **Chi:** Anna

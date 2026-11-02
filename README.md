@@ -17,5 +17,13 @@ Piattaforma per Factory Studios: gestione della vendita di spazi e sponsorizzazi
 
 ## Team
 
+## Avviare la prima demo locale
+
+API Spring Boot e pagine staff/espositore: istruzioni in [`api/README.md`](api/README.md).
+Il flusso commerciale da concordare con BAD è descritto in
+[`power-platform/README.md`](power-platform/README.md).
+
+## Team
+
 - BID: Anna Digiglio, Daniel Quattrone, Yassin En Naour
 - BAD: Alessandro Terlingo, Cristian Provenzano, Lorenzo Musto, Adam Nekkouss, Durand Yenje Boum
