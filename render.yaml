@@ -1,0 +1,36 @@
+# One free Docker web service. Database remains on the existing Supabase project.
+services:
+  - type: web
+    name: arcade-milano
+    runtime: docker
+    plan: free
+    region: frankfurt
+    dockerfilePath: ./Dockerfile
+    dockerContext: .
+    autoDeployTrigger: "off"
+    healthCheckPath: /
+    envVars:
+      - key: SERVER_ADDRESS
+        value: "0.0.0.0"
+      - key: PORT
+        value: "10000"
+      - key: DEBUG
+        value: "false"
+      - key: JAVA_TOOL_OPTIONS
+        value: "-XX:MaxRAMPercentage=60.0 -XX:InitialRAMPercentage=10.0 -XX:+ExitOnOutOfMemoryError"
+      - key: DB_HOST
+        sync: false
+      - key: DB_PORT
+        value: "5432"
+      - key: DB_NAME
+        value: postgres
+      - key: DB_USER
+        sync: false
+      - key: DB_PASSWORD
+        sync: false
+      - key: DB_SSLMODE
+        value: require
+      - key: ARCADE_JWT_SECRET
+        generateValue: true
+      - key: ARCADE_DEMO_ISTANTE
+        value: "2025-12-20T11:55:00+01:00"

@@ -1,0 +1,26 @@
+name: arcade
+services:
+  app:
+    image: arcade-app:local
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "${APP_BIND_ADDRESS:-127.0.0.1}:${APP_PORT:-8080}:8080"
+    environment:
+      SERVER_ADDRESS: 0.0.0.0
+      PORT: "8080"
+      DEBUG: "false"
+      DB_HOST: ${DB_HOST:?Impostare DB_HOST nel file ambiente Docker}
+      DB_PORT: ${DB_PORT:-5432}
+      DB_NAME: ${DB_NAME:-postgres}
+      DB_USER: ${DB_USER:?Impostare DB_USER nel file ambiente Docker}
+      DB_PASSWORD: ${DB_PASSWORD:?Impostare DB_PASSWORD nel file ambiente Docker}
+      DB_SSLMODE: ${DB_SSLMODE:-require}
+      ARCADE_JWT_SECRET: ${ARCADE_JWT_SECRET:?Impostare una chiave JWT di almeno 32 byte}
+      ARCADE_DEMO_ISTANTE: ${ARCADE_DEMO_ISTANTE:-2025-12-20T11:55:00+01:00}
+      JAVA_TOOL_OPTIONS: "-XX:MaxRAMPercentage=60.0 -XX:InitialRAMPercentage=10.0 -XX:+ExitOnOutOfMemoryError"
+    mem_limit: 512m
+    restart: unless-stopped
+    security_opt:
+      - no-new-privileges:true
