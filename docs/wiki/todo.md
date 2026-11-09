@@ -1,5 +1,15 @@
 # Cose da fare
 
+## Avvio Power BI — verifica live del 9 novembre
+
+Riscontro: [avvio-power-bi.md](avvio-power-bi.md).
+
+- [x] Verificare in sola lettura ruolo BAD e permessi sulle 17 viste presenti.
+- [ ] Fornire in privato la password dedicata BAD e provare il login Power BI.
+- [ ] Ricevere CSV con record: entrambe le copie locali sono ancora vuote; C2026-0200 assente da Supabase.
+- [ ] Definire e pubblicare `v_kpi_rinnovo`, `v_incassi_contratto`, `v_vendite_biglietti_giorno`, `v_kpi_conversione`: assenti sia dallo script sia da Supabase.
+- [ ] Aggiungere la chiave UUID sorgente alle scansioni con vincolo univoco e caricamento idempotente; colonna non ancora presente.
+
 ## Verifica BAD — 9 novembre; priorità prossimo SAL del 4 dicembre
 
 Dettagli e riferimenti: [verifica della consegna BAD](verifica-bad-2026-11-09.md).

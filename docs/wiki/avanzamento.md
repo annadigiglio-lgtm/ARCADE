@@ -14,6 +14,18 @@ Modello:
 
 ---
 
+## 2026-11-09 — Riscontro live alle domande BAD per avvio Power BI
+
+**Fatto:** interrogato Supabase in transazione READ ONLY. Ruolo bad_powerbi
+presente e SELECT sulle 17 viste attuali verificato tramite account BID.
+C2026-0200 assente; le quattro viste richieste da BAD non esistono né nel DB
+né nello script KPI; nessuna colonna UUID nella tabella scansioni. Entrambe
+le copie locali dei CSV di scambio hanno zero record. Nessun ETL o DDL eseguito.
+
+**Documentazione:** [avvio Power BI](avvio-power-bi.md), indice e TODO aggiornati.
+Password BAD non recuperata o modificata; login BAD ancora da provare.
+
+
 ## 2026-11-09 — Nuova data SAL e preparazione import commerciale
 
 **Aggiornamento dell’utente:** prossimo SAL il **4 dicembre 2026**; superata
