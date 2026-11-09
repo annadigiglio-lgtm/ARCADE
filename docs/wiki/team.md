@@ -61,11 +61,13 @@ PostgreSQL (Supabase)  ──►  API Spring Boot  ──►  Pagine web
 
 Regola di fondo: **i numeri si calcolano una volta sola, nel DB** ([decisione 0003](decisioni/0003-kpi-in-viste-sql.md)). Le API non ricalcolano nulla e il web non fa conti in JavaScript: così cruscotto, portale e Power BI di BAD danno gli stessi valori.
 
-Scadenze di riferimento ([programma.md](programma.md)): **SAL 1 30/10** (schema e contratto API congelati), **SAL 2 13/11** (due edizioni caricate e un contratto 2026 venduto), **finale 04/12** (demo prima, durante, dopo).
+Scadenze di riferimento ([programma.md](programma.md)): **SAL 1 30/10** (schema e contratto API congelati), **prossimo SAL 04/12**, aggiornamento comunicato il 9/11 (due edizioni caricate e un contratto 2026 end-to-end). La demo prima/durante/dopo resta nel piano; formato finale e presenza cliente da riconfermare.
 
 ### Anna: DB ed ETL
 
 Responsabile di tutto ciò che sta dentro PostgreSQL: struttura delle tabelle, ingresso dei dati, uscita dei dati puliti.
+
+Stato API/web già verificato il 2/11: login e ruoli, isolamento espositori, endpoint principali e prima interfaccia collegata a Supabase; le attività sotto descrivono anche gli obiettivi originari e non certificano nuovi collaudi.
 
 Già fatto: analisi dati e registro anomalie, `schema.sql`, viste KPI, script in `db/caricamento/`, storico 2024-2025 caricato (28/28 controlli OK), Supabase configurato.
 
@@ -77,12 +79,12 @@ Già fatto: analisi dati e registro anomalie, `schema.sql`, viste KPI, script in
 - Velocizzare le viste delle presenze stimate (~6 s oggi)
 - Decidere se i dati del cliente stanno su Git o fuori
 
-**Entro il SAL 2**
+**Entro il prossimo SAL (04/12)**
 
 - Anonimizzazione: niente nomi ed email esposti dove non servono; per i minori solo dati aggregati
 - Mappatura colonne Dataverse ↔ PostgreSQL con BAD e caricamento dell'export commerciale (opzione B), così il contratto 2026 venduto in Power Apps compare nel DB
 
-**Entro la finale**
+**Completamento per il 04/12**
 
 - Script di simulazione dei passaggi ai varchi e delle scansioni agli stand per la demo in tempo reale
 - Ingresso delle scansioni dell'app di BAD
@@ -101,13 +103,13 @@ Responsabile dello strato in mezzo: il servizio Java che legge dal DB, risponde 
   - `GET /espositore/me/visite`, `/espositore/me/riepilogo`, `/espositore/me/confronto` (espositore)
 - Input necessari: da Daniel cosa mostra ogni pagina, da Anna quali viste esistono
 
-**Entro il SAL 2**
+**Entro il prossimo SAL (04/12)**
 
 - Progetto Spring Boot in `api/`, collegato a Supabase con `bid_app`
 - Endpoint principali funzionanti, che leggono le viste senza ricalcolare
 - Autenticazione e ruoli: login, token (es. JWT), almeno `STAFF` ed `ESPOSITORE`
 
-**Entro la finale**
+**Completamento per il 04/12**
 
 - Isolamento espositori: l'id dell'espositore si ricava **dal token, mai da un parametro dell'URL**
 - Aggiornamento in tempo reale per il cruscotto (polling o Server-Sent Events, da decidere con Daniel)
@@ -122,13 +124,13 @@ Responsabile di ciò che vedono le persone: due pagine per due pubblici diversi.
 - Wireframe delle due pagine con l'elenco dei dati necessari in ciascuna, da passare subito a Yassin per il contratto API
 - Scelta della tecnologia del frontend, da registrare in `decisioni/`
 
-**Entro il SAL 2**
+**Entro il prossimo SAL (04/12)**
 
 - **Cruscotto staff** (schermo in fiera): presenze attuali per padiglione, andamento della giornata, ingressi, avvisi di affollamento; leggibile da lontano
 - **Portale espositori**: login e visite al proprio stand per giorno e ora
 - Finché le API non sono pronte si lavora con dati finti ricavati dal contratto OpenAPI
 
-**Entro la finale**
+**Completamento per il 04/12**
 
 - Aggiornamento automatico del cruscotto
 - Portale completo: riepilogo di fine fiera, confronto 2024/2025, invito al rinnovo

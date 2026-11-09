@@ -25,3 +25,7 @@ desktop.ini
 .env
 *.local
 .tools/
+
+# Python: verifiche e script ETL
+__pycache__/
+*.pyc

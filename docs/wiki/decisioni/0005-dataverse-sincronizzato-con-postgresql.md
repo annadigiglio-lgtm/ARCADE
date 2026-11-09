@@ -39,3 +39,13 @@ BAD può invece creare un ambiente Power Platform dedicato al progetto e lavorar
 - [ ] **Chi fa la sincronizzazione e come** (opzioni in [architettura.md](../architettura.md#sincronizzazione-dataverse--postgresql))
 - [ ] **Storico 2024-2025**: proposta di passare i dati commerciali già puliti da BID (abbinamenti di A16-A17) a BAD per l'importazione in Dataverse, così storico e nuovi contratti seguono la stessa strada
 - [ ] Verificare se in quell'ambiente Dataverse è disponibile senza licenza premium: in generale l'uso di Dataverse in Power Apps è legato alle stesse licenze
+
+## Aggiornamento operativo 2026-11-09
+
+BAD dichiara completato il caricamento dello storico pulito BID in Dataverse.
+Ricevuta la mappatura delle sette tabelle. Export CSV proposto da entrambi
+i team per il prossimo SAL del **4 dicembre**; implementato lo script BID sul
+formato di scambio, con validazione e import transazionale. Restano aperte
+validazione su export reale, prova PostgreSQL e conferma operativa del gruppo.
+La lettura automatica API rimane un’alternativa da valutare con il tutor.
+Vedi [verifica](../verifica-bad-2026-11-09.md) e [istruzioni](../../../power-platform/README.md).

@@ -59,8 +59,10 @@ deducono annullamenti dall'assenza. FK o collisioni con stand già occupati
 fanno fallire tutta la transazione. L'import richiede anche i permessi di
 lettura/scrittura sulle due tabelle e di creazione di tabelle temporanee.
 
-Stato: validazione e generazione SQL provate localmente; esecuzione PostgreSQL
-e compatibilità con export reale Dataverse ancora da verificare. Non usare i
+Stato: dieci test sintetici superati e prova su PostgreSQL 18 temporaneo
+completata: import/reimport idempotente, rimozione righe obsolete e rollback
+completo su FK non valida. Il DB temporaneo è stato arrestato. Compatibilità
+con export reale Dataverse e applicazione su Supabase ancora da verificare. Non usare i
 CSV con sola intestazione come prova di integrazione riuscita.
 
 Analisi dei problemi BAD: [verifica del 9/11](../docs/wiki/verifica-bad-2026-11-09.md).

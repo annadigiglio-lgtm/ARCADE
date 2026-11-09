@@ -1,13 +1,15 @@
 # Cose da fare
 
-## Verifica BAD — 9 novembre; priorità SAL 2 del 13/11
+## Verifica BAD — 9 novembre; priorità prossimo SAL del 4 dicembre
 
 Dettagli e riferimenti: [verifica della consegna BAD](verifica-bad-2026-11-09.md).
 
 - [x] Verificare struttura della consegna e confronto statico con modello e KPI BID.
 - [x] Acquisire la mappatura documentale delle sette tabelle commerciali BAD.
 - [ ] Ricevere export con record di C2026-0200 e righe, validare mappatura 1.0.0.4 e confermare opzione B (Anna + BAD).
-- [ ] Implementare import commerciale transazionale e idempotente; provare reimport, errore e righe eliminate (Anna).
+- [x] Predisporre import commerciale transazionale e idempotente con validazione locale e test sintetici (9/11).
+- [x] Provare su PostgreSQL 18 temporaneo import/reimport, rimozione righe obsolete e rollback FK (9/11; dati sintetici).
+- [ ] Validare e provare export reale BAD sul DB di prova, poi applicare al DB condiviso (Anna).
 - [ ] Separare stand prenotati da venduti firmati, confrontando le viste SQL (BAD + BID).
 - [ ] Provare salvataggio parziale e due sessioni concorrenti su numeri e stand; correggere protezioni (BAD).
 - [ ] Correggere selezione del listino per edizione/codice e rimuovere il limite implicito di 16 righe; verificare completezza delle collezioni (BAD).
@@ -20,7 +22,9 @@ Dettagli e riferimenti: [verifica della consegna BAD](verifica-bad-2026-11-09.md
 - [x] Preparare 5 slide comuni con presentazione del gruppo e Gantt sintetico.
 - [ ] Rivedere con BAD stato e date del piano, confermare il nome di Yenje e controllare il PowerPoint nel programma di presentazione.
 
-Materiali: [presentazione, scaletta e inventario](../presentazioni/stato-2026-11-06/README.md).
+Materiali: la cartella `docs/presentazioni/stato-2026-11-06/` non è presente nella copia locale verificata.
+
+- [ ] Ripristinare presentazione, scaletta e inventario del 6/11 e aggiornare il calendario dei materiali al 4/12.
 
 ## Ambiente di sviluppo del gruppo
 
@@ -50,7 +54,8 @@ Dettagli: [render.md](render.md). Servizio verificato: https://arcade-milano.onr
 - [x] Formato commerciale proposto in `power-platform/`, da verificare con BAD.
 - [ ] Provare l'interfaccia nel browser e rivedere il codice insieme al team.
 - [ ] Ottenere un export Dataverse con record e validare la mappatura ricevuta il 9/11 e gli identificativi.
-- [ ] Implementare l'importazione commerciale e provare il contratto 2026.
+- [x] Implementare lo script di importazione commerciale sul formato CSV proposto (9/11).
+- [ ] Provare il contratto 2026 con export reale e PostgreSQL.
 - [ ] Confrontare i numeri con Power BI e preparare l'ambiente condiviso.
 
 Guida operativa: [`api/README.md`](../../api/README.md).
@@ -58,7 +63,7 @@ Le voci precedenti sotto non certificano lo stato del database condiviso.
 
 Aggiornare a ogni sessione. Formato: `- [ ] attività (chi) — scadenza`. Quando è fatta, spuntarla e spostarla in fondo.
 
-## Urgente (entro SAL 1, 2026-10-30)
+## Attività residue dal SAL 1 (scadenza originaria 2026-10-30; riesame per il 04/12)
 
 ### Organizzazione
 - [ ] Scegliere il team leader (tutti)
@@ -74,7 +79,7 @@ Aggiornare a ogni sessione. Formato: `- [ ] attività (chi) — scadenza`. Quand
 - [ ] Rivedere in team gli script di caricamento in `db/caricamento/`: ognuno deve saperli spiegare (BID)
 - [ ] Ottimizzare le viste delle presenze stimate per il cruscotto in diretta (~6 s oggi) (Anna)
 - [x] Eseguire su Supabase `db/viste_kpi.sql` e `db/viste_api.sql` dall'SQL Editor (Anna) — completato 2026-11-02
-- [ ] Utenti di demo nel DB: 1 staff e 2 espositori, password in BCrypt (Anna) — 2026-10-27
+- [x] Tre utenti demo su Supabase, login e ruoli verificati il 2/11.
 - [ ] Verificare [viste-api.md](viste-api.md) con i wireframe di Daniel: se manca un numero, nuova vista (Anna + Daniel)
 - [ ] Chiedere al cliente la capienza dei padiglioni per gli avvisi di affollamento (team leader)
 - [ ] Wireframe di cruscotto staff e portale espositori, con i dati necessari in ogni pagina (Daniel) — 2026-10-26
@@ -100,11 +105,11 @@ Aggiornare a ogni sessione. Formato: `- [ ] attività (chi) — scadenza`. Quand
 
 Dettaglio per area in [team.md](team.md#divisione-interna-bid).
 
-- [ ] Anonimizzazione: niente nomi ed email esposti, minori solo aggregati (Anna) — SAL 2
-- [ ] Caricamento dell'export commerciale da Dataverse (Anna) — SAL 2
+- [ ] Anonimizzazione: niente nomi ed email esposti, minori solo aggregati (Anna) — prossimo SAL 04/12
+- [ ] Caricamento dell'export commerciale da Dataverse (Anna) — prossimo SAL 04/12
 - [x] API Spring Boot collegata a Supabase, endpoint principali, autenticazione e ruoli — verificato 2026-11-02
-- [ ] Prima versione di cruscotto staff e portale espositori (Daniel) — SAL 2
-- [ ] Isolamento espositori lato server (id dal token) (Yassin) — finale
+- [x] Prima versione web staff/espositore collegata alle API e verificata il 2/11; revisione visiva del gruppo ancora aperta.
+- [x] Isolamento espositori lato server dal token implementato e verificato il 2/11.
 - [ ] Tempo reale nel cruscotto (Yassin + Daniel) — finale
 - [ ] Simulazione dei passaggi ai varchi e delle scansioni per la demo (Anna) — finale
 - [ ] Portale completo: riepilogo, confronto 2024/2025, rinnovo (Daniel) — finale

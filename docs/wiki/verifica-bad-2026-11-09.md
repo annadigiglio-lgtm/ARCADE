@@ -2,11 +2,14 @@
 
 ## Esito e perimetro
 
+Calendario aggiornato su indicazione dell’utente: **prossimo SAL 2026-12-04**;
+il riferimento al 13/11 presente nei materiali BAD è storico e superato.
+
 La consegna `ARCADE-BAD_2026-11-06`, nella cartella accanto al repository,
 è coerente con l'architettura BID/BAD e con il modello commerciale PostgreSQL.
 Non dimostra ancora un'integrazione funzionante: mancano l'export commerciale
-con record, il caricamento verso PostgreSQL e il confronto con Power BI.
-Prima del SAL 2 del 13/11 servono le verifiche sotto.
+con record, la prova del caricamento verso PostgreSQL e il confronto con Power BI.
+Prima del prossimo SAL del 4 dicembre servono le verifiche sotto.
 
 Revisione statica di documenti, SQL e sorgenti Canvas esportati. Nessun accesso
 live a Dataverse, Supabase o Render; nessuna modifica ai dati o alla consegna BAD.
@@ -50,17 +53,21 @@ assunzioni di processo o del cliente.
 
 I percorsi BAD sotto sono relativi alla radice della consegna separata.
 
-### P1 — Integrazione SAL 2 ancora da dimostrare (BID + BAD)
+### P1 — Integrazione per il prossimo SAL ancora da dimostrare (BID + BAD)
 
-I CSV sono vuoti e l'importatore commerciale BID non è implementato.
+I CSV sono vuoti. L'importatore BID è ora disponibile in
+`db/caricamento/importa_commerciale.py`: validazione e generazione SQL testate,
+prova PostgreSQL 18 temporaneo superata (reimport, righe obsolete e rollback FK).
+Compatibilità con l'export reale ancora da completare.
 La mappatura esiste in `docs/bad/mappatura-dataverse-postgres.md`, ma cita
 ancora l'inventario 1.0.0.2: va confrontata con l'export effettivo 1.0.0.4.
 La lettura API deve risolvere lookup e valori Choice nei codici/etichette attesi:
 non basta rimuovere il prefisso `g5_`.
 
 Richiedere export reale di C2026-0200 e relative righe, con anagrafiche necessarie;
-validare FK, date, decimali e importi, poi importare in una transazione con upsert
-idempotente. Ripetere l'import deve lasciare invariati conteggi e totali.
+validare FK, date, decimali e importi, poi provare lo script in un DB di prova.
+Lo script prepara una transazione con upsert idempotente e sostituzione completa
+delle righe dei contratti inclusi. Ripetere l'import deve lasciare invariati conteggi e totali.
 Se l'export è uno snapshot completo, gestire anche le righe eliminate, altrimenti
 un semplice upsert lascerà righe obsolete. Tenere esplicita la natura di prova.
 
@@ -129,15 +136,17 @@ scansione per evitare doppioni a ogni import: il solo `bigserial` PostgreSQL
 non riconosce una scansione già ricevuta. Definire timestamp con fuso,
 stand, edizione, `quantita = 1`, `origine = 'app'` e autorizzazioni per stand.
 
-## Criterio di chiusura prima del SAL 2
+## Criterio di chiusura prima del prossimo SAL del 4 dicembre
 
 Nota sulla documentazione BID: i collegamenti già presenti in indice e TODO
 a `docs/presentazioni/stato-2026-11-06/README.md` non si risolvono nella copia
 locale controllata. Ripristinare i materiali della presentazione o correggere
-i percorsi prima di condividerli; non sono stati ricreati durante questa verifica.
+i percorsi prima di condividerli; i collegamenti non funzionanti in indice,
+TODO e README principale sono stati sostituiti con un avviso. I materiali
+non sono stati ricreati durante questa verifica.
 
 1. BAD consegna export con record e mappatura aggiornata; BID e BAD confermano B.
-2. BID valida e importa il contratto di prova e tutte le righe, senza duplicati
+2. BID usa lo script disponibile per validare e importare il contratto di prova e tutte le righe, senza duplicati
    alla ripetizione e senza lasciare dati parziali in caso di errore.
 3. BAD distingue prenotati/firmati e il team confronta importi e KPI fra app,
    PostgreSQL, web e Power BI, dichiarando quando manca ancora un report.

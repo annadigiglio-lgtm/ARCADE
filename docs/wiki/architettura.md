@@ -1,6 +1,6 @@
 # Architettura
 
-Stato al **2026-11-09**: consegna BAD coerente con il modello; sincronizzazione ancora da implementare. Vedi [verifica BAD](verifica-bad-2026-11-09.md).
+Stato al **2026-11-09**: consegna BAD coerente con il modello; script CSV predisposto, sincronizzazione reale ancora da verificare. Vedi [verifica BAD](verifica-bad-2026-11-09.md).
 
 ## Idea centrale
 
@@ -49,7 +49,7 @@ Senza licenze premium Power Automate non può chiamare le API BID (azione HTTP) 
 
 Proposta: scrivere il caricamento dei dati commerciali in modo che legga **lo stesso formato** sia dall'export (B) sia dall'API Dataverse (A). Si parte con B, che funziona sicuramente; se la registrazione dell'applicazione è possibile si passa ad A senza cambiare il resto.
 
-Il pacchetto BAD propone export CSV per SAL 2 e contiene la mappatura, ma i due CSV hanno zero record. La mappatura va validata sulla versione 1.0.0.4. Il flusso scansioni via Dataverse resta da concordare e realizzare.
+Il pacchetto BAD propone export CSV per SAL 2 e contiene la mappatura, ma i due CSV hanno zero record. La mappatura va validata sulla versione 1.0.0.4. Lo [script CSV](../../db/caricamento/importa_commerciale.py) è disponibile: modalità predefinita senza DB e scrittura transazionale con `--applica`; prova su export reale ancora aperta. Il flusso scansioni via Dataverse resta da concordare e realizzare.
 
 ## Punti aperti
 

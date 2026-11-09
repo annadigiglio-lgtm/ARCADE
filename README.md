@@ -49,8 +49,10 @@ Configurazione e aggiornamenti in [`docs/wiki/render.md`](docs/wiki/render.md).
 
 ## Team
 
-Presentazione comune del 6 novembre, inventario dei materiali BAD e Gantt:
-[`docs/presentazioni/stato-2026-11-06/`](docs/presentazioni/stato-2026-11-06/README.md).
+Prossimo SAL: **4 dicembre 2026**, aggiornamento ricevuto il 9/11.
+[Programma](docs/wiki/programma.md), [verifica BAD](docs/wiki/verifica-bad-2026-11-09.md)
+e [import commerciale](power-platform/README.md).
+I materiali della presentazione del 6 novembre vanno ripristinati nella copia locale.
 
 - BID: Anna Digiglio, Daniel Quattrone, Yassin En Naour
 - BAD: Alessandro Terlingo, Cristian Provenzano, Lorenzo Musto, Adam Nekkouss, Durand Yenje Boum

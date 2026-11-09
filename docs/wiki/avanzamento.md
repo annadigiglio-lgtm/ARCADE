@@ -14,6 +14,29 @@ Modello:
 
 ---
 
+## 2026-11-09 — Nuova data SAL e preparazione import commerciale
+
+**Aggiornamento dell’utente:** prossimo SAL il **4 dicembre 2026**; superata
+la data del 13 novembre. Nessuna nuova data finale, presenza cliente o orario
+sono stati comunicati. Aggiornati programma, ruoli, attività e revisione BAD.
+
+**Fatto:** predisposto `db/caricamento/importa_commerciale.py`: valida i CSV
+senza DB per impostazione predefinita; con `--applica` usa psql, transazione,
+upsert contratti e sostituzione delle righe dei soli contratti inclusi.
+Controlli su formato, importi, firma, duplicati e protezione dello storico.
+Dieci test sintetici superati; inoltre import/reimport, rimozione di righe
+obsolete e rollback su errore FK verificati su PostgreSQL 18 temporaneo,
+poi arrestato. Nessun dato cliente usato nei test.
+Aggiornate istruzioni Power Platform e stato della decisione 0005 con nota
+operativa, senza attribuire al gruppo conferme ancora mancanti.
+
+**Aperto:** export reale BAD e prova sul DB condiviso, correzioni nell’app BAD,
+confronto Power BI e ripristino materiali presentazione mancanti dalla copia locale.
+Mappatura commerciale riportata nella wiki per renderla consultabile senza
+la cartella BAD separata; collegamenti a materiali mancanti sostituiti con
+avvisi e attività di ripristino. Nessuna scrittura su database condivisi o
+invio di messaggi al gruppo.
+
 ## 2026-11-09 — Verifica tecnica della consegna BAD e allineamento wiki
 
 **Fatto:** confrontati documenti e sorgenti BAD con schema, viste KPI e formato
