@@ -1,5 +1,27 @@
 # Cose da fare
 
+## Verifica BAD — 9 novembre; priorità SAL 2 del 13/11
+
+Dettagli e riferimenti: [verifica della consegna BAD](verifica-bad-2026-11-09.md).
+
+- [x] Verificare struttura della consegna e confronto statico con modello e KPI BID.
+- [x] Acquisire la mappatura documentale delle sette tabelle commerciali BAD.
+- [ ] Ricevere export con record di C2026-0200 e righe, validare mappatura 1.0.0.4 e confermare opzione B (Anna + BAD).
+- [ ] Implementare import commerciale transazionale e idempotente; provare reimport, errore e righe eliminate (Anna).
+- [ ] Separare stand prenotati da venduti firmati, confrontando le viste SQL (BAD + BID).
+- [ ] Provare salvataggio parziale e due sessioni concorrenti su numeri e stand; correggere protezioni (BAD).
+- [ ] Correggere selezione del listino per edizione/codice e rimuovere il limite implicito di 16 righe; verificare completezza delle collezioni (BAD).
+- [ ] Rendere univoci gli ID delle assunzioni; confermare abbinamenti espositori 2024 e indice rinnovo (BAD + BID + cliente).
+- [ ] Consegnare e confrontare report Power BI; completare flussi e app scansione con chiave stabile condivisa (BAD + BID).
+
+## Presentazione comune — 6 novembre
+
+- [x] Analizzare i materiali ricevuti da BAD e distinguere sorgenti, documenti e dati effettivi.
+- [x] Preparare 5 slide comuni con presentazione del gruppo e Gantt sintetico.
+- [ ] Rivedere con BAD stato e date del piano, confermare il nome di Yenje e controllare il PowerPoint nel programma di presentazione.
+
+Materiali: [presentazione, scaletta e inventario](../presentazioni/stato-2026-11-06/README.md).
+
 ## Ambiente di sviluppo del gruppo
 
 - [x] Documentare installazione e primo avvio per Yassin e Daniel in [ambiente-sviluppo.md](ambiente-sviluppo.md).
@@ -27,7 +49,7 @@ Dettagli: [render.md](render.md). Servizio verificato: https://arcade-milano.onr
 - [x] Tre utenti demo nel DB locale; verifica HTTP/SQL e test di isolamento superati.
 - [x] Formato commerciale proposto in `power-platform/`, da verificare con BAD.
 - [ ] Provare l'interfaccia nel browser e rivedere il codice insieme al team.
-- [ ] Ottenere un export reale Dataverse e concordare mappatura e identificativi.
+- [ ] Ottenere un export Dataverse con record e validare la mappatura ricevuta il 9/11 e gli identificativi.
 - [ ] Implementare l'importazione commerciale e provare il contratto 2026.
 - [ ] Confrontare i numeri con Power BI e preparare l'ambiente condiviso.
 
@@ -66,8 +88,8 @@ Aggiornare a ogni sessione. Formato: `- [ ] attività (chi) — scadenza`. Quand
 - [ ] Mandare a BAD i dati di connessione per Power BI, in modo sicuro (Anna)
 - [ ] Scegliere la modalità di sincronizzazione Dataverse → PostgreSQL ([architettura.md](architettura.md#sincronizzazione-dataverse--postgresql)) (BID + BAD)
 - [ ] Chiedere al tutor se si può registrare un'applicazione in Entra ID per leggere Dataverse (team leader)
-- [ ] Mappatura colonne Dataverse ↔ tabelle PostgreSQL (BID + BAD)
-- [ ] Decidere come arriva lo storico commerciale 2024-2025 in Dataverse (BID + BAD)
+- [x] Ricevuta mappatura documentale Dataverse/PostgreSQL; da validare su export reale (9/11).
+- [x] Ricevuta descrizione caricamento storico in Dataverse (BAD, 3-4/11); conteggi non riverificati live.
 - [ ] Ripensare il flusso delle scansioni dell'app di BAD senza chiamate alle API (BID + BAD)
 - [ ] Preparare la presentazione del SAL 1 (tutti)
 
