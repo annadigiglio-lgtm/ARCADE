@@ -11,7 +11,8 @@ Non dimostra ancora un'integrazione funzionante: mancano l'export commerciale
 con record, la prova del caricamento verso PostgreSQL e il confronto con Power BI.
 Prima del prossimo SAL del 4 dicembre servono le verifiche sotto.
 
-Revisione statica di documenti, SQL e sorgenti Canvas esportati. Nessun accesso
+Revisione statica di documenti, SQL e sorgenti Canvas esportati, integrata
+da test sintetici dell’importatore su PostgreSQL 18 locale temporaneo. Nessun accesso
 live a Dataverse, Supabase o Render; nessuna modifica ai dati o alla consegna BAD.
 I conteggi dei record nell'ambiente e le prove in Studio restano dichiarazioni
 BAD, non una nuova certificazione del 9/11. Le precedenti modifiche locali
