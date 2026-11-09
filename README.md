@@ -49,5 +49,8 @@ Configurazione e aggiornamenti in [`docs/wiki/render.md`](docs/wiki/render.md).
 
 ## Team
 
+Presentazione comune del 6 novembre, inventario dei materiali BAD e Gantt:
+[`docs/presentazioni/stato-2026-11-06/`](docs/presentazioni/stato-2026-11-06/README.md).
+
 - BID: Anna Digiglio, Daniel Quattrone, Yassin En Naour
 - BAD: Alessandro Terlingo, Cristian Provenzano, Lorenzo Musto, Adam Nekkouss, Durand Yenje Boum

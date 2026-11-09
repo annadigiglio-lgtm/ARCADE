@@ -1,6 +1,6 @@
 # Architettura
 
-Stato: **bozza**, da confermare con BAD entro il SAL 1 (2026-10-30).
+Stato al **2026-11-09**: consegna BAD coerente con il modello; sincronizzazione ancora da implementare. Vedi [verifica BAD](verifica-bad-2026-11-09.md).
 
 ## Idea centrale
 
@@ -24,7 +24,7 @@ BAD gestisce il back-office commerciale in **Dataverse** (ambiente Power Platfor
  Cruscotto staff  Portale espositori    Report direzione
      (BID)            (BID)                 (BAD)
                      ▲
-          App scansione stand (BAD) ──► API (BID)
+          Scansioni BAD (da fare) -> Dataverse -> PostgreSQL
 ```
 
 ## Componenti
@@ -49,14 +49,16 @@ Senza licenze premium Power Automate non può chiamare le API BID (azione HTTP) 
 
 Proposta: scrivere il caricamento dei dati commerciali in modo che legga **lo stesso formato** sia dall'export (B) sia dall'API Dataverse (A). Si parte con B, che funziona sicuramente; se la registrazione dell'applicazione è possibile si passa ad A senza cambiare il resto.
 
+Il pacchetto BAD propone export CSV per SAL 2 e contiene la mappatura, ma i due CSV hanno zero record. La mappatura va validata sulla versione 1.0.0.4. Il flusso scansioni via Dataverse resta da concordare e realizzare.
+
 ## Punti aperti
 
 - [x] Dove ospitare PostgreSQL: **Supabase**, piano gratuito ([decisione 0006](decisioni/0006-supabase.md), [guida](guida-supabase.md))
 - [ ] Sincronizzazione Dataverse → PostgreSQL: scegliere tra A e B (sopra); verificare con il tutor se si può registrare un'applicazione in Entra ID
-- [ ] Mappatura colonne Dataverse ↔ tabelle PostgreSQL, condivisa con BAD
+- [x] Mappatura documentale ricevuta da BAD; validazione su export reale ancora aperta.
 - [ ] Formato e endpoint per le scansioni dell'app di BAD: l'app non può chiamare le API BID senza connettori premium, va ripensato (es. scansioni salvate in Dataverse e sincronizzate)
 - [ ] Tempo reale per il cruscotto: polling periodico o Server-Sent Events
-- [ ] Autenticazione: come riconoscere l'espositore e limitarlo ai propri dati
+- [x] API BID: login, ruoli e isolamento verificati il 2/11; accessi BAD da verificare separatamente.
 - [ ] I file del cliente contengono dati personali: decidere se versionarli su Git o tenerli fuori (`.gitignore`)
 
 ## Sicurezza e privacy (requisiti del cliente)

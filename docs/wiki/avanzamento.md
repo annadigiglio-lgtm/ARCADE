@@ -14,6 +14,53 @@ Modello:
 
 ---
 
+## 2026-11-09 — Verifica tecnica della consegna BAD e allineamento wiki
+
+**Fatto:** confrontati documenti e sorgenti BAD con schema, viste KPI e formato
+commerciale BID. Verificati ZIP 1.0.0.4 integro, 7 tabelle, 9 schermate, CSV
+con zero record e assenza di file PBIX. Mappatura BAD ricevuta, ancora da
+validare sull'export reale. Aggiornati indice, architettura e attività senza
+modificare la consegna originale o i database.
+
+**Problemi:** integrazione non dimostrata; differenza preventivi/firmati nel
+conteggio dei venduti; rischio di salvataggio parziale e concorrenza; letture
+su collezioni e limite di 16 righe; modifica listino senza edizione; assunzioni
+con ID duplicati e abbinamenti 2024 ancora da confermare.
+
+**Dettaglio e prossimi passi:** [verifica BAD](verifica-bad-2026-11-09.md).
+Acquisire export di C2026-0200, validare mappatura, realizzare importazione
+transazionale e idempotente, confrontare i KPI con BAD prima del SAL 2.
+Prove live e conteggi dell'ambiente non rieseguiti in questa sessione.
+
+## 2026-11-06 — Presentazione convertita in PDF
+
+**Fatto:** dopo la segnalazione che il PowerPoint non si apre, creata una versione
+PDF di cinque pagine in `output/pdf/ARCADE_Gruppo5_2026-11-06.pdf`, mantenendo
+testi e grafici vettoriali. Le cinque pagine sono state renderizzate e controllate
+visivamente; verificati numero di pagine e testi entro i limiti. Originali conservati.
+Creata anche la scaletta integrale in tre pagine A4:
+`output/pdf/ARCADE_Gruppo5_scaletta_2026-11-06.pdf`, renderizzata e verificata.
+
+## 2026-11-06 — Analisi del pacchetto BAD e bozza di presentazione comune
+
+**Fatto:** letta la cartella separata `ARCADE-BAD_2026-11-06` senza modificarla.
+Il README BAD del 4/11 documenta soluzione Dataverse 1.0.0.4, 9 schermate Canvas
+e 3 contratti 2026 di prova (C2026-0200 firmato, candidato SAL 2). Riscontrati
+i 9 sorgenti delle schermate, il pacchetto soluzione, mappatura, Gantt HTML e
+5 slide HTML BAD. Nessun `.pbix`; i due CSV di scambio contengono solo intestazioni.
+Power Automate e app di scansione restano da fare secondo il report BAD.
+
+Creata in `docs/presentazioni/stato-2026-11-06/` una bozza PowerPoint comune
+di 5 slide: gruppo/ruoli, BID, BAD, integrazione, Gantt. Inclusi scaletta, inventario
+e Gantt SVG. Date operative future indicate come proposta; il report BAD non
+è stato trattato come prova live di sincronizzazione o come consegna originale.
+
+**Verifiche:** struttura XML/ZIP e relazioni del PowerPoint, numero di slide,
+forme entro la pagina, SVG e dati del Gantt validi. Nessun cambio ai database.
+
+**Prossimi passi:** revisione del contenuto con BAD, conferma dei nomi e delle
+date proposte, apertura e verifica visiva del PowerPoint prima dell'esposizione.
+
 ## 2026-11-02 — Guida di installazione per Yassin e Daniel
 
 **Fatto:** aggiunta [ambiente-sviluppo.md](ambiente-sviluppo.md) con strumenti,

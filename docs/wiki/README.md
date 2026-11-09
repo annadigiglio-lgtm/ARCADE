@@ -24,6 +24,8 @@ Wiki interna del progetto. Qui teniamo tutto quello che serve per lavorare: cosa
 - [KPI](kpi.md): definizioni operative degli indicatori
 
 ### Gestione del lavoro
+- [Verifica consegna BAD — 9 novembre](verifica-bad-2026-11-09.md): allineamento, problemi nei sorgenti e condizioni per SAL 2
+- [Presentazione del gruppo e Gantt — 6 novembre](../presentazioni/stato-2026-11-06/README.md): PowerPoint, scaletta e inventario dei materiali BAD ricevuti
 - [Programma](programma.md): calendario e milestone
 - [Cose da fare](todo.md): attività aperte, in corso, fatte
 - [Avanzamento](avanzamento.md): diario del lavoro, aggiornato a ogni sessione
