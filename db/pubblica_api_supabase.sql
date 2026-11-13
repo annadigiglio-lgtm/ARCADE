@@ -10,6 +10,69 @@ BEGIN;
 
 SET search_path = arcade;
 
+-- Estensioni Power BI: definizioni proposte, non ancora approvate dal cliente.
+-- Rinnovo: espositori distinti con contratti firmati in due anni consecutivi.
+-- NULL se non esiste l'edizione precedente; zero se esiste ma e' vuota.
+CREATE OR REPLACE VIEW v_kpi_rinnovo AS
+WITH espositori AS (
+    SELECT DISTINCT edizione, id_espositore FROM contratto WHERE stato = 'firmato'
+)
+SELECT e.anno AS edizione, p.anno AS edizione_precedente,
+       CASE WHEN p.anno IS NOT NULL THEN
+           (SELECT count(*) FROM espositori x WHERE x.edizione = p.anno) END AS espositori_precedenti,
+       (SELECT count(*) FROM espositori x WHERE x.edizione = e.anno) AS espositori_attuali,
+       CASE WHEN p.anno IS NOT NULL THEN
+           (SELECT count(*) FROM espositori x JOIN espositori y USING (id_espositore)
+            WHERE x.edizione = p.anno AND y.edizione = e.anno) END AS espositori_rinnovati,
+       CASE WHEN p.anno IS NOT NULL THEN
+           (SELECT count(*) FROM espositori x WHERE x.edizione = p.anno
+            AND NOT EXISTS (SELECT 1 FROM espositori y WHERE y.edizione = e.anno
+                            AND y.id_espositore = x.id_espositore)) END AS espositori_persi,
+       CASE WHEN p.anno IS NOT NULL THEN
+           (SELECT count(*) FROM espositori x WHERE x.edizione = e.anno
+            AND NOT EXISTS (SELECT 1 FROM espositori y WHERE y.edizione = p.anno
+                            AND y.id_espositore = x.id_espositore)) END AS espositori_nuovi,
+       (SELECT round(count(y.id_espositore)::numeric / NULLIF(count(*), 0), 4)
+        FROM espositori x LEFT JOIN espositori y
+          ON y.edizione = e.anno AND y.id_espositore = x.id_espositore
+        WHERE x.edizione = p.anno) AS tasso_rinnovo
+FROM edizione e LEFT JOIN edizione p ON p.anno = e.anno - 1;
+
+-- Stato documentato dei pagamenti: imponibile NON equivale a incassato.
+-- Non sono disponibili importi di acconto/saldo o movimenti contabili.
+CREATE OR REPLACE VIEW v_incassi_contratto AS
+SELECT id_contratto, edizione, id_espositore, codice_stand, stato,
+       imponibile, acconto_scadenza, acconto_pagato_il, saldo_scadenza, saldo_pagato_il,
+       CASE WHEN stato <> 'firmato' THEN 'non_applicabile'
+            WHEN saldo_pagato_il IS NOT NULL THEN 'saldo_registrato'
+            WHEN acconto_pagato_il IS NOT NULL THEN 'acconto_registrato'
+            ELSE 'nessun_pagamento_registrato' END AS stato_pagamenti,
+       NULL::numeric(12,2) AS importo_incassato
+FROM contratto;
+
+-- Giorno di acquisto in Italia, non giorno di validita' o ingresso.
+-- Prezzo e' il totale del singolo biglietto, anche per Family/abbonamenti.
+CREATE OR REPLACE VIEW v_vendite_biglietti_giorno AS
+SELECT edizione, (acquistato_il AT TIME ZONE 'Europe/Rome')::date AS giorno,
+       canale, count(*) AS biglietti, sum(persone) AS persone,
+       sum(prezzo) AS ricavo_biglietti
+FROM biglietto
+GROUP BY edizione, (acquistato_il AT TIME ZONE 'Europe/Rome')::date, canale;
+
+-- Conversione biglietti -> almeno un ingresso valido nella stessa edizione.
+-- Ogni biglietto pesa uno: Family e abbonamenti non moltiplicano il rapporto.
+CREATE OR REPLACE VIEW v_kpi_conversione AS
+SELECT e.anno AS edizione, count(b.id_biglietto) AS biglietti_venduti,
+       count(b.id_biglietto) FILTER (WHERE EXISTS (
+           SELECT 1 FROM passaggio_varco p WHERE p.id_biglietto = b.id_biglietto
+             AND p.edizione = b.edizione AND p.valido)) AS biglietti_entrati,
+       round(count(b.id_biglietto) FILTER (WHERE EXISTS (
+           SELECT 1 FROM passaggio_varco p WHERE p.id_biglietto = b.id_biglietto
+             AND p.edizione = b.edizione AND p.valido))::numeric
+             / NULLIF(count(b.id_biglietto), 0), 4) AS tasso_conversione
+FROM edizione e LEFT JOIN biglietto b ON b.edizione = e.anno
+GROUP BY e.anno;
+
 -- ---------------------------------------------------------------------
 -- Base: ingressi validi (esito OK, biglietto esistente, no doppie letture)
 -- ---------------------------------------------------------------------
@@ -458,6 +521,7 @@ END
 $$;
 
 GRANT SELECT ON ALL TABLES IN SCHEMA arcade TO bid_app;
+GRANT SELECT ON arcade.v_kpi_rinnovo, arcade.v_incassi_contratto, arcade.v_vendite_biglietti_giorno, arcade.v_kpi_conversione TO bad_powerbi;
 GRANT EXECUTE ON ALL FUNCTIONS IN SCHEMA arcade TO bid_app;
 SELECT * FROM arcade.presenze_al('2025-12-20T11:55:00+01:00'::timestamptz);
 COMMIT;
