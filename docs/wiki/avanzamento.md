@@ -1,5 +1,16 @@
 # Avanzamento
 
+## 2026-11-13 — Pubblicazione Supabase confermata e riconciliata
+
+L'utente ha eseguito lo script nello SQL Editor. Verifica READ ONLY successiva:
+quattro viste presenti e SELECT BAD confermato; rinnovo 2025 70/88 = 79,55%,
+18 persi e 40 nuovi; conversione 96,44% nelle due edizioni storiche.
+Totali giornalieri/canale riconciliati con biglietti e prezzi; conversione
+riconciliata con passaggi validi distinti. Pagamenti: 198 righe, importi incassati
+NULL. C2026-0200 ancora assente. Nessuna scrittura durante la verifica.
+Il rinnovo 2026 resta parziale e non utilizzabile come risultato definitivo.
+Dettagli in `avvio-power-bi.md`; login BAD e confronto nel report ancora aperti.
+
 ## 2026-11-13 — Viste Power BI implementate e verificate localmente
 
 **Fatto:** aggiunte `v_kpi_rinnovo`, `v_incassi_contratto`,

@@ -1,5 +1,14 @@
 # Cose da fare
 
+## Verifica pubblicazione Power BI — 13 novembre
+
+- [x] Pubblicare le quattro nuove viste su Supabase (eseguito dall'utente) e verificare SELECT BAD, risultati storici e riconciliazione vendite/conversione in sola lettura.
+- [ ] Provare il login Power BI con credenziali BAD e confrontare il report con i risultati in `avvio-power-bi.md`.
+- [ ] Confermare le definizioni proposte e ricevere gli importi effettivi dei pagamenti; `importo_incassato` resta NULL.
+
+La pubblicazione indicata ancora aperta nelle sezioni storiche sotto è completata;
+restano aperte conferma delle formule e verifica nel report.
+
 ## Avvio Power BI — verifica live del 9 novembre
 
 Riscontro: [avvio-power-bi.md](avvio-power-bi.md).
