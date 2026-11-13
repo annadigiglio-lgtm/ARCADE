@@ -1,5 +1,25 @@
 # Avanzamento
 
+## 2026-11-13 — Viste Power BI implementate e verificate localmente
+
+**Fatto:** aggiunte `v_kpi_rinnovo`, `v_incassi_contratto`,
+`v_vendite_biglietti_giorno`, `v_kpi_conversione` a `db/viste_kpi.sql`.
+Rinnovi per espositori distinti e contratti firmati; conversione per biglietti
+con almeno un ingresso valido; vendite per data italiana e canale.
+Incassi limitati allo stato registrato: importi effettivi non disponibili,
+quindi `importo_incassato` NULL. Definizioni ancora proposte.
+Rigenerato SQL di pubblicazione con permessi SELECT espliciti per BAD.
+
+**Verifica:** PostgreSQL 18 isolato, schema reale e fixture sintetiche in
+`db/test_viste_powerbi.sql`: duplicati, preventivi, rinnovi/persi/nuovi,
+assenza storico, edizione senza biglietti, letture invalide, Family,
+fuso italiano e stati pagamento. Fixture annullate tramite rollback.
+Nessuna scrittura su Supabase e nessun deploy o push.
+
+**Prossimi passi:** confermare definizioni e dati monetari con BAD,
+pubblicare e verificare su Supabase, confrontare risultati storici e report.
+Export commerciale reale ancora necessario per la prova 2026.
+
 Diario del lavoro. Una voce per sessione, **la più recente in alto**.
 
 Modello:

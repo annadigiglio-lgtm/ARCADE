@@ -94,6 +94,34 @@ I valori riportati sotto sono calcolati sui dati del cliente (2026-10-17), prima
 
 ## Altri indicatori utili (dalle domande del brief)
 
+### Implementazione Power BI del 13 novembre 2026
+
+Le quattro viste sono ora definite in `db/viste_kpi.sql`; la pubblicazione su
+Supabase e il confronto con lo storico restano da eseguire. Stato: **proposto**.
+
+| Vista | Grana e significato |
+|---|---|
+| `v_kpi_rinnovo` | Una riga per edizione. Espositori distinti con contratti firmati; rinnovati = presenti anche nell'anno precedente; persi = solo nel precedente; nuovi = solo nell'attuale. Tasso = rinnovati / espositori precedenti. |
+| `v_vendite_biglietti_giorno` | Edizione, giorno di acquisto in Europe/Rome e canale. Conta biglietti, persone associate e somma dei prezzi; il prezzo Family non viene moltiplicato per le persone. |
+| `v_kpi_conversione` | Una riga per edizione, compresa quella senza vendite. Biglietti con almeno un passaggio valido nella stessa edizione / biglietti venduti. Family e abbonamenti contano un biglietto; ingressi ripetuti non aumentano il numeratore. |
+| `v_incassi_contratto` | Una riga per contratto, con imponibile, scadenze, date e stato dei pagamenti. `importo_incassato` è NULL: mancano importi di acconto/saldo e movimenti contabili. Non sommare l'imponibile come se fosse denaro incassato. |
+
+I tassi sono frazioni (0.5 = 50%) e NULL quando il denominatore è zero.
+Per il rinnovo, se manca l'edizione dell'anno precedente, anche i conteggi di
+precedenti/rinnovati/persi/nuovi sono NULL: non si inventa una base storica.
+Un'edizione ancora aperta mostra dati parziali, non rinnovi persi definitivi.
+Gli abbinamenti storici 2024 restano da confermare; non si usa il flag `rinnovo`
+come sostituto del confronto tra espositori. Nessun indice predittivo 0–3 è introdotto.
+
+Per gli incassi occorre concordare con BAD il dato monetario da esportare
+(importi effettivamente versati, eventuale IVA, storni e pagamenti parziali).
+Le date da sole permettono di descrivere lo stato registrato, non il totale incassato.
+Non vengono inferiti ritardi o mancati pagamenti dalle sole date mancanti.
+
+Verifica ripetibile su database **vuoto di prova**: eseguire con `psql -X -v ON_ERROR_STOP=1`
+i file `db/schema.sql`, `db/viste_kpi.sql`, `db/test_viste_powerbi.sql`, in questo ordine.
+Il test usa dati sintetici e annulla le fixture con ROLLBACK.
+
 | Domanda del brief | Indicatore | Primo dato |
 |---|---|---|
 | Quali padiglioni rendono di più? | Ricavo, saturazione e ricavo/mq per padiglione | P1 genera ~74% del ricavo 2025 |

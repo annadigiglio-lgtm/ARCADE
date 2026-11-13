@@ -9,6 +9,7 @@ $parti = @(
     (Get-Content -LiteralPath (Join-Path $PSScriptRoot 'viste_kpi.sql') -Raw -Encoding UTF8),
     (Get-Content -LiteralPath (Join-Path $PSScriptRoot 'viste_api.sql') -Raw -Encoding UTF8),
     'GRANT SELECT ON ALL TABLES IN SCHEMA arcade TO bid_app;',
+    'GRANT SELECT ON arcade.v_kpi_rinnovo, arcade.v_incassi_contratto, arcade.v_vendite_biglietti_giorno, arcade.v_kpi_conversione TO bad_powerbi;',
     'GRANT EXECUTE ON ALL FUNCTIONS IN SCHEMA arcade TO bid_app;',
     "SELECT * FROM arcade.presenze_al('2025-12-20T11:55:00+01:00'::timestamptz);",
     'COMMIT;'

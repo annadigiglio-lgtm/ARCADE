@@ -1,5 +1,16 @@
 # Avvio Power BI — riscontro per BAD, 2026-11-09
 
+**Aggiornamento del 13/11:** le quattro viste sotto sono ora implementate
+nel repository e verificate con fixture sintetiche su PostgreSQL 18.
+La loro assenza descritta qui è il riscontro live del 9/11: non è stata
+rieseguita una verifica o pubblicazione su Supabase. Definizioni e limiti in
+[KPI](kpi.md#implementazione-power-bi-del-13-novembre-2026).
+`v_incassi_contratto` espone lo stato dei pagamenti; l'importo incassato resta
+NULL perché non presente nelle fonti. Lo script rigenerato
+`db/pubblica_api_supabase.sql` include SELECT sulle quattro nuove viste per
+`bad_powerbi`; va eseguito dal proprietario dello schema e poi verificato
+con il login Power BI. Non richiede di ricreare le tabelle.
+
 Verifica eseguita su Supabase in transazione **READ ONLY**, con l'account BID
 già configurato localmente. Nessuna modifica ai dati o allo schema.
 
