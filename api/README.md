@@ -103,7 +103,11 @@ Per riavviare senza ricompilare un pacchetto già aggiornato, aggiungere
 ## Da completare
 
 - Conferma con il team del contratto OpenAPI, ancora indicato come bozza.
-- Endpoint contatti, confronto e rinnovo presenti nella specifica, non implementati.
+- Confronto implementato: `GET /espositore/me/confronto`, riservato a ESPOSITORE;
+  identità dal JWT, array ordinato per edizione/stand (vuoto se nessun contratto).
+  La pagina mostra mq, imponibile, visite, contatti e ingressi al padiglione.
+  Valori non rilevati distinti da zero. Verifica visiva e deploy ancora da fare.
+- Endpoint contatti e rinnovo presenti nella specifica, non implementati.
 - Export reale da Dataverse e caricamento del contratto commerciale 2026.
 - Confronto dei numeri con Power BI e capienze confermate dal cliente.
 - Demo con orologio in movimento. L'ambiente condiviso è già pubblicato su Render

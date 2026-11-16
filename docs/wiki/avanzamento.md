@@ -1,5 +1,20 @@
 # Avanzamento
 
+## 2026-11-16 — Confronto tra edizioni nel portale espositori
+
+Implementato `GET /espositore/me/confronto` sulla vista SQL già pubblicata,
+con filtro espositore derivato dal JWT e ordinamento edizione/stand.
+Aggiunta tabella al portale con mq, imponibile, visite, contatti e ingressi
+al padiglione; supporta più stand e mantiene NULL distinto da zero.
+La selezione edizione continua a filtrare le visite orarie, mentre il confronto
+mostra tutte le edizioni disponibili. Nessuna modifica al database necessaria.
+
+Verifica: sei test Java superati, compresi identità dal token, tentativo di
+cambiare espositore via URL, risposte vuote e accessi vietati. Sintassi JS
+e rendering DOM di NULL/zero/testo/stato vuoto verificati con Node.
+Controllo visivo in browser e deploy Render ancora da effettuare.
+Endpoint contatti e proposta di rinnovo ancora aperti. Nessun push o deploy.
+
 ## 2026-11-16 — Migrazione scansioni pubblicata su Supabase
 
 Eseguita dall'utente; controllo successivo READ ONLY: colonna UUID presente,

@@ -239,7 +239,7 @@ paths:
         - bearerAuth: []
       responses:
         '200':
-          description: Righe di confronto per edizione
+          description: Righe per edizione e stand con contratto firmato, ordinate per edizione e codice stand; array vuoto se assenti. Visite e contatti non rilevati sono null.
           content:
             application/json:
               schema:

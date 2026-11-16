@@ -61,6 +61,25 @@ class AccessTest {
         mvc.perform(get("/espositore/me/visite?edizione=2025").header("Authorization","Bearer "+token("ESPOSITORE",null))).andExpect(status().isForbidden());
         verifyNoInteractions(db);
     }
+    @Test void comparisonIsPrivateAndSupportsEmptyAndMultipleStands() throws Exception {
+        String query="SELECT edizione,codice_stand,padiglione,mq,imponibile,visite,contatti,ingressi_padiglione FROM arcade.v_espositore_confronto WHERE id_espositore = ? ORDER BY edizione,codice_stand";
+        Map<String,Object> historic=new HashMap<>();
+        historic.put("edizione",2024); historic.put("codiceStand","P1-A01"); historic.put("visite",null);
+        when(db.query(eq(query),eq(DataController.ROW),eq("ESP001"))).thenReturn(List.of(historic,Map.of("edizione",2025,"codiceStand","P1-A02","visite",0)));
+        when(db.query(eq(query),eq(DataController.ROW),eq("ESP002"))).thenReturn(List.of());
+        mvc.perform(get("/espositore/me/confronto?idEspositore=ESP002").header("Authorization","Bearer "+token("ESPOSITORE","ESP001")))
+            .andExpect(status().isOk()).andExpect(jsonPath("$.length()").value(2))
+            .andExpect(jsonPath("$[0].codiceStand").value("P1-A01"))
+            .andExpect(jsonPath("$[1].visite").value(0));
+        mvc.perform(get("/espositore/me/confronto").header("Authorization","Bearer "+token("ESPOSITORE","ESP002")))
+            .andExpect(status().isOk()).andExpect(content().json("[]"));
+        mvc.perform(get("/espositore/me/confronto")).andExpect(status().isUnauthorized());
+        mvc.perform(get("/espositore/me/confronto").header("Authorization","Bearer "+token("STAFF",null))).andExpect(status().isForbidden());
+        mvc.perform(get("/espositore/me/confronto").header("Authorization","Bearer "+token("ESPOSITORE",null))).andExpect(status().isForbidden());
+        verify(db).query(eq(query),eq(DataController.ROW),eq("ESP001"));
+        verify(db).query(eq(query),eq(DataController.ROW),eq("ESP002"));
+        verifyNoMoreInteractions(db);
+    }
     @Test void loginChecksBcryptAndIssuesVerifiableJwt() throws Exception {
         when(db.queryForList("SELECT id, password_hash, ruolo, id_espositore FROM arcade.utente WHERE username = ?","staff"))
             .thenReturn(List.of(Map.of("id",1,"password_hash",passwords.encode("correct-password"),"ruolo","STAFF")));

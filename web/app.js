@@ -1,6 +1,19 @@
 'use strict';
 const $ = id => document.getElementById(id);
 const number = new Intl.NumberFormat('it-IT');
+const euro = new Intl.NumberFormat('it-IT', {style:'currency',currency:'EUR'});
+function drawComparison(rows) {
+  $('comparison-empty').hidden=rows.length>0;
+  $('comparison').replaceChildren(...rows.map(row=>{
+    const tr=document.createElement('tr');
+    [row.edizione,row.codiceStand,row.padiglione,
+      row.mq==null?'—':number.format(row.mq),
+      row.imponibile==null?'—':euro.format(row.imponibile),
+      ...[row.visite,row.contatti,row.ingressiPadiglione].map(value=>value==null?'—':number.format(value))
+    ].forEach(value=>{const td=document.createElement('td');td.textContent=value;tr.append(td);});
+    return tr;
+  }));
+}
 const date = value => new Date(value).toLocaleString('it-IT', {timeZone:'Europe/Rome'});
 let session = null;
 let timer = null;
@@ -60,6 +73,7 @@ function drawTrend(rows) {
   table.append(body);details.append(table);container.append(details);
 }
 function logout() {
+  $('comparison').replaceChildren(); $('comparison-empty').hidden=true;
   session=null; clearTimeout(timer); pending?.abort();
   $('workspace').hidden=true; $('login-panel').hidden=false; $('logout').hidden=true;
   $('identity').textContent='Area riservata'; $('pavilions').replaceChildren(); $('summary').replaceChildren(); $('visits').replaceChildren();
@@ -74,6 +88,7 @@ async function refresh() {
   // Remove previous values so errors cannot leave old data looking current.
   $('pavilions').replaceChildren(); $('summary').replaceChildren(); $('visits').replaceChildren(); $('trend').replaceChildren(); $('entries').replaceChildren(); $('empty').hidden=true;
   $('timestamp').textContent='Caricamento…';
+  $('comparison').replaceChildren(); $('comparison-empty').hidden=true;
   try {
     if(session.ruolo==='STAFF') {
       const [rows,summary,trend,entries]=await Promise.all(['padiglioni','giornata','andamento','ingressi'].map(endpoint=>api(`/affluenza/${endpoint}`,{},controller.signal)));
@@ -88,8 +103,12 @@ async function refresh() {
       $('timestamp').textContent=rows.length ? `Dati riferiti al ${date(rows[0].istante)} · Aggiornamento ogni 30 secondi` : 'Nessun padiglione disponibile';
     } else {
       const edition=$('edition').value;
-      const rows=await api(`/espositore/me/visite?edizione=${edition}`,{},controller.signal);
+      const [rows,comparison]=await Promise.all([
+        api(`/espositore/me/visite?edizione=${edition}`,{},controller.signal),
+        api('/espositore/me/confronto',{},controller.signal)
+      ]);
       if(session!==currentSession) return;
+      drawComparison(comparison);
       $('visits').replaceChildren(...rows.map(r=>{
         const tr=document.createElement('tr');
         const values=[r.codiceStand,new Date(`${r.giorno}T12:00:00+01:00`).toLocaleDateString('it-IT',{timeZone:'Europe/Rome'}),new Date(r.ora).toLocaleTimeString('it-IT',{hour:'2-digit',minute:'2-digit',timeZone:'Europe/Rome'}),number.format(r.scansioni)];

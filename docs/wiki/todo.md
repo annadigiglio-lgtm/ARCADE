@@ -1,5 +1,11 @@
 # Cose da fare
 
+## Portale — confronto tra edizioni, 16 novembre
+
+- [x] Collegare vista confronto all'API e alla pagina espositore; supportare più stand, valori mancanti e array vuoto.
+- [ ] Verificare visivamente la pagina e pubblicare la nuova versione API/web su Render.
+- [ ] Completare endpoint e pagina della proposta di rinnovo (condizioni ancora da confermare).
+
 ## Scansioni — verifica locale completata il 16 novembre
 
 - [x] Aggiungere UUID sorgente, migrazione conservativa e import transazionale senza duplicati; sei test superati, inclusa prova PostgreSQL con rollback e storico conservato.
