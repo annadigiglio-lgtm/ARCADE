@@ -1,5 +1,27 @@
 # Avanzamento
 
+## 2026-11-16 — Portale, privacy e simulazione BID verificati
+
+Completati pagina contatti paginati e rinnovo indicativo. Identità sempre dal
+JWT, nessuna prenotazione o scrittura tramite il portale. Le stime di rinnovo
+riguardano solo l'edizione successiva all'ultimo contratto firmato; il flag
+comprende preventivi non annullati ed è spiegato nella pagina.
+Cruscotto con simulazione storica del 20/12/2025, avanzamento di 15 minuti
+ogni cinque secondi oltre al caricamento, pausa e ripristino ora servizio.
+I quattro endpoint staff accettano lo stesso istante esplicito, senza scritture DB.
+
+Verifiche: nove test Java superati; SQL privacy su PostgreSQL locale isolato
+con cinque contatti sintetici e rollback; frontend con DOM simulato (NULL/zero,
+testo sicuro, fine demo, pulizia logout e risposta di vecchia sessione);
+HTTP locale su Supabase con tre login e tutti i nuovi endpoint, paginazione,
+ruoli, tentativi di cambiare identità e simulazione. Campione tempi staff
+124–481 ms su localhost (rete/Supabase inclusi), non benchmark di produzione.
+OpenAPI YAML valido. Guida ripetibile in `demo-bid.md`.
+
+Revisione visiva aperta: accesso browser non disponibile. Deploy Render aperto:
+plugin trovato ma non collegato; richiesto collegamento, nessuna nuova risorsa
+creata. Export reali BAD, report Power BI e conferme commerciali restano necessari.
+
 ## 2026-11-16 — Confronto tra edizioni nel portale espositori
 
 Implementato `GET /espositore/me/confronto` sulla vista SQL già pubblicata,

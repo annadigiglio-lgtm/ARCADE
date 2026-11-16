@@ -11,11 +11,12 @@ info:
     {status, message}, senza dettagli interni. La paginazione usa un envelope
     indipendente da Spring (content, page, size, totalElements, totalPages);
     le collezioni vuote rispondono 200 con contenuto vuoto e una risorsa singola
-    assente risponde 404. Il server locale è documentato qui; l'URL di deploy
-    verrà aggiunto quando sarà disponibile.
+    assente risponde 404. Le condizioni di rinnovo restano proposte da confermare.
 servers:
   - url: http://localhost:8080
     description: Sviluppo locale
+  - url: https://arcade-milano.onrender.com
+    description: Ambiente condiviso (aggiornamento manuale)
 tags:
   - name: Autenticazione
   - name: Cruscotto staff
@@ -52,6 +53,8 @@ paths:
       x-required-role: STAFF
       security:
         - bearerAuth: []
+      parameters:
+        - $ref: '#/components/parameters/IstanteDemo'
       responses:
         '200':
           description: Una riga per padiglione
@@ -61,6 +64,8 @@ paths:
                 type: array
                 items:
                   $ref: '#/components/schemas/PresenzaPadiglione'
+        '400':
+          $ref: '#/components/responses/BadRequest'
         '401':
           $ref: '#/components/responses/Unauthorized'
         '403':
@@ -74,6 +79,8 @@ paths:
       x-required-role: STAFF
       security:
         - bearerAuth: []
+      parameters:
+        - $ref: '#/components/parameters/IstanteDemo'
       responses:
         '200':
           description: Serie temporale per padiglione
@@ -83,6 +90,8 @@ paths:
                 type: array
                 items:
                   $ref: '#/components/schemas/PuntoAndamento'
+        '400':
+          $ref: '#/components/responses/BadRequest'
         '401':
           $ref: '#/components/responses/Unauthorized'
         '403':
@@ -96,6 +105,8 @@ paths:
       x-required-role: STAFF
       security:
         - bearerAuth: []
+      parameters:
+        - $ref: '#/components/parameters/IstanteDemo'
       responses:
         '200':
           description: Totali orari per padiglione
@@ -105,6 +116,8 @@ paths:
                 type: array
                 items:
                   $ref: '#/components/schemas/IngressiOra'
+        '400':
+          $ref: '#/components/responses/BadRequest'
         '401':
           $ref: '#/components/responses/Unauthorized'
         '403':
@@ -118,6 +131,8 @@ paths:
       x-required-role: STAFF
       security:
         - bearerAuth: []
+      parameters:
+        - $ref: '#/components/parameters/IstanteDemo'
       responses:
         '200':
           description: Riepilogo della giornata
@@ -125,6 +140,8 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/RiepilogoGiornata'
+        '400':
+          $ref: '#/components/responses/BadRequest'
         '401':
           $ref: '#/components/responses/Unauthorized'
         '403':
@@ -193,6 +210,8 @@ paths:
       description: >-
         L'identificativo espositore viene sempre ricavato dal JWT. L'email viene
         restituita solo se è presente il consenso marketing e il contatto è maggiorenne.
+        La vista esclude minori, eta ignota, assenza di consenso ed email NULL.
+        Ordinamento stabile per raccoltoIl e idContatto.
       security:
         - bearerAuth: []
       parameters:
@@ -257,7 +276,12 @@ paths:
       operationId: getPropostaRinnovo
       summary: Proposta di rinnovo sullo stesso stand
       x-required-role: ESPOSITORE
-      description: L'identificativo espositore viene sempre ricavato dal JWT.
+      description: >-
+        Identità dal JWT. Solo le proposte successive all'ultima edizione con
+        contratto firmato dell'espositore. Stima area/posizione senza extra o
+        sconti; prezzi e prelazione da confermare. giaRinnovato indica anche un
+        preventivo non annullato, non una vendita necessariamente firmata.
+        Non effettua prenotazioni o scritture.
       security:
         - bearerAuth: []
       responses:
@@ -281,6 +305,12 @@ components:
       scheme: bearer
       bearerFormat: JWT
   parameters:
+    IstanteDemo:
+      name: istante
+      in: query
+      required: false
+      description: Istante storico ISO 8601 con fuso, anno dal 2024 al 2026. Omettere per usare l'ora configurata dal servizio. Sola lettura, riservato allo staff; usare lo stesso istante per tutte le richieste del cruscotto.
+      schema: { type: string, format: date-time }
     Edizione:
       name: edizione
       in: query

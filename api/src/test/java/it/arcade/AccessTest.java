@@ -80,6 +80,42 @@ class AccessTest {
         verify(db).query(eq(query),eq(DataController.ROW),eq("ESP002"));
         verifyNoMoreInteractions(db);
     }
+    @Test void contactsPaginationAndRenewalUseTokenIdentity() throws Exception {
+        String count="SELECT count(*) FROM arcade.v_contatti_espositore WHERE id_espositore = ? AND edizione = ?";
+        String contacts="SELECT id_contatto,edizione,codice_stand,raccolto_il,email,fascia_eta,provincia,interesse FROM arcade.v_contatti_espositore WHERE id_espositore = ? AND edizione = ? ORDER BY raccolto_il,id_contatto LIMIT ? OFFSET ?";
+        when(db.queryForObject(count,Long.class,"ESP001",2025)).thenReturn(21L);
+        when(db.query(eq(contacts),eq(DataController.ROW),eq("ESP001"),eq(2025),eq(20),eq(20L))).thenReturn(List.of(Map.of("idContatto","TEST")));
+        mvc.perform(get("/espositore/me/contatti?edizione=2025&page=1&size=20&idEspositore=ESP002").header("Authorization","Bearer "+token("ESPOSITORE","ESP001")))
+            .andExpect(status().isOk()).andExpect(jsonPath("$.totalPages").value(2)).andExpect(jsonPath("$.page").value(1)).andExpect(jsonPath("$.content[0].idContatto").value("TEST"));
+        verify(db).queryForObject(count,Long.class,"ESP001",2025);
+        verify(db).query(eq(contacts),eq(DataController.ROW),eq("ESP001"),eq(2025),eq(20),eq(20L));
+        String renewal="SELECT edizione_rinnovo,codice_stand,padiglione,mq,posizione,prezzo_area_stimato,prelazione_fino_al,gia_rinnovato FROM arcade.v_espositore_rinnovo WHERE id_espositore = ? AND edizione_rinnovo = (SELECT max(edizione)+1 FROM arcade.contratto WHERE id_espositore = ? AND stato = 'firmato') ORDER BY codice_stand";
+        when(db.query(eq(renewal),eq(DataController.ROW),eq("ESP001"),eq("ESP001"))).thenReturn(List.of());
+        mvc.perform(get("/espositore/me/rinnovo?idEspositore=ESP002").header("Authorization","Bearer "+token("ESPOSITORE","ESP001"))).andExpect(status().isOk()).andExpect(content().json("[]"));
+        verify(db).query(eq(renewal),eq(DataController.ROW),eq("ESP001"),eq("ESP001"));
+        verifyNoMoreInteractions(db);
+    }
+    @Test void privateEndpointsRejectInvalidRequestsBeforeDatabase() throws Exception {
+        for(String path:List.of("/espositore/me/rinnovo","/espositore/me/contatti?edizione=2025")) {
+            mvc.perform(get(path)).andExpect(status().isUnauthorized());
+            mvc.perform(get(path).header("Authorization","Bearer "+token("STAFF",null))).andExpect(status().isForbidden());
+            mvc.perform(get(path).header("Authorization","Bearer "+token("ESPOSITORE",null))).andExpect(status().isForbidden());
+        }
+        for(String query:List.of("edizione=2030","edizione=2025&page=-1","edizione=2025&size=0","edizione=2025&size=201","edizione=2025&page=oops"))
+            mvc.perform(get("/espositore/me/contatti?"+query).header("Authorization","Bearer "+token("ESPOSITORE","ESP001"))).andExpect(status().isBadRequest());
+        verifyNoInteractions(db);
+    }
+    @Test void historicalInstantIsReadOnlyAndBoundForEachStaffEndpoint() throws Exception {
+        var instant=java.time.OffsetDateTime.parse("2025-12-20T10:00:00+01:00");
+        for(String[] pair:List.of(new String[]{"padiglioni","presenze_al"},new String[]{"andamento","andamento_al"},new String[]{"ingressi","ingressi_al"},new String[]{"giornata","giornata_al"})) {
+            when(db.query(eq("SELECT * FROM arcade."+pair[1]+"(?)"),eq(DataController.ROW),eq(instant))).thenReturn(List.of(Map.of("test",1)));
+            mvc.perform(get("/affluenza/"+pair[0]).param("istante",instant.toString()).header("Authorization","Bearer "+token("STAFF",null))).andExpect(status().isOk());
+            verify(db).query(eq("SELECT * FROM arcade."+pair[1]+"(?)"),eq(DataController.ROW),eq(instant));
+        }
+        mvc.perform(get("/affluenza/padiglioni").param("istante","2030-01-01T10:00:00Z").header("Authorization","Bearer "+token("STAFF",null))).andExpect(status().isBadRequest());
+        mvc.perform(get("/affluenza/padiglioni").param("istante","not-a-date").header("Authorization","Bearer "+token("STAFF",null))).andExpect(status().isBadRequest());
+        verifyNoMoreInteractions(db);
+    }
     @Test void loginChecksBcryptAndIssuesVerifiableJwt() throws Exception {
         when(db.queryForList("SELECT id, password_hash, ruolo, id_espositore FROM arcade.utente WHERE username = ?","staff"))
             .thenReturn(List.of(Map.of("id",1,"password_hash",passwords.encode("correct-password"),"ruolo","STAFF")));

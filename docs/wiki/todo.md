@@ -1,10 +1,20 @@
 # Cose da fare
 
+## Completamento BID - 16 novembre
+
+- [x] Endpoint contatti paginati sulla vista privacy e pagina espositore.
+- [x] Simulazione storica staff con avanzamento, pausa e reset, senza scritture DB.
+- [x] Nove test Java, filtro privacy PostgreSQL, test frontend e flusso HTTP su Supabase.
+- [x] Preparare guida demo ripetibile in `demo-bid.md`.
+- [ ] Revisione visiva completa su desktop e telefono e deploy manuale Render della nuova versione.
+- [ ] Confermare condizioni rinnovo, formule KPI e dati mancanti con BAD/cliente.
+
+
 ## Portale — confronto tra edizioni, 16 novembre
 
 - [x] Collegare vista confronto all'API e alla pagina espositore; supportare più stand, valori mancanti e array vuoto.
 - [ ] Verificare visivamente la pagina e pubblicare la nuova versione API/web su Render.
-- [ ] Completare endpoint e pagina della proposta di rinnovo (condizioni ancora da confermare).
+- [x] Completare endpoint e pagina della proposta di rinnovo; stime e condizioni indicate come proposte da confermare (16/11).
 
 ## Scansioni — verifica locale completata il 16 novembre
 
@@ -30,7 +40,7 @@ Riscontro: [avvio-power-bi.md](avvio-power-bi.md).
 - [ ] Ricevere CSV con record: entrambe le copie locali sono ancora vuote; C2026-0200 assente da Supabase.
 - [x] Implementare le quattro viste Power BI e provarle su PostgreSQL locale con dati sintetici (13/11); definizioni proposte in `kpi.md`.
 - [ ] Confermare le formule, pubblicare le quattro viste su Supabase e confrontare lo storico con Power BI. Per gli incassi mancano gli importi effettivamente versati: la vista espone solo lo stato e importo NULL.
-- [ ] Aggiungere la chiave UUID sorgente alle scansioni con vincolo univoco e caricamento idempotente; colonna non ancora presente.
+- [x] Aggiungere UUID sorgente e import idempotente: migrazione pubblicata e verificata il 16/11; prima prova con export reale ancora aperta.
 
 ## Verifica BAD — 9 novembre; priorità prossimo SAL del 4 dicembre
 

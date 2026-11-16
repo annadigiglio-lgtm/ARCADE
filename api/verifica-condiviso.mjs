@@ -56,3 +56,36 @@ if(loginOnly) {
   assert.ok([...sets[0]].every(stand=>!sets[1].has(stand)),'Gli espositori devono avere stand distinti');
   console.log('OK: 4 endpoint staff, visite/riepilogo espositori e isolamento dei due account.');
 }
+
+if(!loginOnly) {
+  for(const account of [first,second]) {
+    for(const path of ['/espositore/me/confronto','/espositore/me/rinnovo','/espositore/me/contatti?edizione=2025&size=1']) {
+      const result=await request(path,account.accessToken);
+      assert.equal(result.status,200,`Nuovo endpoint: ${path}`);
+      const spoof=await request(path+(path.includes('?')?'&':'?')+'idEspositore='+ (account===first?second.idEspositore:first.idEspositore),account.accessToken);
+      assert.deepEqual(spoof.body,result.body,'Identita dal token anche nei nuovi endpoint');
+      assert.equal((await request(path,staff.accessToken)).status,403);
+      assert.equal((await request(path)).status,401);
+      const rows=Array.isArray(result.body)?result.body:result.body.content;
+      assert.ok(rows.every(row=>!Object.hasOwn(row,'idEspositore')));
+      if(path.includes('contatti')) {
+        assert.ok(rows.length<=1);
+        assert.ok(rows.every(row=>row.email && row.fasciaEta && !['0-7','8-13','14-17'].includes(row.fasciaEta)));
+        assert.equal((await request('/espositore/me/contatti?edizione=2025&size=201',account.accessToken)).status,400);
+      }
+    }
+  }
+  let earlier;
+  for(const time of ['09:00','12:00']) {
+    const query='?istante='+encodeURIComponent('2025-12-20T'+time+':00+01:00');
+    const result=await request('/affluenza/giornata'+query,staff.accessToken);
+    assert.equal(result.status,200);
+    if(earlier) assert.ok(result.body.ingressi>=earlier.ingressi);
+    earlier=result.body;
+    const presence=await request('/affluenza/padiglioni'+query,staff.accessToken);
+    assert.equal(presence.status,200);
+    assert.ok(presence.body.every(row=>Date.parse(row.istante)===Date.parse('2025-12-20T'+time+':00+01:00')));
+  }
+  assert.equal((await request('/affluenza/padiglioni?istante=invalid',staff.accessToken)).status,400);
+  console.log('OK: confronto, rinnovo, contatti paginati, isolamento e simulazione storica. Nessuna scrittura DB.');
+}

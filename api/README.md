@@ -1,6 +1,6 @@
 # API e prima demo locale
 
-Percorso implementato: login → cruscotto staff e login → visite del proprio stand.
+Percorso iniziale: login → cruscotto staff e login → visite del proprio stand.
 Java 21, Spring Boot 3.5, JDBC e PostgreSQL; la pagina web viene servita dalla stessa
 applicazione, senza richiedere un secondo server o configurazione CORS.
 
@@ -107,11 +107,25 @@ Per riavviare senza ricompilare un pacchetto già aggiornato, aggiungere
   identità dal JWT, array ordinato per edizione/stand (vuoto se nessun contratto).
   La pagina mostra mq, imponibile, visite, contatti e ingressi al padiglione.
   Valori non rilevati distinti da zero. Verifica visiva e deploy ancora da fare.
-- Endpoint contatti e rinnovo presenti nella specifica, non implementati.
+- Contatti e rinnovo implementati: `/espositore/me/contatti?edizione=2025&page=0&size=20`
+  e `/espositore/me/rinnovo`, entrambi ESPOSITORE con identità dal JWT.
+  Contatti limitati alla vista privacy e paginati (size da 1 a 200); rinnovo indicativo
+  solo per l'edizione successiva all'ultimo contratto firmato, senza prenotazioni.
 - Export reale da Dataverse e caricamento del contratto commerciale 2026.
 - Confronto dei numeri con Power BI e capienze confermate dal cliente.
-- Demo con orologio in movimento. L'ambiente condiviso è già pubblicato su Render
+- Simulazione storica implementata con avanzamento, pausa e reset in sola lettura. L'ambiente condiviso è già pubblicato su Render
   con Supabase; dettagli in [render.md](../docs/wiki/render.md).
 
 Riferimenti tecnici: [Spring Boot](https://docs.spring.io/spring-boot/3.5/system-requirements.html)
 e [Spring Security JWT](https://docs.spring.io/spring-security/reference/servlet/oauth2/resource-server/jwt.html).
+
+
+## Verifica della nuova versione (16 novembre)
+
+Nove test Java superati; test del filtro privacy su PostgreSQL locale con
+cinque contatti sintetici; prova HTTP dell'app locale collegata a Supabase,
+con tre login, paginazione, ruoli, isolamento e simulazione, senza scritture DB.
+Frontend: `node web/app.test.cjs` (DOM simulato; non sostituisce controllo visivo).
+Prova HTTP: `node api/verifica-condiviso.mjs http://127.0.0.1:8082` oppure URL
+Render dopo il deploy. Non stampa credenziali, token o contatti personali.
+Guida operativa: [demo BID](../docs/wiki/demo-bid.md).
