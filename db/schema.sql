@@ -192,12 +192,15 @@ CREATE INDEX ix_passaggio_biglietto ON passaggio_varco (id_biglietto, rilevato_i
 -- App di scansione BAD (2026): una riga per scansione (quantita = 1).
 CREATE TABLE scansione_stand (
     id              bigserial PRIMARY KEY,
+    g5_id_scansione  uuid UNIQUE, -- GUID sorgente stabile; NULL per storico
     edizione        smallint NOT NULL REFERENCES edizione,
     codice_stand    varchar(10) NOT NULL REFERENCES stand,
     rilevato_il     timestamptz NOT NULL,
     quantita        integer NOT NULL DEFAULT 1 CHECK (quantita >= 0),
     origine         text NOT NULL CHECK (origine IN ('storico_orario', 'app')),
-    anomalia        text CHECK (anomalia IN ('FUORI_SCALA'))
+    anomalia        text CHECK (anomalia IN ('FUORI_SCALA')),
+    CONSTRAINT ck_scansione_app_sorgente CHECK
+        (origine <> 'app' OR (g5_id_scansione IS NOT NULL AND quantita = 1))
 );
 CREATE INDEX ix_scansione_stand ON scansione_stand (edizione, codice_stand, rilevato_il);
 

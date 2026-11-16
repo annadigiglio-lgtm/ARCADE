@@ -1,5 +1,9 @@
 # Primo scambio commerciale con BAD
 
+Scansioni app: formato CSV, migrazione UUID e import senza duplicati disponibili
+nella [guida dedicata](../docs/wiki/import-scansioni.md). Implementazione BID
+verificata localmente; migrazione Supabase ed export reale ancora da completare.
+
 Obiettivo prossimo SAL, **4 dicembre 2026** (calendario aggiornato il 9/11):
 un contratto 2026 creato in Power Apps deve comparire in PostgreSQL.
 I due CSV di questa cartella contengono solo le intestazioni di un **formato di

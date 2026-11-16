@@ -1,5 +1,16 @@
 # Avanzamento
 
+## 2026-11-16 — Scansioni: migrazione e import verificati localmente
+
+Preparati `db/migrazione_scansioni.sql`, schema per nuove installazioni e
+`db/caricamento/importa_scansioni.py`, con CSV proposto a quattro colonne.
+UUID univoco sorgente, quantità uno per nuovi eventi app, storico conservato;
+reinvii identici ignorati e contenuti discordanti rifiutati in transazione.
+Sei test superati, inclusa prova PostgreSQL isolata: migrazione ripetuta,
+reimport, rollback FK/collisione e conservazione eventi legacy.
+Nessuna modifica a Supabase. Pubblicazione ed export reale ancora aperti;
+procedura in `import-scansioni.md`. Nessuna modifica a codice/app BAD.
+
 ## 2026-11-13 — Pubblicazione Supabase confermata e riconciliata
 
 L'utente ha eseguito lo script nello SQL Editor. Verifica READ ONLY successiva:
