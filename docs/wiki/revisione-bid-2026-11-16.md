@@ -1,5 +1,12 @@
 # Revisione tecnica BID — 16 novembre 2026
 
+**Deploy finale verificato:** dopo l'aggiornamento dell'utente, Render serve
+la nuova pagina riepiloghi e il JavaScript aggiornato. Verifica HTTPS superata:
+tre login, quattro endpoint staff, riepiloghi multipli, confronto, rinnovo,
+contatti paginati, ruoli, isolamento e simulazione. Rifiuto password sintetica
+oltre 72 byte UTF-8 confermato. Nessuna scrittura DB durante i controlli.
+La voce di deploy ancora aperto sotto conserva lo stato precedente alla verifica.
+
 ## Correzioni
 
 | Problema riscontrato | Correzione |

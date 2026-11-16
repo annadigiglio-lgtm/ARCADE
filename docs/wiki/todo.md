@@ -3,7 +3,7 @@
 ## Revisione tecnica finale — 16 novembre
 
 - [x] Correggere riepilogo multi-stand, limite UTF-8 del login, valori nulli ed errori; 12 test Java e test frontend superati.
-- [ ] Aggiornare Render con la revisione multi-stand e ripetere la verifica HTTPS.
+- [x] Aggiornare Render con la revisione multi-stand e ripetere la verifica HTTPS: riepiloghi, login UTF-8, portale, ruoli e simulazione verificati il 16/11.
 - [ ] Verifica visiva desktop/mobile ancora aperta; dettagli in `revisione-bid-2026-11-16.md`.
 
 ## Completamento BID - 16 novembre

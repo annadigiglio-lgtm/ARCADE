@@ -1,5 +1,12 @@
 # Avanzamento
 
+## 2026-11-16 — Revisione multi-stand verificata online
+
+Deploy eseguito dall'utente; verifica HTTPS su Render superata dopo l'attesa
+di avvio: asset aggiornati e riepiloghi multipli disponibili, limite UTF-8
+corretto, tre login, portale, ruoli, isolamento e simulazione funzionanti.
+Nessuna scrittura DB. Restano verifica visiva e dipendenze reali BAD/Power BI.
+
 ## 2026-11-16 — Revisione finale: multi-stand e casi limite
 
 Corretto il riepilogo che prima restituiva solo il primo stand: endpoint plurale
