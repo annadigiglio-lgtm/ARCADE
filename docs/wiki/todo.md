@@ -3,7 +3,7 @@
 ## Scansioni — verifica locale completata il 16 novembre
 
 - [x] Aggiungere UUID sorgente, migrazione conservativa e import transazionale senza duplicati; sei test superati, inclusa prova PostgreSQL con rollback e storico conservato.
-- [ ] Eseguire `db/migrazione_scansioni.sql` come proprietario su Supabase e verificare colonna, indice e storico.
+- [x] Eseguire `db/migrazione_scansioni.sql` come proprietario su Supabase e verificare colonna, indice e storico (16/11): UUID presente, indice valido, 2.451 righe storiche e 36.213 scansioni; nessun evento app ancora caricato.
 - [ ] Confermare il GUID stabile con BAD e provare export reale; istruzioni in `import-scansioni.md`.
 
 ## Verifica pubblicazione Power BI — 13 novembre

@@ -72,5 +72,13 @@ Copre reinvio, collisioni, rollback FK, conservazione storico e migrazione ripet
 Verifica PostgreSQL completata il 16/11: tutti i sei test superati, compresa
 la prova integrata di migrazione/import su database isolato.
 
-Stato: da pubblicare su Supabase; export reale e chiave sorgente da confermare
-con BAD. Nessun evento sintetico va caricato nell'ambiente condiviso.
+Pubblicata dall'utente su Supabase e verificata in sola lettura il 16/11:
+colonna UUID presente, indice univoco valido, CHECK NOT VALID presente e
+permessi INSERT BID confermati. Presenti 2.451 righe di storico orario 2025,
+36.213 scansioni totali, ID da 1 a 2.451, tutti gli UUID storici NULL.
+Nessun UUID duplicato e nessun evento app presente. Il CHECK NOT VALID è
+lo stato previsto dalla migrazione: protegge comunque le nuove scritture.
+La verifica non ha inserito eventi né modificato dati.
+
+Stato: export reale e chiave sorgente da confermare con BAD; prima prova di
+import reale ancora aperta. Nessun evento sintetico va caricato nell'ambiente condiviso.

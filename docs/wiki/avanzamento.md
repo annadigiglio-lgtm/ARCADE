@@ -1,5 +1,14 @@
 # Avanzamento
 
+## 2026-11-16 — Migrazione scansioni pubblicata su Supabase
+
+Eseguita dall'utente; controllo successivo READ ONLY: colonna UUID presente,
+indice univoco valido e CHECK NOT VALID nello stato previsto. Permessi INSERT
+BID sulla tabella e sulla nuova colonna confermati. Storico presente: 2.451
+righe 2025, 36.213 scansioni, ID 1–2.451 e GUID NULL; nessun evento app e
+nessun UUID duplicato. Nessuna scrittura durante la verifica.
+Restano conferma del GUID sorgente con BAD e prova dell'export reale.
+
 ## 2026-11-16 — Scansioni: migrazione e import verificati localmente
 
 Preparati `db/migrazione_scansioni.sql`, schema per nuove installazioni e
