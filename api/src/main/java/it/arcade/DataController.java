@@ -40,11 +40,21 @@ class DataController {
         return db.query("SELECT edizione,codice_stand,giorno,ora,scansioni FROM arcade.v_espositore_visite_ora WHERE id_espositore = ? AND edizione = ? ORDER BY giorno,ora,codice_stand",ROW,exhibitor(jwt),edizione);
     }
     @GetMapping("/espositore/me/riepilogo")
-    Map<String,Object> riepilogo(@AuthenticationPrincipal Jwt jwt,@RequestParam int edizione) {
+    Map<String,Object> riepilogo(@AuthenticationPrincipal Jwt jwt,@RequestParam int edizione,
+            @RequestParam(required=false) String codiceStand) {
         checkEdition(edizione);
-        var rows=db.query("SELECT * FROM arcade.v_espositore_riepilogo WHERE id_espositore = ? AND edizione = ?",ROW,exhibitor(jwt),edizione);
+        if(codiceStand!=null && (codiceStand.isBlank() || codiceStand.length()>10))
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST,"Codice stand non valido");
+        var rows=codiceStand==null ? riepiloghi(jwt,edizione) :
+            db.query("SELECT * FROM arcade.v_espositore_riepilogo WHERE id_espositore = ? AND edizione = ? AND codice_stand = ?",ROW,exhibitor(jwt),edizione,codiceStand);
         if(rows.isEmpty()) throw new ResponseStatusException(HttpStatus.NOT_FOUND,"Nessun risultato per questa edizione");
+        if(rows.size()>1) throw new ResponseStatusException(HttpStatus.CONFLICT,"Sono presenti più stand: seleziona lo stand per il riepilogo");
         return rows.getFirst();
+    }
+    @GetMapping("/espositore/me/riepiloghi")
+    List<Map<String,Object>> riepiloghi(@AuthenticationPrincipal Jwt jwt,@RequestParam int edizione) {
+        checkEdition(edizione);
+        return db.query("SELECT * FROM arcade.v_espositore_riepilogo WHERE id_espositore = ? AND edizione = ? ORDER BY codice_stand",ROW,exhibitor(jwt),edizione);
     }
     @GetMapping("/espositore/me/confronto")
     List<Map<String,Object>> confronto(@AuthenticationPrincipal Jwt jwt) {

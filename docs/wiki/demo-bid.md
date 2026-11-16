@@ -1,5 +1,10 @@
 # Demo BID — 16 novembre 2026
 
+Revisione finale: 12 test Java passati; riepiloghi distinti per tutti gli stand
+nell'edizione selezionata e costo per contatto direttamente da SQL. Questa
+revisione successiva richiede un nuovo deploy rispetto a quello già verificato.
+Dettaglio in [revisione BID](revisione-bid-2026-11-16.md).
+
 ## Avvio e versione
 
 L'app comprende cruscotto staff, confronto espositori, contatti consentiti e

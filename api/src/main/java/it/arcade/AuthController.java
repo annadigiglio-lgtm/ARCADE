@@ -29,6 +29,9 @@ class AuthController {
     }
     @PostMapping("/auth/login")
     Map<String,Object> login(@Valid @RequestBody Login login) {
+        // BCrypt limits UTF-8 bytes, not Java characters. Reject before hashing.
+        if(login.password().getBytes(java.nio.charset.StandardCharsets.UTF_8).length>72)
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST,"Password oltre il limite di 72 byte UTF-8");
         var users=db.queryForList("SELECT id, password_hash, ruolo, id_espositore FROM arcade.utente WHERE username = ?",login.username());
         var user=users.isEmpty() ? null : users.getFirst();
         boolean valid=passwords.matches(login.password(),user==null ? dummyHash : (String)user.get("password_hash"));

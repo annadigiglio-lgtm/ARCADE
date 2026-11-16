@@ -122,6 +122,12 @@ e [Spring Security JWT](https://docs.spring.io/spring-security/reference/servlet
 
 ## Verifica della nuova versione (16 novembre)
 
+Revisione successiva: `GET /espositore/me/riepiloghi?edizione=2025` restituisce
+tutti gli stand. `riepilogo` conserva l'oggetto singolo; con più stand serve
+`codiceStand`, altrimenti 409. Portale aggiornato e 12 test Java superati.
+Password limitata a 72 byte UTF-8. Riepilogo correzioni e limiti nella
+[revisione tecnica](../docs/wiki/revisione-bid-2026-11-16.md).
+
 Nove test Java superati; test del filtro privacy su PostgreSQL locale con
 cinque contatti sintetici; prova HTTP dell'app locale collegata a Supabase,
 con tre login, paginazione, ruoli, isolamento e simulazione, senza scritture DB.

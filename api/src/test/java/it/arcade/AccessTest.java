@@ -116,6 +116,37 @@ class AccessTest {
         mvc.perform(get("/affluenza/padiglioni").param("istante","not-a-date").header("Authorization","Bearer "+token("STAFF",null))).andExpect(status().isBadRequest());
         verifyNoMoreInteractions(db);
     }
+    @Test void allStandsAreReturnedAndSingleSummaryRequiresSelection() throws Exception {
+        String all="SELECT * FROM arcade.v_espositore_riepilogo WHERE id_espositore = ? AND edizione = ? ORDER BY codice_stand";
+        String single="SELECT * FROM arcade.v_espositore_riepilogo WHERE id_espositore = ? AND edizione = ? AND codice_stand = ?";
+        when(db.query(eq(all),eq(DataController.ROW),eq("ESP001"),eq(2025))).thenReturn(List.of(Map.of("codiceStand","P1-A01"),Map.of("codiceStand","P1-A02")));
+        when(db.query(eq(single),eq(DataController.ROW),eq("ESP001"),eq(2025),eq("P1-A02"))).thenReturn(List.of(Map.of("codiceStand","P1-A02")));
+        String auth="Bearer "+token("ESPOSITORE","ESP001");
+        mvc.perform(get("/espositore/me/riepiloghi?edizione=2025&idEspositore=ESP002").header("Authorization",auth))
+            .andExpect(status().isOk()).andExpect(jsonPath("$.length()").value(2));
+        mvc.perform(get("/espositore/me/riepilogo?edizione=2025").header("Authorization",auth)).andExpect(status().isConflict());
+        mvc.perform(get("/espositore/me/riepilogo?edizione=2025&codiceStand=P1-A02").header("Authorization",auth))
+            .andExpect(status().isOk()).andExpect(jsonPath("$.codiceStand").value("P1-A02"));
+        mvc.perform(get("/espositore/me/riepilogo?edizione=2025&codiceStand=OTHER").header("Authorization",auth)).andExpect(status().isNotFound());
+        when(db.query(eq(all),eq(DataController.ROW),eq("ESP001"),eq(2024))).thenReturn(List.of());
+        mvc.perform(get("/espositore/me/riepiloghi?edizione=2024").header("Authorization",auth)).andExpect(content().json("[]"));
+        mvc.perform(get("/espositore/me/riepilogo?edizione=2024").header("Authorization",auth)).andExpect(status().isNotFound());
+        mvc.perform(get("/espositore/me/riepiloghi?edizione=2025").header("Authorization","Bearer "+token("STAFF",null))).andExpect(status().isForbidden());
+        verify(db).query(eq(single),eq(DataController.ROW),eq("ESP001"),eq(2025),eq("P1-A02"));
+    }
+    @Test void unicodePasswordsRespectBcryptByteLimit() throws Exception {
+        mvc.perform(post("/auth/login").contentType("application/json").content("{\"username\":\"unknown\",\"password\":\""+"è".repeat(37)+"\"}"))
+            .andExpect(status().isBadRequest());
+        verifyNoInteractions(db);
+        mvc.perform(post("/auth/login").contentType("application/json").content("{\"username\":\"unknown\",\"password\":\""+"è".repeat(36)+"\"}"))
+            .andExpect(status().isUnauthorized());
+    }
+    @Test void databaseErrorsDoNotLeakDetails() throws Exception {
+        when(db.query(anyString(),eq(DataController.ROW),eq("ESP001"))).thenThrow(new org.springframework.dao.DataAccessResourceFailureException("private-database-detail"));
+        mvc.perform(get("/espositore/me/confronto").header("Authorization","Bearer "+token("ESPOSITORE","ESP001")))
+            .andExpect(status().isServiceUnavailable()).andExpect(jsonPath("$.status").value(503))
+            .andExpect(jsonPath("$.message").value("Dati temporaneamente non disponibili"));
+    }
     @Test void loginChecksBcryptAndIssuesVerifiableJwt() throws Exception {
         when(db.queryForList("SELECT id, password_hash, ruolo, id_espositore FROM arcade.utente WHERE username = ?","staff"))
             .thenReturn(List.of(Map.of("id",1,"password_hash",passwords.encode("correct-password"),"ruolo","STAFF")));

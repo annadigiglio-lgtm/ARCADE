@@ -23,8 +23,8 @@ let demoTime = null;
 let demoRunning = false;
 function stopDemo() { demoRunning=false; $('demo-play').textContent='Avvia simulazione'; }
 function clearPrivateData() {
-  ['comparison','visits','contacts','renewal'].forEach(id=>$(id).replaceChildren());
-  ['comparison-empty','contacts-empty','renewal-empty'].forEach(id=>$(id).hidden=true);
+  ['comparison','visits','contacts','renewal','stand-summaries'].forEach(id=>$(id).replaceChildren());
+  ['comparison-empty','contacts-empty','renewal-empty','summaries-empty'].forEach(id=>$(id).hidden=true);
   $('contacts-page').textContent='';
   $('contacts-prev').disabled=true; $('contacts-next').disabled=true;
 }
@@ -131,14 +131,20 @@ async function refresh() {
       $('demo-status').textContent=demoTime ? `Simulazione storica · 20/12/2025 ore ${demoTime}${demoRunning?' · in riproduzione':''}` : 'Ora configurata dal servizio.';
     } else {
       const edition=$('edition').value;
-      const [rows,comparison,contacts,renewal]=await Promise.all([
+      const [rows,comparison,contacts,renewal,summaries]=await Promise.all([
         api(`/espositore/me/visite?edizione=${edition}`,{},controller.signal),
         api('/espositore/me/confronto',{},controller.signal),
         api(`/espositore/me/contatti?edizione=${edition}&page=${contactsPage}&size=20`,{},controller.signal),
-        api('/espositore/me/rinnovo',{},controller.signal)
+        api('/espositore/me/rinnovo',{},controller.signal),
+        api(`/espositore/me/riepiloghi?edizione=${edition}`,{},controller.signal)
       ]);
       if(session!==currentSession || pending!==controller) return;
       drawComparison(comparison);
+      tableRows('stand-summaries',summaries.map(r=>[r.codiceStand,
+        r.imponibile==null?'—':euro.format(r.imponibile),
+        ...[r.visite,r.contatti,r.contattiConConsenso].map(value=>value==null?'—':number.format(value)),
+        r.costoPerContatto==null?'—':euro.format(r.costoPerContatto)]));
+      $('summaries-empty').hidden=summaries.length>0;
       tableRows('contacts',contacts.content.map(r=>[r.codiceStand,date(r.raccoltoIl),r.email,r.interesse]));
       $('contacts-empty').hidden=contacts.content.length>0;
       $('contacts-page').textContent=contacts.totalPages ? `Pagina ${contacts.page+1} di ${contacts.totalPages} · ${contacts.totalElements} contatti` : '0 contatti';
@@ -159,7 +165,11 @@ async function refresh() {
       $('timestamp').textContent=`Edizione ${edition} · Ultimo aggiornamento ${new Date().toLocaleTimeString('it-IT')}`;
     }
   } catch(error) {
-    if(error.name!=='AbortError' && pending===controller) { stopDemo(); controller.abort(); message(error.message); $('timestamp').textContent='Dati non disponibili: riprova con Aggiorna dati.'; }
+    if(error.name!=='AbortError' && pending===controller) {
+      stopDemo(); controller.abort(); clearPrivateData();
+      ['pavilions','summary','trend','entries'].forEach(id=>$(id).replaceChildren());
+      message(error.message); $('timestamp').textContent='Dati non disponibili: riprova con Aggiorna dati.';
+    }
   } finally {
     if(pending===controller) {
       pending=null; $('refresh').disabled=false;

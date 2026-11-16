@@ -35,6 +35,25 @@ const run=s=>vm.runInContext(s,context);
  await scheduled(); // advances to 19:00, then stops
  assert.equal(run('demoTime'),'19:00');assert.equal(run('demoRunning'),false);
  run('logout()');assert.equal(els.contacts.children.length,0);assert.equal(els.renewal.children.length,0);
+ // Multiple summaries keep missing measurements distinct from a measured zero.
+ context.fetch=async path=>({ok:true,status:200,json:async()=>{
+   if(path.includes('/riepiloghi')) return [
+    {codiceStand:'TEST1',imponibile:100,visite:null,contatti:0,contattiConConsenso:0,costoPerContatto:null},
+    {codiceStand:'TEST2',imponibile:200,visite:0,contatti:2,contattiConConsenso:1,costoPerContatto:100}];
+   if(path.includes('/contatti')) return {content:[],page:0,totalPages:0,totalElements:0};
+   return [];
+ }});
+ run('session={accessToken:"test",ruolo:"ESPOSITORE"}'); await run('refresh()');
+ assert.equal(els['stand-summaries'].children.length,2);
+ assert.equal(els['stand-summaries'].children[0].children[2].textContent,'\u2014');
+ assert.equal(els['stand-summaries'].children[1].children[2].textContent,'0');
+ // A failed sibling request must not leave previous private results visible.
+ context.fetch=async()=>({ok:false,status:503,json:async()=>({message:'Unavailable'})});
+ await run('refresh()');
+ assert.equal(els['stand-summaries'].children.length,0);
+ assert.equal(els.contacts.children.length,0);
+ assert.equal(els.message.textContent,'Unavailable');
+ assert.equal(els.refresh.disabled,false);
  // An expired response belonging to a previous login must not log out the new one.
  context.fetch=async()=>{run('session={accessToken:"new",ruolo:"ESPOSITORE"}');return {ok:false,status:401,json:async()=>({message:'expired'})};};
  run('session={accessToken:"old",ruolo:"ESPOSITORE"}');

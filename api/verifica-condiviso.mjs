@@ -59,7 +59,7 @@ if(loginOnly) {
 
 if(!loginOnly) {
   for(const account of [first,second]) {
-    for(const path of ['/espositore/me/confronto','/espositore/me/rinnovo','/espositore/me/contatti?edizione=2025&size=1']) {
+    for(const path of ['/espositore/me/riepiloghi?edizione=2025','/espositore/me/confronto','/espositore/me/rinnovo','/espositore/me/contatti?edizione=2025&size=1']) {
       const result=await request(path,account.accessToken);
       assert.equal(result.status,200,`Nuovo endpoint: ${path}`);
       const spoof=await request(path+(path.includes('?')?'&':'?')+'idEspositore='+ (account===first?second.idEspositore:first.idEspositore),account.accessToken);

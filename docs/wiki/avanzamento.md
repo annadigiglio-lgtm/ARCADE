@@ -1,5 +1,20 @@
 # Avanzamento
 
+## 2026-11-16 — Revisione finale: multi-stand e casi limite
+
+Corretto il riepilogo che prima restituiva solo il primo stand: endpoint plurale
+e tabella dei riepiloghi per edizione, con costo per contatto da SQL.
+L'endpoint singolo accetta selezione stand e restituisce 409 se ambiguo,
+mantenendo compatibilità per un solo stand. Corretti limite UTF-8 del login,
+schema nullable del picco ed errori 503 nella specifica. Il frontend pulisce
+i risultati anche quando il caricamento fallisce.
+
+12 test Java passati, test frontend ampliati e OpenAPI validato (11 percorsi).
+Prova HTTP locale su Supabase passata con tre login, riepiloghi, isolamento,
+contatti, rinnovo e simulazione. Nessuna scrittura su Supabase.
+Report in `revisione-bid-2026-11-16.md`; nuovo deploy Render e verifica
+visiva ancora aperti. Non dichiarata integrazione reale 2026 completata.
+
 ## 2026-11-16 — Deploy Render verificato via HTTPS
 
 L'utente ha eseguito il deploy. Verifica su https://arcade-milano.onrender.com:

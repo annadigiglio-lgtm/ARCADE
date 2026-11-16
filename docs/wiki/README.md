@@ -12,6 +12,7 @@ Wiki interna del progetto. Qui teniamo tutto quello che serve per lavorare: cosa
 - [Glossario](glossario.md): termini e sigle
 
 ### Tecnica
+- [Revisione tecnica BID del 16 novembre](revisione-bid-2026-11-16.md): correzioni, verifiche e limiti residui
 - [Demo BID](demo-bid.md): avvio, percorso prima/durante/dopo, verifiche e limiti ancora aperti
 - [Avvio Power BI per BAD](avvio-power-bi.md): connessione, permessi e verifica live di viste, contratto e chiave scansioni
 - [Ambiente di sviluppo](ambiente-sviluppo.md): installazione e primo avvio per Yassin e Daniel, con Docker o Java e Supabase
