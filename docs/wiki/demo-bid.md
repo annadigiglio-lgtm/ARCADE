@@ -65,7 +65,9 @@ termina con ROLLBACK. Mai caricare fixture nel database condiviso.
 Verifiche del 16/11: nove test Java passati, privacy PostgreSQL verificata,
 frontend verificato con DOM simulato e flussi HTTP locali su Supabase passati.
 Il test frontend non certifica il layout desktop/mobile: revisione visiva aperta.
-Il deploy della nuova versione su Render va verificato separatamente.
+Deploy Render eseguito dall'utente e verificato via HTTPS il 16/11:
+pagina/asset aggiornati, tre login, endpoint staff e portale, contatti paginati,
+isolamento e simulazione superati. Nessuna scrittura DB durante la verifica.
 
 Ancora necessari export commerciale/scansioni reali BAD, report Power BI,
 conferma delle formule, condizioni rinnovo e importi incassati. Il contratto

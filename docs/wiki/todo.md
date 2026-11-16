@@ -6,14 +6,16 @@
 - [x] Simulazione storica staff con avanzamento, pausa e reset, senza scritture DB.
 - [x] Nove test Java, filtro privacy PostgreSQL, test frontend e flusso HTTP su Supabase.
 - [x] Preparare guida demo ripetibile in `demo-bid.md`.
-- [ ] Revisione visiva completa su desktop e telefono e deploy manuale Render della nuova versione.
+- [x] Deploy manuale Render eseguito dall'utente e verifica HTTPS della nuova pagina, portale e simulazione superata (16/11).
+- [ ] Revisione visiva completa su desktop e telefono.
 - [ ] Confermare condizioni rinnovo, formule KPI e dati mancanti con BAD/cliente.
 
 
 ## Portale — confronto tra edizioni, 16 novembre
 
 - [x] Collegare vista confronto all'API e alla pagina espositore; supportare più stand, valori mancanti e array vuoto.
-- [ ] Verificare visivamente la pagina e pubblicare la nuova versione API/web su Render.
+- [x] Pubblicare la nuova versione API/web su Render e verificarla via HTTPS (16/11).
+- [ ] Verificare visivamente la pagina desktop/mobile.
 - [x] Completare endpoint e pagina della proposta di rinnovo; stime e condizioni indicate come proposte da confermare (16/11).
 
 ## Scansioni — verifica locale completata il 16 novembre

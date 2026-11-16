@@ -1,5 +1,16 @@
 # Avanzamento
 
+## 2026-11-16 — Deploy Render verificato via HTTPS
+
+L'utente ha eseguito il deploy. Verifica su https://arcade-milano.onrender.com:
+pagina e JavaScript aggiornati, tre login, quattro endpoint staff,
+visite/riepilogo, confronto, rinnovo e contatti paginati tutti funzionanti.
+Confermati isolamento dei due espositori, rifiuto di accessi non autorizzati
+e parametri invalidi, identità dal token anche con ID diverso nell'URL.
+Simulazione storica verificata via HTTP con istanti espliciti.
+Nessuna scrittura DB durante le verifiche. Controllo visivo desktop/mobile
+ancora aperto; export reali BAD e confronto nel report Power BI ancora necessari.
+
 ## 2026-11-16 — Portale, privacy e simulazione BID verificati
 
 Completati pagina contatti paginati e rinnovo indicativo. Identità sempre dal
