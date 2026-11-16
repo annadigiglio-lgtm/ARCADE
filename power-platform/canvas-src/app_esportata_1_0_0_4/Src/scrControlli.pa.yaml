@@ -1,0 +1,1231 @@
+# ************************************************************************************************
+# Warning: YAML source code for Canvas Apps should only be used to review changes made within Power Apps Studio and for minor edits (Preview).
+# Use the maker portal to create and edit your Power Apps.
+# 
+# The schema file for Canvas Apps is available at https://go.microsoft.com/fwlink/?linkid=2304907
+# 
+# For more information, visit https://go.microsoft.com/fwlink/?linkid=2292623
+# ************************************************************************************************
+Screens:
+  scrControlli:
+    Properties:
+      Fill: =nfSfondo
+      OnVisible: |-
+        =If(IsBlank(locChk), UpdateContext({locChk: "1"}));
+        If(IsEmpty(colRighe),
+            ForAll(Sequence(16) As n,
+                Collect(colRighe, AddColumns(Filter('Righe contratto', Riga = n.Value), IdC, ThisRecord.Contratto.'ID contratto'))));
+        Clear(colAnom);
+        Collect(colAnom, ForAll(Filter(colContratti As a, a.StatoTxt <> "annullato" && CountRows(Filter(colContratti, AnnoEd = a.AnnoEd && CodStand = a.CodStand && StatoTxt <> "annullato")) > 1) As x,
+            {Chk: "1", Rif: x.'ID contratto', Dett: "Stand " & x.CodStand & " venduto più volte nell'edizione " & x.AnnoEd}));
+        Collect(colAnom, ForAll(Filter(colContratti, StatoTxt = "firmato" && IsBlank('Data firma')) As x,
+            {Chk: "2", Rif: x.'ID contratto', Dett: "Contratto firmato senza data di firma"}));
+        Collect(colAnom, ForAll(Filter(Espositori, !IsMatch('Partita IVA', "\d{11}")) As x,
+            {Chk: "3", Rif: x.'ID espositore', Dett: "Partita IVA non valida: " & x.'Partita IVA'}));
+        Collect(colAnom, ForAll(Filter(colContratti As a, a.StatoTxt <> "annullato" && Abs(Sum(Filter(colRighe, IdC = a.'ID contratto'), Importo) - a.'Imponibile a listino') > 0.01) As x,
+            {Chk: "4", Rif: x.'ID contratto', Dett: "Somma righe " & Text(Sum(Filter(colRighe, IdC = x.'ID contratto'), Importo), "#,##0.00") & " diversa dal totale a listino " & Text(x.'Imponibile a listino', "#,##0.00")}));
+        Collect(colAnom, ForAll(Filter(colContratti, Abs('Imponibile a listino' * (1 - Sconto) - Imponibile) > 0.01) As x,
+            {Chk: "5", Rif: x.'ID contratto', Dett: "Imponibile " & Text(x.Imponibile, "#,##0.00") & " diverso da listino meno sconto"}));
+        Collect(colAnom, ForAll(Filter(colContratti, !IsBlank('Data firma') && ((!IsBlank('Acconto pagato il') && 'Acconto pagato il' < 'Data firma') || (!IsBlank('Saldo pagato il') && 'Saldo pagato il' < 'Data firma'))) As x,
+            {Chk: "6", Rif: x.'ID contratto', Dett: "Pagamento registrato prima della firma"}));
+        Collect(colAnom, ForAll(Filter(colContratti, StatoTxt = "firmato" && (IsBlank('Scadenza acconto') || IsBlank('Scadenza saldo'))) As x,
+            {Chk: "7", Rif: x.'ID contratto', Dett: "Contratto firmato senza scadenza di acconto o saldo"}));
+        Collect(colAnom, ForAll(Filter(colContratti As a, a.StatoTxt <> "annullato" && LookUp(colStand, 'Codice stand' = a.CodStand).AnnoAtt > Value(a.AnnoEd)) As x,
+            {Chk: "8", Rif: x.'ID contratto', Dett: "Stand " & x.CodStand & " non ancora attivo nel " & x.AnnoEd}))
+    Children:
+      - ck_recSidebar:
+          Control: Rectangle@2.3.0
+          Properties:
+            AccessibleLabel: ="Elemento grafico"
+            Fill: =nfBlu
+            Height: =768
+            Width: =220
+      - ck_lblLogo:
+          Control: Label@2.5.1
+          Properties:
+            Color: =Color.White
+            FocusedBorderThickness: =2
+            Font: =nfFont
+            FontWeight: =FontWeight.Semibold
+            Height: =36
+            Size: =20
+            Text: ="ARCADE"
+            Width: =172
+            X: =24
+            Y: =24
+      - ck_lblLogoSub:
+          Control: Label@2.5.1
+          Properties:
+            Color: =ColorValue("#94A3B8")
+            FocusedBorderThickness: =2
+            Font: =nfFont
+            Height: =20
+            Size: =10
+            Text: ="Back-office commerciale"
+            Width: =172
+            X: =24
+            Y: =58
+      - ck_recSep:
+          Control: Rectangle@2.3.0
+          Properties:
+            AccessibleLabel: ="Elemento grafico"
+            Fill: =nfBlu2
+            Height: =1
+            Width: =172
+            X: =24
+            Y: =96
+      - ck_btnNavHome:
+          Control: Classic/Button@2.2.0
+          Properties:
+            Align: =Align.Left
+            BorderThickness: =0
+            Color: =Color.White
+            DisabledColor: =ColorValue("#64748B")
+            DisabledFill: =nfBlu
+            Fill: =nfBlu
+            Font: =nfFont
+            HoverColor: =Color.White
+            HoverFill: =ColorFade(nfBlu, -10%)
+            OnSelect: =Navigate(scrHome, ScreenTransition.None)
+            PaddingLeft: =16
+            PressedFill: =ColorFade(nfBlu, -20%)
+            RadiusBottomLeft: =8
+            RadiusBottomRight: =8
+            RadiusTopLeft: =8
+            RadiusTopRight: =8
+            Size: =12
+            Text: ="Panoramica"
+            Width: =196
+            X: =12
+            Y: =116
+      - ck_btnNavStand:
+          Control: Classic/Button@2.2.0
+          Properties:
+            Align: =Align.Left
+            BorderThickness: =0
+            Color: =Color.White
+            DisabledColor: =ColorValue("#64748B")
+            DisabledFill: =nfBlu
+            Fill: =nfBlu
+            Font: =nfFont
+            HoverColor: =Color.White
+            HoverFill: =ColorFade(nfBlu, -10%)
+            OnSelect: =Navigate(scrStand, ScreenTransition.None)
+            PaddingLeft: =16
+            PressedFill: =ColorFade(nfBlu, -20%)
+            RadiusBottomLeft: =8
+            RadiusBottomRight: =8
+            RadiusTopLeft: =8
+            RadiusTopRight: =8
+            Size: =12
+            Text: ="Planimetria stand"
+            Width: =196
+            X: =12
+            Y: =164
+      - ck_btnNavEspositori:
+          Control: Classic/Button@2.2.0
+          Properties:
+            Align: =Align.Left
+            BorderThickness: =0
+            Color: =Color.White
+            DisabledColor: =ColorValue("#64748B")
+            DisabledFill: =nfBlu
+            Fill: =nfBlu
+            Font: =nfFont
+            HoverColor: =Color.White
+            HoverFill: =ColorFade(nfBlu, -10%)
+            OnSelect: =Navigate(scrEspositori, ScreenTransition.None)
+            PaddingLeft: =16
+            PressedFill: =ColorFade(nfBlu, -20%)
+            RadiusBottomLeft: =8
+            RadiusBottomRight: =8
+            RadiusTopLeft: =8
+            RadiusTopRight: =8
+            Size: =12
+            Text: ="Espositori"
+            Width: =196
+            X: =12
+            Y: =212
+      - ck_btnNavContratti:
+          Control: Classic/Button@2.2.0
+          Properties:
+            Align: =Align.Left
+            BorderThickness: =0
+            Color: =Color.White
+            DisabledColor: =ColorValue("#64748B")
+            DisabledFill: =nfBlu
+            Fill: =nfBlu
+            Font: =nfFont
+            HoverColor: =Color.White
+            HoverFill: =ColorFade(nfBlu, -10%)
+            OnSelect: =Navigate(scrContratti, ScreenTransition.None)
+            PaddingLeft: =16
+            PressedFill: =ColorFade(nfBlu, -20%)
+            RadiusBottomLeft: =8
+            RadiusBottomRight: =8
+            RadiusTopLeft: =8
+            RadiusTopRight: =8
+            Size: =12
+            Text: ="Contratti"
+            Width: =196
+            X: =12
+            Y: =260
+      - ck_btnNavNuovo:
+          Control: Classic/Button@2.2.0
+          Properties:
+            Align: =Align.Left
+            BorderThickness: =0
+            Color: =Color.White
+            DisabledColor: =ColorValue("#64748B")
+            DisabledFill: =nfBlu
+            Fill: =nfBlu
+            Font: =nfFont
+            HoverColor: =Color.White
+            HoverFill: =ColorFade(nfBlu, -10%)
+            OnSelect: =Navigate(scrNuovo, ScreenTransition.None)
+            PaddingLeft: =16
+            PressedFill: =ColorFade(nfBlu, -20%)
+            RadiusBottomLeft: =8
+            RadiusBottomRight: =8
+            RadiusTopLeft: =8
+            RadiusTopRight: =8
+            Size: =12
+            Text: ="Nuovo contratto"
+            Width: =196
+            X: =12
+            Y: =308
+      - ck_btnNavScadenze:
+          Control: Classic/Button@2.2.0
+          Properties:
+            Align: =Align.Left
+            BorderThickness: =0
+            Color: =Color.White
+            DisabledColor: =ColorValue("#64748B")
+            DisabledFill: =nfBlu
+            Fill: =nfBlu
+            Font: =nfFont
+            HoverColor: =Color.White
+            HoverFill: =ColorFade(nfBlu, -10%)
+            OnSelect: =Navigate(scrScadenze, ScreenTransition.None)
+            PaddingLeft: =16
+            PressedFill: =ColorFade(nfBlu, -20%)
+            RadiusBottomLeft: =8
+            RadiusBottomRight: =8
+            RadiusTopLeft: =8
+            RadiusTopRight: =8
+            Size: =12
+            Text: ="Scadenze e incassi"
+            Width: =196
+            X: =12
+            Y: =356
+      - ck_btnNavRinnovi:
+          Control: Classic/Button@2.2.0
+          Properties:
+            Align: =Align.Left
+            BorderThickness: =0
+            Color: =Color.White
+            DisabledColor: =ColorValue("#64748B")
+            DisabledFill: =nfBlu
+            Fill: =nfBlu
+            Font: =nfFont
+            HoverColor: =Color.White
+            HoverFill: =ColorFade(nfBlu, -10%)
+            OnSelect: =Navigate(scrRinnovi, ScreenTransition.None)
+            PaddingLeft: =16
+            PressedFill: =ColorFade(nfBlu, -20%)
+            RadiusBottomLeft: =8
+            RadiusBottomRight: =8
+            RadiusTopLeft: =8
+            RadiusTopRight: =8
+            Size: =12
+            Text: ="Rinnovi e prelazione"
+            Width: =196
+            X: =12
+            Y: =404
+      - ck_btnNavListino:
+          Control: Classic/Button@2.2.0
+          Properties:
+            Align: =Align.Left
+            BorderThickness: =0
+            Color: =Color.White
+            DisabledColor: =ColorValue("#64748B")
+            DisabledFill: =nfBlu
+            Fill: =nfBlu
+            Font: =nfFont
+            HoverColor: =Color.White
+            HoverFill: =ColorFade(nfBlu, -10%)
+            OnSelect: =Navigate(scrListino, ScreenTransition.None)
+            PaddingLeft: =16
+            PressedFill: =ColorFade(nfBlu, -20%)
+            RadiusBottomLeft: =8
+            RadiusBottomRight: =8
+            RadiusTopLeft: =8
+            RadiusTopRight: =8
+            Size: =12
+            Text: ="Listino 2026"
+            Width: =196
+            X: =12
+            Y: =452
+      - ck_btnNavControlli:
+          Control: Classic/Button@2.2.0
+          Properties:
+            Align: =Align.Left
+            BorderThickness: =0
+            Color: =Color.White
+            DisabledColor: =ColorValue("#64748B")
+            DisabledFill: =nfBlu
+            Fill: =nfAccento
+            Font: =nfFont
+            HoverColor: =Color.White
+            HoverFill: =ColorFade(nfAccento, -10%)
+            OnSelect: =Navigate(scrControlli, ScreenTransition.None)
+            PaddingLeft: =16
+            PressedFill: =ColorFade(nfAccento, -20%)
+            RadiusBottomLeft: =8
+            RadiusBottomRight: =8
+            RadiusTopLeft: =8
+            RadiusTopRight: =8
+            Size: =12
+            Text: ="Controlli dati"
+            Width: =196
+            X: =12
+            Y: =500
+      - ck_lblUtente:
+          Control: Label@2.5.1
+          Properties:
+            Color: =Color.White
+            FocusedBorderThickness: =2
+            Font: =nfFont
+            Height: =20
+            Size: =10
+            Text: =User().FullName
+            Width: =172
+            X: =24
+            Y: =712
+      - ck_lblEdizioneSide:
+          Control: Label@2.5.1
+          Properties:
+            Color: =ColorValue("#94A3B8")
+            FocusedBorderThickness: =2
+            Font: =nfFont
+            Height: =18
+            Size: =9
+            Text: ="Edizione " & gblAnno
+            Width: =172
+            X: =24
+            Y: =734
+      - ck_lblTitolo:
+          Control: Label@2.5.1
+          Properties:
+            Color: =nfTesto
+            FocusedBorderThickness: =2
+            Font: =nfFont
+            FontWeight: =FontWeight.Semibold
+            Size: =22
+            Text: ="Controlli dati"
+            Width: =700
+            X: =248
+            Y: =18
+      - ck_lblSottotitolo:
+          Control: Label@2.5.1
+          Properties:
+            Color: =nfTestoSec
+            FocusedBorderThickness: =2
+            Font: =nfFont
+            Height: =22
+            Size: =11
+            Text: ="Regole del progetto verificate sui dati di Dataverse · controllo del " & Text(Now(), "dd/mm/yyyy hh:mm")
+            Width: =800
+            X: =248
+            Y: =56
+      - ck_recKpi0:
+          Control: Rectangle@2.3.0
+          Properties:
+            AccessibleLabel: ="Elemento grafico"
+            BorderColor: =nfBordo
+            BorderThickness: =1
+            Fill: =nfCard
+            Height: =92
+            Width: =259
+            X: =248
+            Y: =96
+      - ck_recKpiBar0:
+          Control: Rectangle@2.3.0
+          Properties:
+            AccessibleLabel: ="Elemento grafico"
+            Fill: =nfVerde
+            Height: =4
+            Width: =259
+            X: =248
+            Y: =96
+      - ck_lblKpiCap0:
+          Control: Label@2.5.1
+          Properties:
+            Color: =nfTestoSec
+            FocusedBorderThickness: =2
+            Font: =nfFont
+            Height: =20
+            Size: =11
+            Text: ="Controlli superati"
+            Width: =219
+            X: =268
+            Y: =108
+      - ck_lblKpiVal0:
+          Control: Label@2.5.1
+          Properties:
+            Color: =nfTesto
+            FocusedBorderThickness: =2
+            Font: =nfFont
+            FontWeight: =FontWeight.Semibold
+            Height: =34
+            Size: =22
+            Text: =(If(CountRows(Filter(colAnom, Chk = "1")) = 0, 1, 0) + If(CountRows(Filter(colAnom, Chk = "2")) = 0, 1, 0) + If(CountRows(Filter(colAnom, Chk = "3")) = 0, 1, 0) + If(CountRows(Filter(colAnom, Chk = "4")) = 0, 1, 0) + If(CountRows(Filter(colAnom, Chk = "5")) = 0, 1, 0) + If(CountRows(Filter(colAnom, Chk = "6")) = 0, 1, 0) + If(CountRows(Filter(colAnom, Chk = "7")) = 0, 1, 0) + If(CountRows(Filter(colAnom, Chk = "8")) = 0, 1, 0)) & " / 8"
+            Width: =219
+            X: =268
+            Y: =128
+      - ck_lblKpiSub0:
+          Control: Label@2.5.1
+          Properties:
+            Color: =nfTestoSec
+            FocusedBorderThickness: =2
+            Font: =nfFont
+            Height: =20
+            Size: =10
+            Text: ="regole senza anomalie"
+            Width: =219
+            X: =268
+            Y: =162
+      - ck_recKpi1:
+          Control: Rectangle@2.3.0
+          Properties:
+            AccessibleLabel: ="Elemento grafico"
+            BorderColor: =nfBordo
+            BorderThickness: =1
+            Fill: =nfCard
+            Height: =92
+            Width: =259
+            X: =523
+            Y: =96
+      - ck_recKpiBar1:
+          Control: Rectangle@2.3.0
+          Properties:
+            AccessibleLabel: ="Elemento grafico"
+            Fill: =nfRosso
+            Height: =4
+            Width: =259
+            X: =523
+            Y: =96
+      - ck_lblKpiCap1:
+          Control: Label@2.5.1
+          Properties:
+            Color: =nfTestoSec
+            FocusedBorderThickness: =2
+            Font: =nfFont
+            Height: =20
+            Size: =11
+            Text: ="Anomalie trovate"
+            Width: =219
+            X: =543
+            Y: =108
+      - ck_lblKpiVal1:
+          Control: Label@2.5.1
+          Properties:
+            Color: =nfTesto
+            FocusedBorderThickness: =2
+            Font: =nfFont
+            FontWeight: =FontWeight.Semibold
+            Height: =34
+            Size: =22
+            Text: =CountRows(colAnom)
+            Width: =219
+            X: =543
+            Y: =128
+      - ck_lblKpiSub1:
+          Control: Label@2.5.1
+          Properties:
+            Color: =nfTestoSec
+            FocusedBorderThickness: =2
+            Font: =nfFont
+            Height: =20
+            Size: =10
+            Text: ="da correggere prima della sincronizzazione"
+            Width: =219
+            X: =543
+            Y: =162
+      - ck_recKpi2:
+          Control: Rectangle@2.3.0
+          Properties:
+            AccessibleLabel: ="Elemento grafico"
+            BorderColor: =nfBordo
+            BorderThickness: =1
+            Fill: =nfCard
+            Height: =92
+            Width: =259
+            X: =798
+            Y: =96
+      - ck_recKpiBar2:
+          Control: Rectangle@2.3.0
+          Properties:
+            AccessibleLabel: ="Elemento grafico"
+            Fill: =nfBlu
+            Height: =4
+            Width: =259
+            X: =798
+            Y: =96
+      - ck_lblKpiCap2:
+          Control: Label@2.5.1
+          Properties:
+            Color: =nfTestoSec
+            FocusedBorderThickness: =2
+            Font: =nfFont
+            Height: =20
+            Size: =11
+            Text: ="Contratti verificati"
+            Width: =219
+            X: =818
+            Y: =108
+      - ck_lblKpiVal2:
+          Control: Label@2.5.1
+          Properties:
+            Color: =nfTesto
+            FocusedBorderThickness: =2
+            Font: =nfFont
+            FontWeight: =FontWeight.Semibold
+            Height: =34
+            Size: =22
+            Text: =CountRows(colContratti)
+            Width: =219
+            X: =818
+            Y: =128
+      - ck_lblKpiSub2:
+          Control: Label@2.5.1
+          Properties:
+            Color: =nfTestoSec
+            FocusedBorderThickness: =2
+            Font: =nfFont
+            Height: =20
+            Size: =10
+            Text: ="tutte le edizioni, compresi gli annullati"
+            Width: =219
+            X: =818
+            Y: =162
+      - ck_btnRicontrolla:
+          Control: Classic/Button@2.2.0
+          Properties:
+            BorderThickness: =0
+            Color: =Color.White
+            Fill: =nfAccento
+            Font: =nfFont
+            Height: =44
+            HoverColor: =Color.White
+            HoverFill: =ColorFade(nfAccento, -10%)
+            OnSelect: |-
+              =Refresh(Contratti);
+              ClearCollect(colContratti, AddColumns(Contratti,
+                  AnnoEd, ThisRecord.Edizione.Anno,
+                  CodStand, ThisRecord.Stand.'Codice stand',
+                  IdEsp, ThisRecord.Espositore.'ID espositore',
+                  RagSoc, ThisRecord.Espositore.'Ragione sociale',
+                  StatoTxt, Text(ThisRecord.'Stato (g5_stato)')));
+              ClearCollect(colStand, AddColumns(Stand,
+                  CodPad, ThisRecord.Padiglione.Codice,
+                  AnnoAtt, Value(ThisRecord.'Attivo dal'.Anno),
+                  PosTxt, Text(ThisRecord.Posizione)));
+              Clear(colRighe);
+              If(IsEmpty(colRighe),
+                  ForAll(Sequence(16) As n,
+                      Collect(colRighe, AddColumns(Filter('Righe contratto', Riga = n.Value), IdC, ThisRecord.Contratto.'ID contratto'))));
+              Clear(colAnom);
+              Collect(colAnom, ForAll(Filter(colContratti As a, a.StatoTxt <> "annullato" && CountRows(Filter(colContratti, AnnoEd = a.AnnoEd && CodStand = a.CodStand && StatoTxt <> "annullato")) > 1) As x,
+                  {Chk: "1", Rif: x.'ID contratto', Dett: "Stand " & x.CodStand & " venduto più volte nell'edizione " & x.AnnoEd}));
+              Collect(colAnom, ForAll(Filter(colContratti, StatoTxt = "firmato" && IsBlank('Data firma')) As x,
+                  {Chk: "2", Rif: x.'ID contratto', Dett: "Contratto firmato senza data di firma"}));
+              Collect(colAnom, ForAll(Filter(Espositori, !IsMatch('Partita IVA', "\d{11}")) As x,
+                  {Chk: "3", Rif: x.'ID espositore', Dett: "Partita IVA non valida: " & x.'Partita IVA'}));
+              Collect(colAnom, ForAll(Filter(colContratti As a, a.StatoTxt <> "annullato" && Abs(Sum(Filter(colRighe, IdC = a.'ID contratto'), Importo) - a.'Imponibile a listino') > 0.01) As x,
+                  {Chk: "4", Rif: x.'ID contratto', Dett: "Somma righe " & Text(Sum(Filter(colRighe, IdC = x.'ID contratto'), Importo), "#,##0.00") & " diversa dal totale a listino " & Text(x.'Imponibile a listino', "#,##0.00")}));
+              Collect(colAnom, ForAll(Filter(colContratti, Abs('Imponibile a listino' * (1 - Sconto) - Imponibile) > 0.01) As x,
+                  {Chk: "5", Rif: x.'ID contratto', Dett: "Imponibile " & Text(x.Imponibile, "#,##0.00") & " diverso da listino meno sconto"}));
+              Collect(colAnom, ForAll(Filter(colContratti, !IsBlank('Data firma') && ((!IsBlank('Acconto pagato il') && 'Acconto pagato il' < 'Data firma') || (!IsBlank('Saldo pagato il') && 'Saldo pagato il' < 'Data firma'))) As x,
+                  {Chk: "6", Rif: x.'ID contratto', Dett: "Pagamento registrato prima della firma"}));
+              Collect(colAnom, ForAll(Filter(colContratti, StatoTxt = "firmato" && (IsBlank('Scadenza acconto') || IsBlank('Scadenza saldo'))) As x,
+                  {Chk: "7", Rif: x.'ID contratto', Dett: "Contratto firmato senza scadenza di acconto o saldo"}));
+              Collect(colAnom, ForAll(Filter(colContratti As a, a.StatoTxt <> "annullato" && LookUp(colStand, 'Codice stand' = a.CodStand).AnnoAtt > Value(a.AnnoEd)) As x,
+                  {Chk: "8", Rif: x.'ID contratto', Dett: "Stand " & x.CodStand & " non ancora attivo nel " & x.AnnoEd}))
+            PressedFill: =ColorFade(nfAccento, -20%)
+            RadiusBottomLeft: =8
+            RadiusBottomRight: =8
+            RadiusTopLeft: =8
+            RadiusTopRight: =8
+            Size: =12
+            Text: ="Ricontrolla"
+            Width: =190
+            X: =1073
+            Y: =112
+      - ck_recChk0:
+          Control: Rectangle@2.3.0
+          Properties:
+            AccessibleLabel: ="Elemento grafico"
+            BorderColor: =nfBordo
+            BorderThickness: =1
+            Fill: =If(locChk = "1", nfAccentoChiaro, nfCard)
+            Height: =62
+            Width: =520
+            X: =248
+            Y: =204
+      - ck_lblChkT0:
+          Control: Label@2.5.1
+          Properties:
+            Color: =nfTesto
+            FocusedBorderThickness: =2
+            Font: =nfFont
+            FontWeight: =FontWeight.Semibold
+            Height: =22
+            Size: =12
+            Text: ="R1 · Stand venduto una sola volta per edizione"
+            Width: =380
+            X: =264
+            Y: =212
+      - ck_lblChkD0:
+          Control: Label@2.5.1
+          Properties:
+            Color: =nfTestoSec
+            FocusedBorderThickness: =2
+            Font: =nfFont
+            Height: =22
+            Size: =10
+            Text: ="Due contratti non annullati sullo stesso stand e nella stessa edizione"
+            Width: =400
+            X: =264
+            Y: =236
+      - ck_lblChkN0:
+          Control: Label@2.5.1
+          Properties:
+            Align: =Align.Center
+            Color: =If(CountRows(Filter(colAnom, Chk = "1")) = 0, nfVerde, nfRosso)
+            Fill: =If(CountRows(Filter(colAnom, Chk = "1")) = 0, nfVerdeChiaro, nfRossoChiaro)
+            FocusedBorderThickness: =2
+            Font: =nfFont
+            FontWeight: =FontWeight.Semibold
+            Height: =26
+            Size: =10
+            Text: =If(CountRows(Filter(colAnom, Chk = "1")) = 0, "OK", CountRows(Filter(colAnom, Chk = "1")) & " anomalie")
+            Width: =84
+            X: =668
+            Y: =222
+      - ck_btnChk0:
+          Control: Classic/Button@2.2.0
+          Properties:
+            BorderThickness: =0
+            Color: =Color.Transparent
+            Fill: =Color.Transparent
+            Font: =nfFont
+            Height: =62
+            HoverColor: =Color.Transparent
+            HoverFill: =ColorFade(nfAccento, 92%)
+            OnSelect: |-
+              =UpdateContext({locChk: "1"})
+            PressedFill: =ColorFade(nfAccento, 85%)
+            RadiusBottomLeft: =0
+            RadiusBottomRight: =0
+            RadiusTopLeft: =0
+            RadiusTopRight: =0
+            Size: =12
+            Text: =""
+            Width: =520
+            X: =248
+            Y: =204
+      - ck_recChk1:
+          Control: Rectangle@2.3.0
+          Properties:
+            AccessibleLabel: ="Elemento grafico"
+            BorderColor: =nfBordo
+            BorderThickness: =1
+            Fill: =If(locChk = "2", nfAccentoChiaro, nfCard)
+            Height: =62
+            Width: =520
+            X: =248
+            Y: =272
+      - ck_lblChkT1:
+          Control: Label@2.5.1
+          Properties:
+            Color: =nfTesto
+            FocusedBorderThickness: =2
+            Font: =nfFont
+            FontWeight: =FontWeight.Semibold
+            Height: =22
+            Size: =12
+            Text: ="R2 · Contratto firmato con data di firma"
+            Width: =380
+            X: =264
+            Y: =280
+      - ck_lblChkD1:
+          Control: Label@2.5.1
+          Properties:
+            Color: =nfTestoSec
+            FocusedBorderThickness: =2
+            Font: =nfFont
+            Height: =22
+            Size: =10
+            Text: ="Ogni contratto firmato deve avere la data di firma"
+            Width: =400
+            X: =264
+            Y: =304
+      - ck_lblChkN1:
+          Control: Label@2.5.1
+          Properties:
+            Align: =Align.Center
+            Color: =If(CountRows(Filter(colAnom, Chk = "2")) = 0, nfVerde, nfRosso)
+            Fill: =If(CountRows(Filter(colAnom, Chk = "2")) = 0, nfVerdeChiaro, nfRossoChiaro)
+            FocusedBorderThickness: =2
+            Font: =nfFont
+            FontWeight: =FontWeight.Semibold
+            Height: =26
+            Size: =10
+            Text: =If(CountRows(Filter(colAnom, Chk = "2")) = 0, "OK", CountRows(Filter(colAnom, Chk = "2")) & " anomalie")
+            Width: =84
+            X: =668
+            Y: =290
+      - ck_btnChk1:
+          Control: Classic/Button@2.2.0
+          Properties:
+            BorderThickness: =0
+            Color: =Color.Transparent
+            Fill: =Color.Transparent
+            Font: =nfFont
+            Height: =62
+            HoverColor: =Color.Transparent
+            HoverFill: =ColorFade(nfAccento, 92%)
+            OnSelect: |-
+              =UpdateContext({locChk: "2"})
+            PressedFill: =ColorFade(nfAccento, 85%)
+            RadiusBottomLeft: =0
+            RadiusBottomRight: =0
+            RadiusTopLeft: =0
+            RadiusTopRight: =0
+            Size: =12
+            Text: =""
+            Width: =520
+            X: =248
+            Y: =272
+      - ck_recChk2:
+          Control: Rectangle@2.3.0
+          Properties:
+            AccessibleLabel: ="Elemento grafico"
+            BorderColor: =nfBordo
+            BorderThickness: =1
+            Fill: =If(locChk = "3", nfAccentoChiaro, nfCard)
+            Height: =62
+            Width: =520
+            X: =248
+            Y: =340
+      - ck_lblChkT2:
+          Control: Label@2.5.1
+          Properties:
+            Color: =nfTesto
+            FocusedBorderThickness: =2
+            Font: =nfFont
+            FontWeight: =FontWeight.Semibold
+            Height: =22
+            Size: =12
+            Text: ="R3 · Partita IVA di 11 cifre"
+            Width: =380
+            X: =264
+            Y: =348
+      - ck_lblChkD2:
+          Control: Label@2.5.1
+          Properties:
+            Color: =nfTestoSec
+            FocusedBorderThickness: =2
+            Font: =nfFont
+            Height: =22
+            Size: =10
+            Text: ="Tutti gli espositori hanno una partita IVA valida"
+            Width: =400
+            X: =264
+            Y: =372
+      - ck_lblChkN2:
+          Control: Label@2.5.1
+          Properties:
+            Align: =Align.Center
+            Color: =If(CountRows(Filter(colAnom, Chk = "3")) = 0, nfVerde, nfRosso)
+            Fill: =If(CountRows(Filter(colAnom, Chk = "3")) = 0, nfVerdeChiaro, nfRossoChiaro)
+            FocusedBorderThickness: =2
+            Font: =nfFont
+            FontWeight: =FontWeight.Semibold
+            Height: =26
+            Size: =10
+            Text: =If(CountRows(Filter(colAnom, Chk = "3")) = 0, "OK", CountRows(Filter(colAnom, Chk = "3")) & " anomalie")
+            Width: =84
+            X: =668
+            Y: =358
+      - ck_btnChk2:
+          Control: Classic/Button@2.2.0
+          Properties:
+            BorderThickness: =0
+            Color: =Color.Transparent
+            Fill: =Color.Transparent
+            Font: =nfFont
+            Height: =62
+            HoverColor: =Color.Transparent
+            HoverFill: =ColorFade(nfAccento, 92%)
+            OnSelect: |-
+              =UpdateContext({locChk: "3"})
+            PressedFill: =ColorFade(nfAccento, 85%)
+            RadiusBottomLeft: =0
+            RadiusBottomRight: =0
+            RadiusTopLeft: =0
+            RadiusTopRight: =0
+            Size: =12
+            Text: =""
+            Width: =520
+            X: =248
+            Y: =340
+      - ck_recChk3:
+          Control: Rectangle@2.3.0
+          Properties:
+            AccessibleLabel: ="Elemento grafico"
+            BorderColor: =nfBordo
+            BorderThickness: =1
+            Fill: =If(locChk = "4", nfAccentoChiaro, nfCard)
+            Height: =62
+            Width: =520
+            X: =248
+            Y: =408
+      - ck_lblChkT3:
+          Control: Label@2.5.1
+          Properties:
+            Color: =nfTesto
+            FocusedBorderThickness: =2
+            Font: =nfFont
+            FontWeight: =FontWeight.Semibold
+            Height: =22
+            Size: =12
+            Text: ="Righe uguali al totale a listino"
+            Width: =380
+            X: =264
+            Y: =416
+      - ck_lblChkD3:
+          Control: Label@2.5.1
+          Properties:
+            Color: =nfTestoSec
+            FocusedBorderThickness: =2
+            Font: =nfFont
+            Height: =22
+            Size: =10
+            Text: ="La somma delle righe coincide con l'imponibile a listino"
+            Width: =400
+            X: =264
+            Y: =440
+      - ck_lblChkN3:
+          Control: Label@2.5.1
+          Properties:
+            Align: =Align.Center
+            Color: =If(CountRows(Filter(colAnom, Chk = "4")) = 0, nfVerde, nfRosso)
+            Fill: =If(CountRows(Filter(colAnom, Chk = "4")) = 0, nfVerdeChiaro, nfRossoChiaro)
+            FocusedBorderThickness: =2
+            Font: =nfFont
+            FontWeight: =FontWeight.Semibold
+            Height: =26
+            Size: =10
+            Text: =If(CountRows(Filter(colAnom, Chk = "4")) = 0, "OK", CountRows(Filter(colAnom, Chk = "4")) & " anomalie")
+            Width: =84
+            X: =668
+            Y: =426
+      - ck_btnChk3:
+          Control: Classic/Button@2.2.0
+          Properties:
+            BorderThickness: =0
+            Color: =Color.Transparent
+            Fill: =Color.Transparent
+            Font: =nfFont
+            Height: =62
+            HoverColor: =Color.Transparent
+            HoverFill: =ColorFade(nfAccento, 92%)
+            OnSelect: |-
+              =UpdateContext({locChk: "4"})
+            PressedFill: =ColorFade(nfAccento, 85%)
+            RadiusBottomLeft: =0
+            RadiusBottomRight: =0
+            RadiusTopLeft: =0
+            RadiusTopRight: =0
+            Size: =12
+            Text: =""
+            Width: =520
+            X: =248
+            Y: =408
+      - ck_recChk4:
+          Control: Rectangle@2.3.0
+          Properties:
+            AccessibleLabel: ="Elemento grafico"
+            BorderColor: =nfBordo
+            BorderThickness: =1
+            Fill: =If(locChk = "5", nfAccentoChiaro, nfCard)
+            Height: =62
+            Width: =520
+            X: =248
+            Y: =476
+      - ck_lblChkT4:
+          Control: Label@2.5.1
+          Properties:
+            Color: =nfTesto
+            FocusedBorderThickness: =2
+            Font: =nfFont
+            FontWeight: =FontWeight.Semibold
+            Height: =22
+            Size: =12
+            Text: ="Imponibile = listino meno sconto"
+            Width: =380
+            X: =264
+            Y: =484
+      - ck_lblChkD4:
+          Control: Label@2.5.1
+          Properties:
+            Color: =nfTestoSec
+            FocusedBorderThickness: =2
+            Font: =nfFont
+            Height: =22
+            Size: =10
+            Text: ="Imponibile uguale a totale a listino per (1 - sconto)"
+            Width: =400
+            X: =264
+            Y: =508
+      - ck_lblChkN4:
+          Control: Label@2.5.1
+          Properties:
+            Align: =Align.Center
+            Color: =If(CountRows(Filter(colAnom, Chk = "5")) = 0, nfVerde, nfRosso)
+            Fill: =If(CountRows(Filter(colAnom, Chk = "5")) = 0, nfVerdeChiaro, nfRossoChiaro)
+            FocusedBorderThickness: =2
+            Font: =nfFont
+            FontWeight: =FontWeight.Semibold
+            Height: =26
+            Size: =10
+            Text: =If(CountRows(Filter(colAnom, Chk = "5")) = 0, "OK", CountRows(Filter(colAnom, Chk = "5")) & " anomalie")
+            Width: =84
+            X: =668
+            Y: =494
+      - ck_btnChk4:
+          Control: Classic/Button@2.2.0
+          Properties:
+            BorderThickness: =0
+            Color: =Color.Transparent
+            Fill: =Color.Transparent
+            Font: =nfFont
+            Height: =62
+            HoverColor: =Color.Transparent
+            HoverFill: =ColorFade(nfAccento, 92%)
+            OnSelect: |-
+              =UpdateContext({locChk: "5"})
+            PressedFill: =ColorFade(nfAccento, 85%)
+            RadiusBottomLeft: =0
+            RadiusBottomRight: =0
+            RadiusTopLeft: =0
+            RadiusTopRight: =0
+            Size: =12
+            Text: =""
+            Width: =520
+            X: =248
+            Y: =476
+      - ck_recChk5:
+          Control: Rectangle@2.3.0
+          Properties:
+            AccessibleLabel: ="Elemento grafico"
+            BorderColor: =nfBordo
+            BorderThickness: =1
+            Fill: =If(locChk = "6", nfAccentoChiaro, nfCard)
+            Height: =62
+            Width: =520
+            X: =248
+            Y: =544
+      - ck_lblChkT5:
+          Control: Label@2.5.1
+          Properties:
+            Color: =nfTesto
+            FocusedBorderThickness: =2
+            Font: =nfFont
+            FontWeight: =FontWeight.Semibold
+            Height: =22
+            Size: =12
+            Text: ="Pagamenti non prima della firma"
+            Width: =380
+            X: =264
+            Y: =552
+      - ck_lblChkD5:
+          Control: Label@2.5.1
+          Properties:
+            Color: =nfTestoSec
+            FocusedBorderThickness: =2
+            Font: =nfFont
+            Height: =22
+            Size: =10
+            Text: ="Acconto e saldo non sono pagati prima di firmare"
+            Width: =400
+            X: =264
+            Y: =576
+      - ck_lblChkN5:
+          Control: Label@2.5.1
+          Properties:
+            Align: =Align.Center
+            Color: =If(CountRows(Filter(colAnom, Chk = "6")) = 0, nfVerde, nfRosso)
+            Fill: =If(CountRows(Filter(colAnom, Chk = "6")) = 0, nfVerdeChiaro, nfRossoChiaro)
+            FocusedBorderThickness: =2
+            Font: =nfFont
+            FontWeight: =FontWeight.Semibold
+            Height: =26
+            Size: =10
+            Text: =If(CountRows(Filter(colAnom, Chk = "6")) = 0, "OK", CountRows(Filter(colAnom, Chk = "6")) & " anomalie")
+            Width: =84
+            X: =668
+            Y: =562
+      - ck_btnChk5:
+          Control: Classic/Button@2.2.0
+          Properties:
+            BorderThickness: =0
+            Color: =Color.Transparent
+            Fill: =Color.Transparent
+            Font: =nfFont
+            Height: =62
+            HoverColor: =Color.Transparent
+            HoverFill: =ColorFade(nfAccento, 92%)
+            OnSelect: |-
+              =UpdateContext({locChk: "6"})
+            PressedFill: =ColorFade(nfAccento, 85%)
+            RadiusBottomLeft: =0
+            RadiusBottomRight: =0
+            RadiusTopLeft: =0
+            RadiusTopRight: =0
+            Size: =12
+            Text: =""
+            Width: =520
+            X: =248
+            Y: =544
+      - ck_recChk6:
+          Control: Rectangle@2.3.0
+          Properties:
+            AccessibleLabel: ="Elemento grafico"
+            BorderColor: =nfBordo
+            BorderThickness: =1
+            Fill: =If(locChk = "7", nfAccentoChiaro, nfCard)
+            Height: =62
+            Width: =520
+            X: =248
+            Y: =612
+      - ck_lblChkT6:
+          Control: Label@2.5.1
+          Properties:
+            Color: =nfTesto
+            FocusedBorderThickness: =2
+            Font: =nfFont
+            FontWeight: =FontWeight.Semibold
+            Height: =22
+            Size: =12
+            Text: ="Scadenze sui contratti firmati"
+            Width: =380
+            X: =264
+            Y: =620
+      - ck_lblChkD6:
+          Control: Label@2.5.1
+          Properties:
+            Color: =nfTestoSec
+            FocusedBorderThickness: =2
+            Font: =nfFont
+            Height: =22
+            Size: =10
+            Text: ="Acconto e saldo hanno una scadenza fissata"
+            Width: =400
+            X: =264
+            Y: =644
+      - ck_lblChkN6:
+          Control: Label@2.5.1
+          Properties:
+            Align: =Align.Center
+            Color: =If(CountRows(Filter(colAnom, Chk = "7")) = 0, nfVerde, nfRosso)
+            Fill: =If(CountRows(Filter(colAnom, Chk = "7")) = 0, nfVerdeChiaro, nfRossoChiaro)
+            FocusedBorderThickness: =2
+            Font: =nfFont
+            FontWeight: =FontWeight.Semibold
+            Height: =26
+            Size: =10
+            Text: =If(CountRows(Filter(colAnom, Chk = "7")) = 0, "OK", CountRows(Filter(colAnom, Chk = "7")) & " anomalie")
+            Width: =84
+            X: =668
+            Y: =630
+      - ck_btnChk6:
+          Control: Classic/Button@2.2.0
+          Properties:
+            BorderThickness: =0
+            Color: =Color.Transparent
+            Fill: =Color.Transparent
+            Font: =nfFont
+            Height: =62
+            HoverColor: =Color.Transparent
+            HoverFill: =ColorFade(nfAccento, 92%)
+            OnSelect: |-
+              =UpdateContext({locChk: "7"})
+            PressedFill: =ColorFade(nfAccento, 85%)
+            RadiusBottomLeft: =0
+            RadiusBottomRight: =0
+            RadiusTopLeft: =0
+            RadiusTopRight: =0
+            Size: =12
+            Text: =""
+            Width: =520
+            X: =248
+            Y: =612
+      - ck_recChk7:
+          Control: Rectangle@2.3.0
+          Properties:
+            AccessibleLabel: ="Elemento grafico"
+            BorderColor: =nfBordo
+            BorderThickness: =1
+            Fill: =If(locChk = "8", nfAccentoChiaro, nfCard)
+            Height: =62
+            Width: =520
+            X: =248
+            Y: =680
+      - ck_lblChkT7:
+          Control: Label@2.5.1
+          Properties:
+            Color: =nfTesto
+            FocusedBorderThickness: =2
+            Font: =nfFont
+            FontWeight: =FontWeight.Semibold
+            Height: =22
+            Size: =12
+            Text: ="Stand attivo nell'edizione venduta"
+            Width: =380
+            X: =264
+            Y: =688
+      - ck_lblChkD7:
+          Control: Label@2.5.1
+          Properties:
+            Color: =nfTestoSec
+            FocusedBorderThickness: =2
+            Font: =nfFont
+            Height: =22
+            Size: =10
+            Text: ="Lo stand esisteva nell'edizione del contratto"
+            Width: =400
+            X: =264
+            Y: =712
+      - ck_lblChkN7:
+          Control: Label@2.5.1
+          Properties:
+            Align: =Align.Center
+            Color: =If(CountRows(Filter(colAnom, Chk = "8")) = 0, nfVerde, nfRosso)
+            Fill: =If(CountRows(Filter(colAnom, Chk = "8")) = 0, nfVerdeChiaro, nfRossoChiaro)
+            FocusedBorderThickness: =2
+            Font: =nfFont
+            FontWeight: =FontWeight.Semibold
+            Height: =26
+            Size: =10
+            Text: =If(CountRows(Filter(colAnom, Chk = "8")) = 0, "OK", CountRows(Filter(colAnom, Chk = "8")) & " anomalie")
+            Width: =84
+            X: =668
+            Y: =698
+      - ck_btnChk7:
+          Control: Classic/Button@2.2.0
+          Properties:
+            BorderThickness: =0
+            Color: =Color.Transparent
+            Fill: =Color.Transparent
+            Font: =nfFont
+            Height: =62
+            HoverColor: =Color.Transparent
+            HoverFill: =ColorFade(nfAccento, 92%)
+            OnSelect: |-
+              =UpdateContext({locChk: "8"})
+            PressedFill: =ColorFade(nfAccento, 85%)
+            RadiusBottomLeft: =0
+            RadiusBottomRight: =0
+            RadiusTopLeft: =0
+            RadiusTopRight: =0
+            Size: =12
+            Text: =""
+            Width: =520
+            X: =248
+            Y: =680
+      - ck_recDett:
+          Control: Rectangle@2.3.0
+          Properties:
+            AccessibleLabel: ="Elemento grafico"
+            BorderColor: =nfBordo
+            BorderThickness: =1
+            Fill: =nfCard
+            Height: =544
+            Width: =558
+            X: =784
+            Y: =204
+      - ck_lblDetT:
+          Control: Label@2.5.1
+          Properties:
+            Color: =nfTesto
+            FocusedBorderThickness: =2
+            Font: =nfFont
+            FontWeight: =FontWeight.Semibold
+            Height: =28
+            Size: =14
+            Text: =Switch(locChk, "1", "R1 · Stand venduto una sola volta per edizione", "2", "R2 · Contratto firmato con data di firma", "3", "R3 · Partita IVA di 11 cifre", "4", "Righe uguali al totale a listino", "5", "Imponibile = listino meno sconto", "6", "Pagamenti non prima della firma", "7", "Scadenze sui contratti firmati", "8", "Stand attivo nell'edizione venduta", "")
+            Width: =518
+            X: =804
+            Y: =216
+      - ck_lblDetN:
+          Control: Label@2.5.1
+          Properties:
+            Color: =nfTestoSec
+            FocusedBorderThickness: =2
+            Font: =nfFont
+            Height: =22
+            Size: =11
+            Text: |-
+              =Switch(CountRows(Filter(colAnom, Chk = locChk)), 0, "Nessuna anomalia: controllo superato", CountRows(Filter(colAnom, Chk = locChk)) & " anomalie da correggere")
+            Width: =518
+            X: =804
+            Y: =246
+      - ck_galAnom:
+          Control: Gallery@2.15.0
+          Variant: BrowseLayout_Flexible_SocialFeed_ver5.0
+          Properties:
+            AccessibleLabel: ="Anomalie del controllo selezionato"
+            Height: =456
+            Items: =Filter(colAnom, Chk = locChk)
+            TabIndex: =0
+            TemplatePadding: =0
+            TemplateSize: =40
+            Width: =518
+            X: =804
+            Y: =280
+          Children:
+            - ck_lblARif:
+                Control: Label@2.5.1
+                Properties:
+                  Color: =nfTesto
+                  FocusedBorderThickness: =2
+                  Font: =nfFont
+                  FontWeight: =FontWeight.Semibold
+                  Height: =24
+                  Size: =11
+                  Text: =ThisItem.Rif
+                  Width: =130
+                  Y: =8
+            - ck_lblADett:
+                Control: Label@2.5.1
+                Properties:
+                  Color: =nfTesto
+                  FocusedBorderThickness: =2
+                  Font: =nfFont
+                  Height: =24
+                  Size: =11
+                  Text: =ThisItem.Dett
+                  Width: =380
+                  X: =130
+                  Y: =8
+            - ck_recASep:
+                Control: Rectangle@2.3.0
+                Properties:
+                  AccessibleLabel: ="Elemento grafico"
+                  Fill: =nfBordo
+                  Height: =1
+                  Width: =Parent.TemplateWidth
+                  Y: =Parent.TemplateHeight - 1

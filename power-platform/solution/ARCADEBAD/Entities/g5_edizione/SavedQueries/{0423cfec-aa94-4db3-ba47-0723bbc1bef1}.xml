@@ -1,0 +1,44 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<savedqueries xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <savedquery>
+    <IsCustomizable>1</IsCustomizable>
+    <CanBeDeleted>0</CanBeDeleted>
+    <isquickfindquery>0</isquickfindquery>
+    <isprivate>0</isprivate>
+    <isdefault>1</isdefault>
+    <savedqueryid>{0423cfec-aa94-4db3-ba47-0723bbc1bef1}</savedqueryid>
+    <layoutxml>
+      <grid name="resultset" jump="g5_anno" select="1" icon="1" preview="1">
+        <row name="result" id="g5_edizioneid">
+          <cell name="g5_anno" width="300" />
+          <cell name="g5_data_inizio" width="150" />
+          <cell name="g5_data_fine" width="150" />
+          <cell name="g5_ora_apertura" width="150" />
+          <cell name="g5_ora_chiusura" width="150" />
+        </row>
+      </grid>
+    </layoutxml>
+    <querytype>0</querytype>
+    <fetchxml>
+      <fetch version="1.0" mapping="logical">
+        <entity name="g5_edizione">
+          <attribute name="g5_edizioneid" />
+          <attribute name="g5_anno" />
+          <attribute name="createdon" />
+          <attribute name="g5_data_inizio" />
+          <attribute name="g5_data_fine" />
+          <attribute name="g5_ora_apertura" />
+          <attribute name="g5_ora_chiusura" />
+          <order attribute="g5_anno" descending="false" />
+          <filter type="and">
+            <condition attribute="statecode" operator="eq" value="0" />
+          </filter>
+        </entity>
+      </fetch>
+    </fetchxml>
+    <IntroducedVersion>1.0.0.0</IntroducedVersion>
+    <LocalizedNames>
+      <LocalizedName description="Edizioni attivi/e" languagecode="1040" />
+    </LocalizedNames>
+  </savedquery>
+</savedqueries>

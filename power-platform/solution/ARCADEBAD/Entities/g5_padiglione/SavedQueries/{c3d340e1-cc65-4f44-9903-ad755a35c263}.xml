@@ -1,0 +1,38 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<savedqueries xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <savedquery>
+    <IsCustomizable>1</IsCustomizable>
+    <CanBeDeleted>0</CanBeDeleted>
+    <isquickfindquery>0</isquickfindquery>
+    <isprivate>0</isprivate>
+    <isdefault>1</isdefault>
+    <savedqueryid>{c3d340e1-cc65-4f44-9903-ad755a35c263}</savedqueryid>
+    <layoutxml>
+      <grid name="resultset" jump="g5_codice" select="1" icon="1" preview="1">
+        <row name="result" id="g5_padiglioneid">
+          <cell name="g5_codice" width="300" />
+          <cell name="g5_nome" width="150" />
+        </row>
+      </grid>
+    </layoutxml>
+    <querytype>0</querytype>
+    <fetchxml>
+      <fetch version="1.0" mapping="logical">
+        <entity name="g5_padiglione">
+          <attribute name="g5_padiglioneid" />
+          <attribute name="g5_codice" />
+          <attribute name="createdon" />
+          <attribute name="g5_nome" />
+          <order attribute="g5_codice" descending="false" />
+          <filter type="and">
+            <condition attribute="statecode" operator="eq" value="0" />
+          </filter>
+        </entity>
+      </fetch>
+    </fetchxml>
+    <IntroducedVersion>1.0.0.0</IntroducedVersion>
+    <LocalizedNames>
+      <LocalizedName description="Padiglioni attivi/e" languagecode="1040" />
+    </LocalizedNames>
+  </savedquery>
+</savedqueries>

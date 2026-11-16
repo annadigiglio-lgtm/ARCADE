@@ -1,0 +1,48 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<savedqueries xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <savedquery>
+    <IsCustomizable>1</IsCustomizable>
+    <CanBeDeleted>0</CanBeDeleted>
+    <isquickfindquery>0</isquickfindquery>
+    <isprivate>0</isprivate>
+    <isdefault>0</isdefault>
+    <savedqueryid>{83ed44a0-90b0-445c-8ab9-a694e344b9b2}</savedqueryid>
+    <layoutxml>
+      <grid name="resultset" jump="g5_id_espositore" select="1" icon="1" preview="1">
+        <row name="result" id="g5_espositoreid">
+          <cell name="g5_id_espositore" width="300" />
+          <cell name="g5_ragione_sociale" width="150" />
+          <cell name="g5_partita_iva" width="150" />
+          <cell name="g5_settore" width="150" />
+          <cell name="g5_citta" width="150" />
+          <cell name="g5_referente" width="150" />
+          <cell name="g5_email_referente" width="150" />
+        </row>
+      </grid>
+    </layoutxml>
+    <querytype>0</querytype>
+    <fetchxml>
+      <fetch version="1.0" mapping="logical">
+        <entity name="g5_espositore">
+          <attribute name="g5_espositoreid" />
+          <attribute name="g5_id_espositore" />
+          <attribute name="createdon" />
+          <attribute name="g5_ragione_sociale" />
+          <attribute name="g5_partita_iva" />
+          <attribute name="g5_settore" />
+          <attribute name="g5_citta" />
+          <attribute name="g5_referente" />
+          <attribute name="g5_email_referente" />
+          <order attribute="g5_id_espositore" descending="false" />
+          <filter type="and">
+            <condition attribute="statecode" operator="eq" value="1" />
+          </filter>
+        </entity>
+      </fetch>
+    </fetchxml>
+    <IntroducedVersion>1.0.0.0</IntroducedVersion>
+    <LocalizedNames>
+      <LocalizedName description="Espositori inattivi/e" languagecode="1040" />
+    </LocalizedNames>
+  </savedquery>
+</savedqueries>

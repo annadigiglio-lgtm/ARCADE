@@ -1,0 +1,40 @@
+# ************************************************************************************************
+# Warning: YAML source code for Canvas Apps should only be used to review changes made within Power Apps Studio and for minor edits (Preview).
+# Use the maker portal to create and edit your Power Apps.
+# 
+# The schema file for Canvas Apps is available at https://go.microsoft.com/fwlink/?linkid=2304907
+# 
+# For more information, visit https://go.microsoft.com/fwlink/?linkid=2292623
+# ************************************************************************************************
+App:
+  Properties:
+    Formulas: |-
+      =nfBlu = ColorValue("#0F172A");
+      nfBlu2 = ColorValue("#1E293B");
+      nfAccento = ColorValue("#7C3AED");
+      nfAccentoChiaro = ColorValue("#EDE9FE");
+      nfSfondo = ColorValue("#F1F5F9");
+      nfCard = ColorValue("#FFFFFF");
+      nfBordo = ColorValue("#E2E8F0");
+      nfTesto = ColorValue("#0F172A");
+      nfTestoSec = ColorValue("#64748B");
+      nfVerde = ColorValue("#16A34A");
+      nfVerdeChiaro = ColorValue("#DCFCE7");
+      nfRosso = ColorValue("#DC2626");
+      nfRossoChiaro = ColorValue("#FEE2E2");
+      nfAmbra = ColorValue("#D97706");
+      nfAmbraChiaro = ColorValue("#FEF3C7");
+      nfFont = Font.'Segoe UI';
+    OnStart: |-
+      =Set(gblAnno, "2026");
+      ClearCollect(colContratti, AddColumns(Contratti,
+          AnnoEd, ThisRecord.Edizione.Anno,
+          CodStand, ThisRecord.Stand.'Codice stand',
+          IdEsp, ThisRecord.Espositore.'ID espositore',
+          RagSoc, ThisRecord.Espositore.'Ragione sociale',
+          StatoTxt, Text(ThisRecord.'Stato (g5_stato)')));
+      ClearCollect(colStand, AddColumns(Stand,
+          CodPad, ThisRecord.Padiglione.Codice,
+          AnnoAtt, Value(ThisRecord.'Attivo dal'.Anno),
+          PosTxt, Text(ThisRecord.Posizione)))
+    Theme: =PowerAppsTheme

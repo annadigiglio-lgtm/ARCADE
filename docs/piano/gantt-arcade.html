@@ -1,0 +1,414 @@
+<!doctype html>
+<html lang="it">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Gantt ARCADE Milano</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+/* Layout: intestazione con milestone e ruoli, poi un Gantt a righe per fase con colonna sinistra fissa e scorrimento orizzontale */
+:root {
+  --bg: #F5F6F4;
+  --surface: #FFFFFF;
+  --ink: #16201E;
+  --muted: #5C6865;
+  --line: #DDE2DF;
+  --weekend: #ECEFEC;
+  --bad: #0F6E6A;
+  --bad-soft: #D5EBE9;
+  --bid: #B0561A;
+  --bid-soft: #F5E1D3;
+  --all: #3D4A8C;
+  --all-soft: #DFE2F2;
+  --today: #C2185B;
+  --font-body: "IBM Plex Sans", "Segoe UI", system-ui, sans-serif;
+  --font-mono: "IBM Plex Mono", "Consolas", ui-monospace, monospace;
+  --day: 24px;
+  --label: 300px;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #101615; --surface: #18201F; --ink: #E6ECEA; --muted: #9AA7A3; --line: #2C3735; --weekend: #141B1A;
+    --bad: #4FC1B9; --bad-soft: #1C3B39; --bid: #F0985A; --bid-soft: #43291A; --all: #9BA6EA; --all-soft: #262B4A; --today: #F06292;
+    color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #101615; --surface: #18201F; --ink: #E6ECEA; --muted: #9AA7A3; --line: #2C3735; --weekend: #141B1A;
+  --bad: #4FC1B9; --bad-soft: #1C3B39; --bid: #F0985A; --bid-soft: #43291A; --all: #9BA6EA; --all-soft: #262B4A; --today: #F06292;
+  color-scheme: dark;
+}
+@media (max-width: 640px) { :root { --label: 180px; } }
+* { box-sizing: border-box; }
+body { background: var(--bg); color: var(--ink); font-family: var(--font-body); font-size: 14px; line-height: 1.5; }
+.wrap { max-width: 1440px; margin: 0 auto; padding-block: 28px 48px; padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); display: grid; gap: 24px; }
+header { display: grid; gap: 6px; }
+.eyebrow { font-family: var(--font-mono); font-size: 12px; letter-spacing: .08em; text-transform: uppercase; color: var(--muted); }
+h1 { font-size: clamp(24px, 3.2vw, 34px); line-height: 1.15; margin: 0; text-wrap: balance; font-weight: 700; }
+h2 { font-size: 16px; margin: 0 0 10px; font-weight: 600; }
+.sub { color: var(--muted); max-width: 75ch; margin: 0; }
+.milestones { display: grid; grid-template-columns: repeat(auto-fit, minmax(170px, 1fr)); gap: 10px; }
+.ms { background: var(--surface); border: 1px solid var(--line); border-radius: 8px; padding: 12px 14px; display: grid; gap: 2px; min-width: 0; }
+.ms .d { font-family: var(--font-mono); font-size: 12px; color: var(--muted); font-variant-numeric: tabular-nums; }
+.ms .n { font-weight: 600; }
+.ms .t { font-size: 12.5px; color: var(--muted); }
+.ms.next { border-color: var(--today); }
+.ms.next .d { color: var(--today); }
+.roles { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 16px; }
+.team { background: var(--surface); border: 1px solid var(--line); border-radius: 8px; padding: 14px 16px; min-width: 0; }
+.team h2 { display: flex; align-items: center; gap: 8px; }
+.sw { width: 12px; height: 12px; border-radius: 3px; display: inline-block; flex: none; }
+.team ul { list-style: none; margin: 0; padding: 0; display: grid; gap: 6px; }
+.team li { display: grid; grid-template-columns: 170px 1fr; gap: 8px; }
+.team li b { font-weight: 600; }
+.team li span { color: var(--muted); }
+@media (max-width: 520px) { .team li { grid-template-columns: 1fr; gap: 0; } }
+.controls { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
+.chip { font: inherit; font-size: 13px; border: 1px solid var(--line); background: var(--surface); color: var(--ink); padding: 6px 12px; border-radius: 999px; cursor: pointer; }
+.chip[aria-pressed="true"] { background: var(--ink); color: var(--bg); border-color: var(--ink); }
+.chip:focus-visible, select:focus-visible { outline: 2px solid var(--today); outline-offset: 2px; }
+select { font: inherit; font-size: 13px; padding: 6px 10px; border-radius: 8px; border: 1px solid var(--line); background: var(--surface); color: var(--ink); }
+.legend { display: flex; flex-wrap: wrap; gap: 14px; font-size: 12.5px; color: var(--muted); align-items: center; }
+.legend i { display: inline-block; width: 22px; height: 10px; border-radius: 3px; vertical-align: middle; margin-right: 6px; }
+.lg-done { background: var(--bad); }
+.lg-prog { background: repeating-linear-gradient(135deg, var(--bad) 0 5px, var(--bad-soft) 5px 9px); }
+.lg-todo { background: var(--bad-soft); border: 1.5px dashed var(--bad); }
+.lg-ms { width: 10px !important; height: 10px !important; background: var(--all); transform: rotate(45deg); border-radius: 1px !important; }
+.lg-today { width: 2px !important; height: 14px !important; background: var(--today); border-radius: 0 !important; }
+.gantt-box { background: var(--surface); border: 1px solid var(--line); border-radius: 10px; overflow-x: auto; }
+.gantt { position: relative; width: calc(var(--label) + var(--days) * var(--day)); }
+.row { display: grid; grid-template-columns: var(--label) 1fr; min-height: 34px; border-bottom: 1px solid var(--line); }
+.row:last-child { border-bottom: 0; }
+.cell-l { position: sticky; left: 0; z-index: 3; background: var(--surface); border-right: 1px solid var(--line); padding: 6px 12px; display: grid; align-content: center; min-width: 0; }
+.cell-l .name { font-size: 13px; line-height: 1.3; }
+.cell-l .who { font-size: 11.5px; color: var(--muted); line-height: 1.3; }
+.track { position: relative; }
+.phase .cell-l { background: var(--bg); }
+.phase .cell-l .name { font-weight: 700; font-size: 13.5px; }
+.phase .track { background: var(--bg); }
+.phase-bar { position: absolute; top: 50%; height: 6px; margin-top: -3px; border-radius: 3px; background: var(--muted); opacity: .45; }
+.head { position: sticky; top: 0; z-index: 4; background: var(--surface); }
+.head .cell-l { font-family: var(--font-mono); font-size: 11.5px; color: var(--muted); text-transform: uppercase; letter-spacing: .06em; }
+.months, .days { position: relative; height: 22px; }
+.months div, .days div { position: absolute; top: 0; height: 22px; font-family: var(--font-mono); font-size: 11px; color: var(--muted); display: flex; align-items: center; justify-content: center; font-variant-numeric: tabular-nums; }
+.months div { justify-content: flex-start; padding-left: 6px; border-left: 1px solid var(--line); font-weight: 500; color: var(--ink); }
+.days div.we { color: var(--muted); opacity: .6; }
+.bg-cols { position: absolute; inset: 0; pointer-events: none; }
+.bg-cols div { position: absolute; top: 0; bottom: 0; }
+.bg-cols .we { background: var(--weekend); }
+.bg-cols .wk { border-left: 1px solid var(--line); }
+.bar { position: absolute; top: 7px; height: 20px; border-radius: 4px; font-size: 11px; line-height: 20px; padding: 0 6px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; color: #fff; font-weight: 500; z-index: 1; }
+.bar.BAD { --c: var(--bad); --s: var(--bad-soft); }
+.bar.BID { --c: var(--bid); --s: var(--bid-soft); }
+.bar.ALL { --c: var(--all); --s: var(--all-soft); }
+.bar.fatto { background: var(--c); }
+.bar.corso { background: repeating-linear-gradient(135deg, var(--c) 0 6px, color-mix(in srgb, var(--c) 70%, var(--s)) 6px 11px); }
+.bar.dafare { background: var(--s); color: var(--c); border: 1.5px dashed var(--c); line-height: 17px; }
+.diamond { position: absolute; top: 10px; width: 14px; height: 14px; transform: rotate(45deg); background: var(--all); z-index: 2; border-radius: 2px; }
+.diamond.BAD { background: var(--bad); }
+.diamond.BID { background: var(--bid); }
+.ms-label { position: absolute; top: 8px; font-size: 11.5px; font-weight: 600; white-space: nowrap; z-index: 2; }
+.today { position: absolute; top: 0; bottom: 0; width: 2px; background: var(--today); z-index: 2; pointer-events: none; }
+.today span { position: absolute; top: 2px; left: 4px; font-family: var(--font-mono); font-size: 10.5px; color: var(--today); white-space: nowrap; background: var(--surface); padding: 0 3px; }
+.row.hidden { display: none; }
+.note { font-size: 12.5px; color: var(--muted); }
+.list { display: grid; gap: 10px; }
+.list table { border-collapse: collapse; width: 100%; min-width: 640px; font-size: 13px; }
+.list th, .list td { text-align: left; padding: 7px 10px; border-bottom: 1px solid var(--line); vertical-align: top; }
+.list th { font-family: var(--font-mono); font-size: 11.5px; text-transform: uppercase; letter-spacing: .06em; color: var(--muted); font-weight: 500; }
+.list td.n { font-family: var(--font-mono); font-variant-numeric: tabular-nums; white-space: nowrap; }
+.pill { display: inline-block; font-size: 11.5px; padding: 1px 8px; border-radius: 999px; border: 1px solid var(--line); white-space: nowrap; }
+.pill.fatto { background: var(--bad-soft); color: var(--bad); border-color: transparent; }
+.pill.corso { background: var(--all-soft); color: var(--all); border-color: transparent; }
+.pill.dafare { color: var(--muted); }
+.tbl-box { background: var(--surface); border: 1px solid var(--line); border-radius: 10px; overflow-x: auto; }
+@media (prefers-reduced-motion: no-preference) { .bar, .diamond { transition: opacity .15s; } }
+</style>
+</head>
+<body>
+
+<div class="wrap">
+  <header>
+    <div class="eyebrow">Gruppo 5 · ARCADE Milano · Factory Studios</div>
+    <h1>Piano di progetto 16 ottobre – 4 dicembre 2026</h1>
+    <p class="sub">Tutte le fasi e le attività, dal kickoff alla presentazione finale, con il responsabile di ogni attività. Stato aggiornato al 6 novembre 2026. Riferimento: <code>docs/wiki/analisi-funzionale.md</code>, §10.</p>
+  </header>
+
+  <section class="milestones" aria-label="Milestone" id="ms"></section>
+
+  <section class="roles" aria-label="Ruoli">
+    <div class="team">
+      <h2><span class="sw" style="background:var(--bad)"></span>BAD · Power Platform</h2>
+      <ul>
+        <li><b>Alessandro Terlingo</b><span>Team leader BAD · Dataverse · app back-office e app di scansione · sincronizzazione con BID</span></li>
+        <li><b>Lorenzo Musto</b><span>Le due app Power Apps (back-office commerciale e scansione allo stand)</span></li>
+        <li><b>Adam Nekkouss</b><span>Flussi Power Automate</span></li>
+        <li><b>Cristian Provenzano</b><span>Dashboard Power BI</span></li>
+        <li><b>Yenje Boum Durand</b><span>Dashboard Power BI</span></li>
+      </ul>
+    </div>
+    <div class="team">
+      <h2><span class="sw" style="background:var(--bid)"></span>BID · Dati, API, web</h2>
+      <ul>
+        <li><b>Anna Digiglio</b><span>Database PostgreSQL, ETL, viste KPI, caricamento dei dati commerciali</span></li>
+        <li><b>Yassin En Naour</b><span>API Spring Boot, autenticazione e ruoli</span></li>
+        <li><b>Daniel Quattrone</b><span>Cruscotto staff e portale espositori</span></li>
+      </ul>
+    </div>
+  </section>
+
+  <section class="controls" aria-label="Filtri">
+    <button class="chip" data-team="tutti" aria-pressed="true">Tutti</button>
+    <button class="chip" data-team="BAD" aria-pressed="false">Solo BAD</button>
+    <button class="chip" data-team="BID" aria-pressed="false">Solo BID</button>
+    <label for="persona" class="note" style="margin-left:6px">Persona</label>
+    <select id="persona"><option value="">Tutte</option></select>
+  </section>
+
+  <div class="legend">
+    <span><i class="lg-done"></i>Fatto</span>
+    <span><i class="lg-prog"></i>In corso</span>
+    <span><i class="lg-todo"></i>Da fare</span>
+    <span><i class="lg-ms"></i>Milestone</span>
+    <span><i class="lg-today"></i>Oggi (4/11)</span>
+    <span><i style="background:var(--bad)"></i>BAD</span>
+    <span><i style="background:var(--bid)"></i>BID</span>
+    <span><i style="background:var(--all)"></i>Tutto il gruppo</span>
+  </div>
+
+  <div class="gantt-box"><div class="gantt" id="gantt"></div></div>
+  <p class="note">I giorni grigi sono sabato e domenica. Le date delle attività future sono pianificate: il team leader le aggiorna nello stato settimanale.</p>
+
+  <section class="list">
+    <h2>Elenco delle attività</h2>
+    <div class="tbl-box"><table>
+      <thead><tr><th>Fase</th><th>Attività</th><th>Responsabili</th><th>Dal</th><th>Al</th><th>Stato</th></tr></thead>
+      <tbody id="tbl"></tbody>
+    </table></div>
+  </section>
+</div>
+
+<script>
+(function () {
+  var START = Date.UTC(2026, 9, 16);   // 16 ottobre 2026
+  var END = Date.UTC(2026, 11, 4);     // 4 dicembre 2026
+  var TODAY = Date.UTC(2026, 10, 4);   // 4 novembre 2026
+  var DAY = 86400000;
+  var DAYS = (END - START) / DAY + 1;
+
+  // [fase, attività, team (BAD/BID/ALL), persone, inizio "GG/MM", fine "GG/MM", stato (fatto/corso/dafare/ms)]
+  var T = [
+    ["Fase 0 · Avvio", null],
+    ["", "Kickoff: brief del cliente, consegna dei dati", "ALL", "Tutti", "16/10", "16/10", "ms"],
+    ["", "Formazione dei team e divisione dei ruoli", "ALL", "Tutti", "16/10", "23/10", "fatto"],
+
+    ["Fase 1 · Analisi e progettazione", null],
+    ["", "Lettura dei documenti e wiki di progetto", "BID", "Anna", "16/10", "17/10", "fatto"],
+    ["", "Analisi dei dati e registro anomalie (A1–A31)", "BID", "Anna", "17/10", "20/10", "fatto"],
+    ["", "Proposta dei KPI con valori 2024/2025", "ALL", "Anna, Cristian, Yenje", "17/10", "29/10", "fatto"],
+    ["", "Schema dati PostgreSQL e diagramma ER", "BID", "Anna", "17/10", "27/10", "fatto"],
+    ["", "Decisioni 0005–0007: Dataverse sincronizzato, Supabase, convenzioni API", "ALL", "Alessandro, Anna, Yassin", "23/10", "23/10", "fatto"],
+    ["", "Supabase e caricamento dello storico (28/28 controlli)", "BID", "Anna", "23/10", "23/10", "fatto"],
+    ["", "Viste per le API e contratto OpenAPI", "BID", "Anna, Yassin", "23/10", "30/10", "fatto"],
+    ["", "Wireframe di cruscotto e portale", "BID", "Daniel", "23/10", "26/10", "fatto"],
+    ["", "Analisi del processo commerciale e piano BAD", "BAD", "Alessandro, Lorenzo", "23/10", "02/11", "fatto"],
+    ["", "SAL 1: schema dati e contratto API congelati", "ALL", "Tutti", "30/10", "30/10", "ms"],
+
+    ["Fase 2 · Costruzione verso il SAL 2", null],
+    ["", "API Spring Boot: login, ruoli, endpoint staff ed espositore", "BID", "Yassin", "27/10", "02/11", "fatto"],
+    ["", "Prime pagine web staff ed espositori; servizio Render HTTPS", "BID", "Daniel, Yassin", "28/10", "02/11", "fatto"],
+    ["", "Soluzione ARCADE BAD e 7 tabelle Dataverse g5_", "BAD", "Alessandro", "02/11", "03/11", "fatto"],
+    ["", "Import e verifica dei dati storici (198 contratti, 950 righe)", "BAD", "Alessandro", "03/11", "04/11", "fatto"],
+    ["", "App back-office commerciale v1–v13 (9 schermate)", "BAD", "Alessandro, Lorenzo", "03/11", "04/11", "fatto"],
+    ["", "Analisi funzionale, Gantt, presentazione", "BAD", "Alessandro", "04/11", "05/11", "corso"],
+    ["", "Prove delle scritture: espositore e listino", "BAD", "Lorenzo", "05/11", "06/11", "dafare"],
+    ["", "Verifica dei connettori Power Automate nell'ambiente Developer", "BAD", "Adam", "05/11", "06/11", "dafare"],
+    ["", "Collegamento di Power BI a Supabase (utente bad_powerbi)", "BAD", "Cristian, Yenje", "05/11", "06/11", "dafare"],
+    ["", "Stato di avanzamento; ambiente Power Platform condiviso con BID", "ALL", "Alessandro, tutti", "06/11", "06/11", "ms"],
+    ["", "Anonimizzazione dei dati personali", "BID", "Anna", "03/11", "13/11", "corso"],
+    ["", "Cruscotto staff e portale espositori v1", "BID", "Daniel", "03/11", "13/11", "corso"],
+    ["", "Flussi FL-01 promemoria pagamenti, FL-02 conferma firma, FL-05 export", "BAD", "Adam", "09/11", "12/11", "dafare"],
+    ["", "Dashboard PB-01 sintesi direzione e PB-02 padiglioni", "BAD", "Cristian", "09/11", "12/11", "dafare"],
+    ["", "Dashboard PB-04 vendite 2026 e incassi", "BAD", "Yenje", "09/11", "12/11", "dafare"],
+    ["", "Sincronizzazione (opzione B): export e mappatura concordati", "ALL", "Alessandro, Anna", "09/11", "10/11", "dafare"],
+    ["", "Caricamento commerciale in PostgreSQL (upsert sui codici)", "BID", "Anna", "10/11", "12/11", "dafare"],
+    ["", "Prova end-to-end: contratto 2026 in PostgreSQL e Power BI", "ALL", "Alessandro, Anna, Cristian, Yenje", "12/11", "12/11", "dafare"],
+    ["", "Tabella g5_scansione_stand e bozza dell'app di scansione", "BAD", "Lorenzo, Alessandro", "09/11", "12/11", "dafare"],
+    ["", "SAL 2: storico caricato + contratto 2026 venduto, nel DB e in Power BI", "ALL", "Tutti", "13/11", "13/11", "ms"],
+
+    ["Fase 3 · Completamento", null],
+    ["", "App di scansione: schermate, salvataggio, contatore", "BAD", "Lorenzo, Alessandro", "16/11", "20/11", "dafare"],
+    ["", "App di scansione: prove su telefono e rifinitura", "BAD", "Lorenzo", "23/11", "25/11", "dafare"],
+    ["", "Back-office: disponibilità sponsor sull'edizione, pubblicazione, condivisione", "BAD", "Alessandro", "16/11", "20/11", "dafare"],
+    ["", "Integrazione delle scansioni con BID (chiave, frequenza)", "ALL", "Alessandro, Anna", "23/11", "27/11", "dafare"],
+    ["", "Flussi FL-03 invio preventivo e FL-04 controllo stand doppio", "BAD", "Adam", "16/11", "20/11", "dafare"],
+    ["", "Flussi FL-06 invito al rinnovo, FL-07 disponibilità, FL-08 riepilogo", "BAD", "Adam", "23/11", "27/11", "dafare"],
+    ["", "Dashboard PB-03 espositori e rinnovi, PB-06 affluenza", "BAD", "Cristian", "16/11", "20/11", "dafare"],
+    ["", "Dashboard PB-05 pubblico e biglietteria, PB-07 stand e contatti", "BAD", "Yenje", "16/11", "20/11", "dafare"],
+    ["", "Rifinitura del report Power BI", "BAD", "Cristian, Yenje", "23/11", "27/11", "dafare"],
+    ["", "Viste mancanti per Power BI (rinnovi, biglietti, conversione, incassi)", "BID", "Anna", "16/11", "20/11", "dafare"],
+    ["", "Isolamento espositori lato server (ID dal token)", "BID", "Yassin", "16/11", "24/11", "dafare"],
+    ["", "Tempo reale nel cruscotto (polling o SSE)", "BID", "Yassin, Daniel", "16/11", "27/11", "dafare"],
+    ["", "Portale completo: riepilogo, confronto, rinnovo", "BID", "Daniel", "16/11", "27/11", "dafare"],
+    ["", "Simulazione dei varchi e delle scansioni per la demo", "BID", "Anna", "16/11", "27/11", "dafare"],
+    ["", "Sincronizzazione automatica (opzione A), se l'accesso è concesso", "BID", "Yassin, Alessandro", "16/11", "24/11", "dafare"],
+    ["", "Stato settimanale al cliente", "BAD", "Alessandro", "20/11", "20/11", "ms"],
+    ["", "Stato settimanale al cliente", "BAD", "Alessandro", "27/11", "27/11", "ms"],
+    ["", "Verifica che Power BI e web diano gli stessi numeri", "ALL", "Anna, Cristian, Yenje, Daniel", "30/11", "02/12", "dafare"],
+    ["", "Export finale della soluzione, sorgenti e README", "BAD", "Alessandro", "30/11", "02/12", "dafare"],
+    ["", "Prova generale della demo prima / durante / dopo", "ALL", "Tutti", "03/12", "03/12", "dafare"],
+    ["", "Presentazione finale con demo dal vivo", "ALL", "Tutti", "04/12", "04/12", "ms"]
+  ];
+
+  var MS = [
+    ["16/10", "Kickoff", "Requisiti e dati", false],
+    ["30/10", "SAL 1", "Schema e API congelati", false],
+    ["06/11", "Stato avanzamento", "Presentazione e condivisione con BID", true],
+    ["13/11", "SAL 2", "Contratto 2026 nel DB e in Power BI", false],
+    ["04/12", "Finale", "Demo prima / durante / dopo", false]
+  ];
+
+  function d(s) { var p = s.split("/"); return Date.UTC(2026, +p[1] - 1, +p[0]); }
+  function idx(s) { return Math.round((d(s) - START) / DAY); }
+  function el(tag, cls, txt) { var e = document.createElement(tag); if (cls) e.className = cls; if (txt != null) e.textContent = txt; return e; }
+  var TEAMLBL = { BAD: "BAD", BID: "BID", ALL: "Gruppo" };
+  var STLBL = { fatto: "Fatto", corso: "In corso", dafare: "Da fare", ms: "Milestone" };
+  var MESI = ["gen", "feb", "mar", "apr", "mag", "giu", "lug", "ago", "set", "ott", "nov", "dic"];
+  var GG = ["D", "L", "M", "M", "G", "V", "S"];
+
+  // milestone in alto
+  var msBox = document.getElementById("ms");
+  MS.forEach(function (m) {
+    var c = el("div", "ms" + (m[3] ? " next" : ""));
+    c.appendChild(el("span", "d", (m[3] ? "Prossima · " : "") + m[0] + "/2026"));
+    c.appendChild(el("span", "n", m[1]));
+    c.appendChild(el("span", "t", m[2]));
+    msBox.appendChild(c);
+  });
+
+  var g = document.getElementById("gantt");
+  g.style.setProperty("--days", DAYS);
+
+  function bgCols() {
+    var b = el("div", "bg-cols");
+    for (var i = 0; i < DAYS; i++) {
+      var dow = new Date(START + i * DAY).getUTCDay();
+      if (dow === 0 || dow === 6) { var w = el("div", "we"); w.style.left = (i * 24) + "px"; w.style.width = "24px"; b.appendChild(w); }
+      if (dow === 1) { var k = el("div", "wk"); k.style.left = (i * 24) + "px"; b.appendChild(k); }
+    }
+    return b;
+  }
+  function todayLine(withLabel) {
+    var t = el("div", "today"); t.style.left = (((TODAY - START) / DAY) * 24 + 11) + "px";
+    if (withLabel) t.appendChild(el("span", null, "oggi 4/11"));
+    return t;
+  }
+
+  // intestazione: mesi e giorni
+  var head = el("div", "row head");
+  var hl = el("div", "cell-l", "Attività · responsabili");
+  var ht = el("div", "track");
+  var months = el("div", "months"), days = el("div", "days");
+  var lastM = -1;
+  for (var i = 0; i < DAYS; i++) {
+    var dt = new Date(START + i * DAY);
+    if (dt.getUTCMonth() !== lastM) {
+      lastM = dt.getUTCMonth();
+      var m = el("div", null, MESI[lastM] + " 2026"); m.style.left = (i * 24) + "px"; months.appendChild(m);
+    }
+    var dow = dt.getUTCDay();
+    var dd = el("div", (dow === 0 || dow === 6) ? "we" : null, String(dt.getUTCDate()));
+    dd.title = GG[dow] + " " + dt.getUTCDate() + " " + MESI[dt.getUTCMonth()];
+    dd.style.left = (i * 24) + "px"; dd.style.width = "24px"; days.appendChild(dd);
+  }
+  ht.appendChild(months); ht.appendChild(days);
+  head.appendChild(hl); head.appendChild(ht); g.appendChild(head);
+
+  var people = {};
+  var tbl = document.getElementById("tbl");
+  var phase = "", phaseRows = [], phaseRow = null;
+
+  T.forEach(function (r) {
+    if (r[1] === null) {
+      phase = r[0];
+      phaseRow = el("div", "row phase");
+      var l = el("div", "cell-l"); l.appendChild(el("span", "name", r[0]));
+      var tr = el("div", "track"); tr.appendChild(bgCols());
+      phaseRow.appendChild(l); phaseRow.appendChild(tr);
+      phaseRow._bar = el("div", "phase-bar"); tr.appendChild(phaseRow._bar);
+      phaseRow._min = 1e9; phaseRow._max = -1; phaseRow._kids = [];
+      g.appendChild(phaseRow);
+      phaseRows.push(phaseRow);
+      return;
+    }
+    var name = r[1], team = r[2], who = r[3], a = idx(r[4]), b = idx(r[5]), st = r[6];
+    who.split(",").forEach(function (p) { p = p.trim(); if (p && p.indexOf("tutti") < 0 && p !== "Tutti") people[p] = 1; });
+    var row = el("div", "row");
+    row.dataset.team = team; row.dataset.who = who;
+    var l = el("div", "cell-l");
+    l.appendChild(el("span", "name", name));
+    l.appendChild(el("span", "who", TEAMLBL[team] + " · " + who));
+    var tr = el("div", "track"); tr.appendChild(bgCols());
+    var tip = name + "\n" + who + "\n" + r[4] + (r[4] !== r[5] ? " → " + r[5] : "") + " · " + STLBL[st];
+    if (st === "ms") {
+      var dm = el("div", "diamond " + team); dm.style.left = (a * 24 + 5) + "px"; dm.title = tip; tr.appendChild(dm);
+      var lb = el("div", "ms-label", r[4]); lb.style.left = (a * 24 + 26) + "px"; tr.appendChild(lb);
+    } else {
+      var bar = el("div", "bar " + team + " " + st, name);
+      bar.style.left = (a * 24 + 1) + "px"; bar.style.width = ((b - a + 1) * 24 - 2) + "px"; bar.title = tip;
+      tr.appendChild(bar);
+    }
+    tr.appendChild(todayLine(false));
+    row.appendChild(l); row.appendChild(tr); g.appendChild(row);
+    phaseRow._min = Math.min(phaseRow._min, a); phaseRow._max = Math.max(phaseRow._max, b);
+    phaseRow._kids.push(row);
+
+    var tRow = document.createElement("tr");
+    tRow.dataset.team = team; tRow.dataset.who = who;
+    [phase, name, TEAMLBL[team] + " · " + who, r[4], r[5]].forEach(function (v, k) { tRow.appendChild(el("td", k >= 3 ? "n" : null, v)); });
+    var stc = el("td"); stc.appendChild(el("span", "pill " + (st === "ms" ? "corso" : st), STLBL[st])); tRow.appendChild(stc);
+    tbl.appendChild(tRow);
+  });
+
+  phaseRows.forEach(function (p) {
+    p._bar.style.left = (p._min * 24) + "px";
+    p._bar.style.width = ((p._max - p._min + 1) * 24) + "px";
+    p.querySelector(".track").appendChild(todayLine(p === phaseRows[0]));
+  });
+
+  var sel = document.getElementById("persona");
+  Object.keys(people).sort().forEach(function (p) { var o = el("option", null, p); o.value = p; sel.appendChild(o); });
+
+  var curTeam = "tutti";
+  function apply() {
+    var who = sel.value;
+    function ok(n) {
+      var t = n.dataset.team, w = n.dataset.who || "";
+      var teamOk = curTeam === "tutti" || t === curTeam || t === "ALL";
+      var whoOk = !who || w.indexOf(who) >= 0 || /tutti/i.test(w);
+      return teamOk && whoOk;
+    }
+    phaseRows.forEach(function (p) {
+      var any = false;
+      p._kids.forEach(function (k) { var v = ok(k); k.classList.toggle("hidden", !v); any = any || v; });
+      p.classList.toggle("hidden", !any);
+    });
+    Array.prototype.forEach.call(tbl.children, function (r) { r.hidden = !ok(r); });
+  }
+  Array.prototype.forEach.call(document.querySelectorAll(".chip"), function (c) {
+    c.addEventListener("click", function () {
+      curTeam = c.dataset.team;
+      Array.prototype.forEach.call(document.querySelectorAll(".chip"), function (x) { x.setAttribute("aria-pressed", x === c ? "true" : "false"); });
+      apply();
+    });
+  });
+  sel.addEventListener("change", apply);
+
+  // porta in vista la settimana corrente
+  var box = document.querySelector(".gantt-box");
+  try { box.scrollLeft = Math.max(0, ((TODAY - START) / DAY) * 24 - 360); } catch (e) {}
+})();
+</script>
+</body>
+</html>

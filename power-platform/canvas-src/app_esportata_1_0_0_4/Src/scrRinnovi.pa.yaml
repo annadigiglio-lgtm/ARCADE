@@ -1,0 +1,1037 @@
+# ************************************************************************************************
+# Warning: YAML source code for Canvas Apps should only be used to review changes made within Power Apps Studio and for minor edits (Preview).
+# Use the maker portal to create and edit your Power Apps.
+# 
+# The schema file for Canvas Apps is available at https://go.microsoft.com/fwlink/?linkid=2304907
+# 
+# For more information, visit https://go.microsoft.com/fwlink/?linkid=2292623
+# ************************************************************************************************
+Screens:
+  scrRinnovi:
+    Properties:
+      Fill: =nfSfondo
+      OnVisible: |-
+        =If(IsBlank(locRin), UpdateContext({locRin: "Da contattare", locIdx: "Tutti"}));
+        If(IsEmpty(colListino), ClearCollect(colListino, 'Voci listino'));
+        ClearCollect(colRinnBase, ForAll(Filter(colContratti, AnnoEd = Text(Value(gblAnno) - 1, "0") && StatoTxt <> "annullato") As c,
+            {IdEsp: c.IdEsp, RagSoc: c.RagSoc, StandPrec: c.CodStand, ImpPrec: c.Imponibile, ScoPrec: c.Sconto,
+             Fedele: !IsBlank(LookUp(colContratti, IdEsp = c.IdEsp && AnnoEd = Text(Value(gblAnno) - 2, "0") && StatoTxt <> "annullato")),
+             Puntuale: !IsBlank(c.'Acconto pagato il') && !IsBlank(c.'Saldo pagato il')
+                 && c.'Acconto pagato il' <= DateAdd(c.'Scadenza acconto', 30, TimeUnit.Days)
+                 && c.'Saldo pagato il' <= DateAdd(c.'Scadenza saldo', 30, TimeUnit.Days)}));
+        ClearCollect(colRinn, AddColumns(colRinnBase, Punti, If(Fedele, 1, 0) + If(Puntuale, 1, 0) + If(ScoPrec <= 0.05, 1, 0)))
+    Children:
+      - rn_recSidebar:
+          Control: Rectangle@2.3.0
+          Properties:
+            AccessibleLabel: ="Elemento grafico"
+            Fill: =nfBlu
+            Height: =768
+            Width: =220
+      - rn_lblLogo:
+          Control: Label@2.5.1
+          Properties:
+            Color: =Color.White
+            FocusedBorderThickness: =2
+            Font: =nfFont
+            FontWeight: =FontWeight.Semibold
+            Height: =36
+            Size: =20
+            Text: ="ARCADE"
+            Width: =172
+            X: =24
+            Y: =24
+      - rn_lblLogoSub:
+          Control: Label@2.5.1
+          Properties:
+            Color: =ColorValue("#94A3B8")
+            FocusedBorderThickness: =2
+            Font: =nfFont
+            Height: =20
+            Size: =10
+            Text: ="Back-office commerciale"
+            Width: =172
+            X: =24
+            Y: =58
+      - rn_recSep:
+          Control: Rectangle@2.3.0
+          Properties:
+            AccessibleLabel: ="Elemento grafico"
+            Fill: =nfBlu2
+            Height: =1
+            Width: =172
+            X: =24
+            Y: =96
+      - rn_btnNavHome:
+          Control: Classic/Button@2.2.0
+          Properties:
+            Align: =Align.Left
+            BorderThickness: =0
+            Color: =Color.White
+            DisabledColor: =ColorValue("#64748B")
+            DisabledFill: =nfBlu
+            Fill: =nfBlu
+            Font: =nfFont
+            HoverColor: =Color.White
+            HoverFill: =ColorFade(nfBlu, -10%)
+            OnSelect: =Navigate(scrHome, ScreenTransition.None)
+            PaddingLeft: =16
+            PressedFill: =ColorFade(nfBlu, -20%)
+            RadiusBottomLeft: =8
+            RadiusBottomRight: =8
+            RadiusTopLeft: =8
+            RadiusTopRight: =8
+            Size: =12
+            Text: ="Panoramica"
+            Width: =196
+            X: =12
+            Y: =116
+      - rn_btnNavStand:
+          Control: Classic/Button@2.2.0
+          Properties:
+            Align: =Align.Left
+            BorderThickness: =0
+            Color: =Color.White
+            DisabledColor: =ColorValue("#64748B")
+            DisabledFill: =nfBlu
+            Fill: =nfBlu
+            Font: =nfFont
+            HoverColor: =Color.White
+            HoverFill: =ColorFade(nfBlu, -10%)
+            OnSelect: =Navigate(scrStand, ScreenTransition.None)
+            PaddingLeft: =16
+            PressedFill: =ColorFade(nfBlu, -20%)
+            RadiusBottomLeft: =8
+            RadiusBottomRight: =8
+            RadiusTopLeft: =8
+            RadiusTopRight: =8
+            Size: =12
+            Text: ="Planimetria stand"
+            Width: =196
+            X: =12
+            Y: =164
+      - rn_btnNavEspositori:
+          Control: Classic/Button@2.2.0
+          Properties:
+            Align: =Align.Left
+            BorderThickness: =0
+            Color: =Color.White
+            DisabledColor: =ColorValue("#64748B")
+            DisabledFill: =nfBlu
+            Fill: =nfBlu
+            Font: =nfFont
+            HoverColor: =Color.White
+            HoverFill: =ColorFade(nfBlu, -10%)
+            OnSelect: =Navigate(scrEspositori, ScreenTransition.None)
+            PaddingLeft: =16
+            PressedFill: =ColorFade(nfBlu, -20%)
+            RadiusBottomLeft: =8
+            RadiusBottomRight: =8
+            RadiusTopLeft: =8
+            RadiusTopRight: =8
+            Size: =12
+            Text: ="Espositori"
+            Width: =196
+            X: =12
+            Y: =212
+      - rn_btnNavContratti:
+          Control: Classic/Button@2.2.0
+          Properties:
+            Align: =Align.Left
+            BorderThickness: =0
+            Color: =Color.White
+            DisabledColor: =ColorValue("#64748B")
+            DisabledFill: =nfBlu
+            Fill: =nfBlu
+            Font: =nfFont
+            HoverColor: =Color.White
+            HoverFill: =ColorFade(nfBlu, -10%)
+            OnSelect: =Navigate(scrContratti, ScreenTransition.None)
+            PaddingLeft: =16
+            PressedFill: =ColorFade(nfBlu, -20%)
+            RadiusBottomLeft: =8
+            RadiusBottomRight: =8
+            RadiusTopLeft: =8
+            RadiusTopRight: =8
+            Size: =12
+            Text: ="Contratti"
+            Width: =196
+            X: =12
+            Y: =260
+      - rn_btnNavNuovo:
+          Control: Classic/Button@2.2.0
+          Properties:
+            Align: =Align.Left
+            BorderThickness: =0
+            Color: =Color.White
+            DisabledColor: =ColorValue("#64748B")
+            DisabledFill: =nfBlu
+            Fill: =nfBlu
+            Font: =nfFont
+            HoverColor: =Color.White
+            HoverFill: =ColorFade(nfBlu, -10%)
+            OnSelect: =Navigate(scrNuovo, ScreenTransition.None)
+            PaddingLeft: =16
+            PressedFill: =ColorFade(nfBlu, -20%)
+            RadiusBottomLeft: =8
+            RadiusBottomRight: =8
+            RadiusTopLeft: =8
+            RadiusTopRight: =8
+            Size: =12
+            Text: ="Nuovo contratto"
+            Width: =196
+            X: =12
+            Y: =308
+      - rn_btnNavScadenze:
+          Control: Classic/Button@2.2.0
+          Properties:
+            Align: =Align.Left
+            BorderThickness: =0
+            Color: =Color.White
+            DisabledColor: =ColorValue("#64748B")
+            DisabledFill: =nfBlu
+            Fill: =nfBlu
+            Font: =nfFont
+            HoverColor: =Color.White
+            HoverFill: =ColorFade(nfBlu, -10%)
+            OnSelect: =Navigate(scrScadenze, ScreenTransition.None)
+            PaddingLeft: =16
+            PressedFill: =ColorFade(nfBlu, -20%)
+            RadiusBottomLeft: =8
+            RadiusBottomRight: =8
+            RadiusTopLeft: =8
+            RadiusTopRight: =8
+            Size: =12
+            Text: ="Scadenze e incassi"
+            Width: =196
+            X: =12
+            Y: =356
+      - rn_btnNavRinnovi:
+          Control: Classic/Button@2.2.0
+          Properties:
+            Align: =Align.Left
+            BorderThickness: =0
+            Color: =Color.White
+            DisabledColor: =ColorValue("#64748B")
+            DisabledFill: =nfBlu
+            Fill: =nfAccento
+            Font: =nfFont
+            HoverColor: =Color.White
+            HoverFill: =ColorFade(nfAccento, -10%)
+            OnSelect: =Navigate(scrRinnovi, ScreenTransition.None)
+            PaddingLeft: =16
+            PressedFill: =ColorFade(nfAccento, -20%)
+            RadiusBottomLeft: =8
+            RadiusBottomRight: =8
+            RadiusTopLeft: =8
+            RadiusTopRight: =8
+            Size: =12
+            Text: ="Rinnovi e prelazione"
+            Width: =196
+            X: =12
+            Y: =404
+      - rn_btnNavListino:
+          Control: Classic/Button@2.2.0
+          Properties:
+            Align: =Align.Left
+            BorderThickness: =0
+            Color: =Color.White
+            DisabledColor: =ColorValue("#64748B")
+            DisabledFill: =nfBlu
+            Fill: =nfBlu
+            Font: =nfFont
+            HoverColor: =Color.White
+            HoverFill: =ColorFade(nfBlu, -10%)
+            OnSelect: =Navigate(scrListino, ScreenTransition.None)
+            PaddingLeft: =16
+            PressedFill: =ColorFade(nfBlu, -20%)
+            RadiusBottomLeft: =8
+            RadiusBottomRight: =8
+            RadiusTopLeft: =8
+            RadiusTopRight: =8
+            Size: =12
+            Text: ="Listino 2026"
+            Width: =196
+            X: =12
+            Y: =452
+      - rn_btnNavControlli:
+          Control: Classic/Button@2.2.0
+          Properties:
+            Align: =Align.Left
+            BorderThickness: =0
+            Color: =Color.White
+            DisabledColor: =ColorValue("#64748B")
+            DisabledFill: =nfBlu
+            Fill: =nfBlu
+            Font: =nfFont
+            HoverColor: =Color.White
+            HoverFill: =ColorFade(nfBlu, -10%)
+            OnSelect: =Navigate(scrControlli, ScreenTransition.None)
+            PaddingLeft: =16
+            PressedFill: =ColorFade(nfBlu, -20%)
+            RadiusBottomLeft: =8
+            RadiusBottomRight: =8
+            RadiusTopLeft: =8
+            RadiusTopRight: =8
+            Size: =12
+            Text: ="Controlli dati"
+            Width: =196
+            X: =12
+            Y: =500
+      - rn_lblUtente:
+          Control: Label@2.5.1
+          Properties:
+            Color: =Color.White
+            FocusedBorderThickness: =2
+            Font: =nfFont
+            Height: =20
+            Size: =10
+            Text: =User().FullName
+            Width: =172
+            X: =24
+            Y: =712
+      - rn_lblEdizioneSide:
+          Control: Label@2.5.1
+          Properties:
+            Color: =ColorValue("#94A3B8")
+            FocusedBorderThickness: =2
+            Font: =nfFont
+            Height: =18
+            Size: =9
+            Text: ="Edizione " & gblAnno
+            Width: =172
+            X: =24
+            Y: =734
+      - rn_lblTitolo:
+          Control: Label@2.5.1
+          Properties:
+            Color: =nfTesto
+            FocusedBorderThickness: =2
+            Font: =nfFont
+            FontWeight: =FontWeight.Semibold
+            Size: =22
+            Text: ="Rinnovi e prelazione"
+            Width: =700
+            X: =248
+            Y: =18
+      - rn_lblSottotitolo:
+          Control: Label@2.5.1
+          Properties:
+            Color: =nfTestoSec
+            FocusedBorderThickness: =2
+            Font: =nfFont
+            Height: =22
+            Size: =11
+            Text: ="Espositori " & Text(Value(gblAnno) - 1, "0") & " da riconfermare per il " & gblAnno & " · prelazione " & Coalesce(LookUp(colListino, Codice = "COND-PRELAZ").Note, "")
+            Width: =800
+            X: =248
+            Y: =56
+      - rn_lblEd:
+          Control: Label@2.5.1
+          Properties:
+            Align: =Align.Right
+            Color: =nfTestoSec
+            FocusedBorderThickness: =2
+            Font: =nfFont
+            Size: =11
+            Text: ="Edizione"
+            Width: =90
+            X: =1060
+            Y: =26
+      - rn_ddEdizione:
+          Control: Classic/DropDown@2.3.1
+          Properties:
+            AccessibleLabel: ="Edizione"
+            BorderColor: =nfBordo
+            ChevronBackground: =nfCard
+            ChevronFill: =nfTesto
+            Default: =gblAnno
+            Fill: =nfCard
+            Font: =nfFont
+            Items: =["2026", "2025"]
+            Items.Value: =Value
+            OnChange: |-
+              =Set(gblAnno, Self.Selected.Value);
+              ClearCollect(colRinnBase, ForAll(Filter(colContratti, AnnoEd = Text(Value(gblAnno) - 1, "0") && StatoTxt <> "annullato") As c,
+                  {IdEsp: c.IdEsp, RagSoc: c.RagSoc, StandPrec: c.CodStand, ImpPrec: c.Imponibile, ScoPrec: c.Sconto,
+                   Fedele: !IsBlank(LookUp(colContratti, IdEsp = c.IdEsp && AnnoEd = Text(Value(gblAnno) - 2, "0") && StatoTxt <> "annullato")),
+                   Puntuale: !IsBlank(c.'Acconto pagato il') && !IsBlank(c.'Saldo pagato il')
+                       && c.'Acconto pagato il' <= DateAdd(c.'Scadenza acconto', 30, TimeUnit.Days)
+                       && c.'Saldo pagato il' <= DateAdd(c.'Scadenza saldo', 30, TimeUnit.Days)}));
+              ClearCollect(colRinn, AddColumns(colRinnBase, Punti, If(Fedele, 1, 0) + If(Puntuale, 1, 0) + If(ScoPrec <= 0.05, 1, 0)))
+            Size: =12
+            Width: =170
+            X: =1160
+            Y: =26
+      - rn_recKpi0:
+          Control: Rectangle@2.3.0
+          Properties:
+            AccessibleLabel: ="Elemento grafico"
+            BorderColor: =nfBordo
+            BorderThickness: =1
+            Fill: =nfCard
+            Height: =104
+            Width: =259
+            X: =248
+            Y: =96
+      - rn_recKpiBar0:
+          Control: Rectangle@2.3.0
+          Properties:
+            AccessibleLabel: ="Elemento grafico"
+            Fill: =nfBlu
+            Height: =4
+            Width: =259
+            X: =248
+            Y: =96
+      - rn_lblKpiCap0:
+          Control: Label@2.5.1
+          Properties:
+            Color: =nfTestoSec
+            FocusedBorderThickness: =2
+            Font: =nfFont
+            Height: =20
+            Size: =11
+            Text: ="Da riconfermare"
+            Width: =219
+            X: =268
+            Y: =110
+      - rn_lblKpiVal0:
+          Control: Label@2.5.1
+          Properties:
+            Color: =nfTesto
+            FocusedBorderThickness: =2
+            Font: =nfFont
+            FontWeight: =FontWeight.Semibold
+            Height: =36
+            Size: =22
+            Text: =CountRows(colRinn)
+            Width: =219
+            X: =268
+            Y: =132
+      - rn_lblKpiSub0:
+          Control: Label@2.5.1
+          Properties:
+            Color: =nfTestoSec
+            FocusedBorderThickness: =2
+            Font: =nfFont
+            Height: =20
+            Size: =10
+            Text: ="Contratti " & Text(Value(gblAnno) - 1, "0") & " non annullati"
+            Width: =219
+            X: =268
+            Y: =170
+      - rn_recKpi1:
+          Control: Rectangle@2.3.0
+          Properties:
+            AccessibleLabel: ="Elemento grafico"
+            BorderColor: =nfBordo
+            BorderThickness: =1
+            Fill: =nfCard
+            Height: =104
+            Width: =259
+            X: =523
+            Y: =96
+      - rn_recKpiBar1:
+          Control: Rectangle@2.3.0
+          Properties:
+            AccessibleLabel: ="Elemento grafico"
+            Fill: =nfVerde
+            Height: =4
+            Width: =259
+            X: =523
+            Y: =96
+      - rn_lblKpiCap1:
+          Control: Label@2.5.1
+          Properties:
+            Color: =nfTestoSec
+            FocusedBorderThickness: =2
+            Font: =nfFont
+            Height: =20
+            Size: =11
+            Text: ="Già rinnovati"
+            Width: =219
+            X: =543
+            Y: =110
+      - rn_lblKpiVal1:
+          Control: Label@2.5.1
+          Properties:
+            Color: =nfTesto
+            FocusedBorderThickness: =2
+            Font: =nfFont
+            FontWeight: =FontWeight.Semibold
+            Height: =36
+            Size: =22
+            Text: =CountRows(Filter(colRinn As r, !IsBlank(LookUp(colContratti, IdEsp = r.IdEsp && AnnoEd = gblAnno && StatoTxt <> "annullato"))))
+            Width: =219
+            X: =543
+            Y: =132
+      - rn_lblKpiSub1:
+          Control: Label@2.5.1
+          Properties:
+            Color: =nfTestoSec
+            FocusedBorderThickness: =2
+            Font: =nfFont
+            Height: =20
+            Size: =10
+            Text: =Text(CountRows(Filter(colRinn As r, !IsBlank(LookUp(colContratti, IdEsp = r.IdEsp && AnnoEd = gblAnno && StatoTxt <> "annullato")))) / Max(1, CountRows(colRinn)), "0%") & " del totale"
+            Width: =219
+            X: =543
+            Y: =170
+      - rn_recKpi2:
+          Control: Rectangle@2.3.0
+          Properties:
+            AccessibleLabel: ="Elemento grafico"
+            BorderColor: =nfBordo
+            BorderThickness: =1
+            Fill: =nfCard
+            Height: =104
+            Width: =259
+            X: =798
+            Y: =96
+      - rn_recKpiBar2:
+          Control: Rectangle@2.3.0
+          Properties:
+            AccessibleLabel: ="Elemento grafico"
+            Fill: =nfAmbra
+            Height: =4
+            Width: =259
+            X: =798
+            Y: =96
+      - rn_lblKpiCap2:
+          Control: Label@2.5.1
+          Properties:
+            Color: =nfTestoSec
+            FocusedBorderThickness: =2
+            Font: =nfFont
+            Height: =20
+            Size: =11
+            Text: ="Da contattare"
+            Width: =219
+            X: =818
+            Y: =110
+      - rn_lblKpiVal2:
+          Control: Label@2.5.1
+          Properties:
+            Color: =nfTesto
+            FocusedBorderThickness: =2
+            Font: =nfFont
+            FontWeight: =FontWeight.Semibold
+            Height: =36
+            Size: =22
+            Text: =CountRows(Filter(colRinn As r, IsBlank(LookUp(colContratti, IdEsp = r.IdEsp && AnnoEd = gblAnno && StatoTxt <> "annullato"))))
+            Width: =219
+            X: =818
+            Y: =132
+      - rn_lblKpiSub2:
+          Control: Label@2.5.1
+          Properties:
+            Color: =nfTestoSec
+            FocusedBorderThickness: =2
+            Font: =nfFont
+            Height: =20
+            Size: =10
+            Text: =CountRows(Filter(Filter(colRinn As r, IsBlank(LookUp(colContratti, IdEsp = r.IdEsp && AnnoEd = gblAnno && StatoTxt <> "annullato"))), Punti = 3)) & " con indice di rinnovo alto"
+            Width: =219
+            X: =818
+            Y: =170
+      - rn_recKpi3:
+          Control: Rectangle@2.3.0
+          Properties:
+            AccessibleLabel: ="Elemento grafico"
+            BorderColor: =nfBordo
+            BorderThickness: =1
+            Fill: =nfCard
+            Height: =104
+            Width: =259
+            X: =1073
+            Y: =96
+      - rn_recKpiBar3:
+          Control: Rectangle@2.3.0
+          Properties:
+            AccessibleLabel: ="Elemento grafico"
+            Fill: =nfAccento
+            Height: =4
+            Width: =259
+            X: =1073
+            Y: =96
+      - rn_lblKpiCap3:
+          Control: Label@2.5.1
+          Properties:
+            Color: =nfTestoSec
+            FocusedBorderThickness: =2
+            Font: =nfFont
+            Height: =20
+            Size: =11
+            Text: ="Valore da rinnovare"
+            Width: =219
+            X: =1093
+            Y: =110
+      - rn_lblKpiVal3:
+          Control: Label@2.5.1
+          Properties:
+            Color: =nfTesto
+            FocusedBorderThickness: =2
+            Font: =nfFont
+            FontWeight: =FontWeight.Semibold
+            Height: =36
+            Size: =22
+            Text: |-
+              =Text(Sum(Filter(colRinn As r, IsBlank(LookUp(colContratti, IdEsp = r.IdEsp && AnnoEd = gblAnno && StatoTxt <> "annullato"))), ImpPrec), "[$-it-IT]€ #,##0")
+            Width: =219
+            X: =1093
+            Y: =132
+      - rn_lblKpiSub3:
+          Control: Label@2.5.1
+          Properties:
+            Color: =nfTestoSec
+            FocusedBorderThickness: =2
+            Font: =nfFont
+            Height: =20
+            Size: =10
+            Text: ="imponibile dei contratti " & Text(Value(gblAnno) - 1, "0")
+            Width: =219
+            X: =1093
+            Y: =170
+      - rn_txtCerca:
+          Control: Classic/TextInput@2.3.2
+          Properties:
+            AccessibleLabel: ="Cerca espositore"
+            BorderColor: =nfBordo
+            Default: =""
+            DelayOutput: =true
+            Fill: =nfCard
+            Font: =nfFont
+            HintText: ="Cerca espositore o stand"
+            RadiusBottomLeft: =8
+            RadiusBottomRight: =8
+            RadiusTopLeft: =8
+            RadiusTopRight: =8
+            Size: =12
+            Width: =300
+            X: =248
+            Y: =214
+      - rn_btnFiltro0:
+          Control: Classic/Button@2.2.0
+          Properties:
+            BorderColor: =nfBordo
+            BorderThickness: =1
+            Color: =If(locRin = "Da contattare", Color.White, nfTesto)
+            Fill: =If(locRin = "Da contattare", nfAccento, nfCard)
+            Font: =nfFont
+            HoverColor: =If(locRin = "Da contattare", Color.White, nfTesto)
+            HoverFill: =ColorFade(If(locRin = "Da contattare", nfAccento, nfCard), -10%)
+            OnSelect: |-
+              =UpdateContext({locRin: "Da contattare"})
+            PressedFill: =ColorFade(If(locRin = "Da contattare", nfAccento, nfCard), -20%)
+            RadiusBottomLeft: =8
+            RadiusBottomRight: =8
+            RadiusTopLeft: =8
+            RadiusTopRight: =8
+            Size: =11
+            Text: ="Da contattare"
+            Width: =118
+            X: =564
+            Y: =214
+      - rn_btnFiltro1:
+          Control: Classic/Button@2.2.0
+          Properties:
+            BorderColor: =nfBordo
+            BorderThickness: =1
+            Color: =If(locRin = "Rinnovati", Color.White, nfTesto)
+            Fill: =If(locRin = "Rinnovati", nfAccento, nfCard)
+            Font: =nfFont
+            HoverColor: =If(locRin = "Rinnovati", Color.White, nfTesto)
+            HoverFill: =ColorFade(If(locRin = "Rinnovati", nfAccento, nfCard), -10%)
+            OnSelect: |-
+              =UpdateContext({locRin: "Rinnovati"})
+            PressedFill: =ColorFade(If(locRin = "Rinnovati", nfAccento, nfCard), -20%)
+            RadiusBottomLeft: =8
+            RadiusBottomRight: =8
+            RadiusTopLeft: =8
+            RadiusTopRight: =8
+            Size: =11
+            Text: ="Rinnovati"
+            Width: =118
+            X: =688
+            Y: =214
+      - rn_btnFiltro2:
+          Control: Classic/Button@2.2.0
+          Properties:
+            BorderColor: =nfBordo
+            BorderThickness: =1
+            Color: =If(locRin = "Tutti", Color.White, nfTesto)
+            Fill: =If(locRin = "Tutti", nfAccento, nfCard)
+            Font: =nfFont
+            HoverColor: =If(locRin = "Tutti", Color.White, nfTesto)
+            HoverFill: =ColorFade(If(locRin = "Tutti", nfAccento, nfCard), -10%)
+            OnSelect: |-
+              =UpdateContext({locRin: "Tutti"})
+            PressedFill: =ColorFade(If(locRin = "Tutti", nfAccento, nfCard), -20%)
+            RadiusBottomLeft: =8
+            RadiusBottomRight: =8
+            RadiusTopLeft: =8
+            RadiusTopRight: =8
+            Size: =11
+            Text: ="Tutti"
+            Width: =118
+            X: =812
+            Y: =214
+      - rn_btnFiltro3:
+          Control: Classic/Button@2.2.0
+          Properties:
+            BorderColor: =nfBordo
+            BorderThickness: =1
+            Color: =If(locIdx = "Alta", Color.White, nfTesto)
+            Fill: =If(locIdx = "Alta", nfAccento, nfCard)
+            Font: =nfFont
+            HoverColor: =If(locIdx = "Alta", Color.White, nfTesto)
+            HoverFill: =ColorFade(If(locIdx = "Alta", nfAccento, nfCard), -10%)
+            OnSelect: |-
+              =UpdateContext({locIdx: "Alta"})
+            PressedFill: =ColorFade(If(locIdx = "Alta", nfAccento, nfCard), -20%)
+            RadiusBottomLeft: =8
+            RadiusBottomRight: =8
+            RadiusTopLeft: =8
+            RadiusTopRight: =8
+            Size: =11
+            Text: ="Indice alta"
+            Width: =104
+            X: =948
+            Y: =214
+      - rn_btnFiltro4:
+          Control: Classic/Button@2.2.0
+          Properties:
+            BorderColor: =nfBordo
+            BorderThickness: =1
+            Color: =If(locIdx = "Media", Color.White, nfTesto)
+            Fill: =If(locIdx = "Media", nfAccento, nfCard)
+            Font: =nfFont
+            HoverColor: =If(locIdx = "Media", Color.White, nfTesto)
+            HoverFill: =ColorFade(If(locIdx = "Media", nfAccento, nfCard), -10%)
+            OnSelect: |-
+              =UpdateContext({locIdx: "Media"})
+            PressedFill: =ColorFade(If(locIdx = "Media", nfAccento, nfCard), -20%)
+            RadiusBottomLeft: =8
+            RadiusBottomRight: =8
+            RadiusTopLeft: =8
+            RadiusTopRight: =8
+            Size: =11
+            Text: ="Indice media"
+            Width: =104
+            X: =1058
+            Y: =214
+      - rn_btnFiltro5:
+          Control: Classic/Button@2.2.0
+          Properties:
+            BorderColor: =nfBordo
+            BorderThickness: =1
+            Color: =If(locIdx = "Bassa", Color.White, nfTesto)
+            Fill: =If(locIdx = "Bassa", nfAccento, nfCard)
+            Font: =nfFont
+            HoverColor: =If(locIdx = "Bassa", Color.White, nfTesto)
+            HoverFill: =ColorFade(If(locIdx = "Bassa", nfAccento, nfCard), -10%)
+            OnSelect: |-
+              =UpdateContext({locIdx: "Bassa"})
+            PressedFill: =ColorFade(If(locIdx = "Bassa", nfAccento, nfCard), -20%)
+            RadiusBottomLeft: =8
+            RadiusBottomRight: =8
+            RadiusTopLeft: =8
+            RadiusTopRight: =8
+            Size: =11
+            Text: ="Indice bassa"
+            Width: =104
+            X: =1168
+            Y: =214
+      - rn_btnFiltro6:
+          Control: Classic/Button@2.2.0
+          Properties:
+            BorderColor: =nfBordo
+            BorderThickness: =1
+            Color: =If(locIdx = "Tutti", Color.White, nfTesto)
+            Fill: =If(locIdx = "Tutti", nfAccento, nfCard)
+            Font: =nfFont
+            HoverColor: =If(locIdx = "Tutti", Color.White, nfTesto)
+            HoverFill: =ColorFade(If(locIdx = "Tutti", nfAccento, nfCard), -10%)
+            OnSelect: |-
+              =UpdateContext({locIdx: "Tutti"})
+            PressedFill: =ColorFade(If(locIdx = "Tutti", nfAccento, nfCard), -20%)
+            RadiusBottomLeft: =8
+            RadiusBottomRight: =8
+            RadiusTopLeft: =8
+            RadiusTopRight: =8
+            Size: =11
+            Text: ="Ogni indice"
+            Width: =104
+            X: =1278
+            Y: =214
+      - rn_recLista:
+          Control: Rectangle@2.3.0
+          Properties:
+            AccessibleLabel: ="Elemento grafico"
+            BorderColor: =nfBordo
+            BorderThickness: =1
+            Fill: =nfCard
+            Height: =482
+            Width: =1094
+            X: =248
+            Y: =270
+      - rn_lblH20:
+          Control: Label@2.5.1
+          Properties:
+            Color: =nfTestoSec
+            FocusedBorderThickness: =2
+            Font: =nfFont
+            Height: =20
+            Size: =9
+            Text: ="Espositore"
+            Width: =300
+            X: =269
+            Y: =276
+      - rn_lblH330:
+          Control: Label@2.5.1
+          Properties:
+            Color: =nfTestoSec
+            FocusedBorderThickness: =2
+            Font: =nfFont
+            Height: =20
+            Size: =9
+            Text: ="Stand storico"
+            Width: =130
+            X: =579
+            Y: =276
+      - rn_lblH470:
+          Control: Label@2.5.1
+          Properties:
+            Color: =nfTestoSec
+            FocusedBorderThickness: =2
+            Font: =nfFont
+            Height: =20
+            Size: =9
+            Text: ="Valore"
+            Width: =110
+            X: =719
+            Y: =276
+      - rn_lblH590:
+          Control: Label@2.5.1
+          Properties:
+            Color: =nfTestoSec
+            FocusedBorderThickness: =2
+            Font: =nfFont
+            Height: =20
+            Size: =9
+            Text: ="Indice di rinnovo"
+            Width: =220
+            X: =839
+            Y: =276
+      - rn_lblH840:
+          Control: Label@2.5.1
+          Properties:
+            Color: =nfTestoSec
+            FocusedBorderThickness: =2
+            Font: =nfFont
+            Height: =20
+            Size: =9
+            Text: ="Azione"
+            Width: =200
+            X: =1089
+            Y: =276
+      - rn_lblConta:
+          Control: Label@2.5.1
+          Properties:
+            Align: =Align.Right
+            Color: =nfAccento
+            FocusedBorderThickness: =2
+            Font: =nfFont
+            FontWeight: =FontWeight.Semibold
+            Height: =20
+            Size: =10
+            Text: =CountRows(Filter(colRinn As r, (locRin = "Tutti" || (locRin = "Da contattare" && IsBlank(LookUp(colContratti, IdEsp = r.IdEsp && AnnoEd = gblAnno && StatoTxt <> "annullato"))) || (locRin = "Rinnovati" && !IsBlank(LookUp(colContratti, IdEsp = r.IdEsp && AnnoEd = gblAnno && StatoTxt <> "annullato")))) && (locIdx = "Tutti" || Switch(r.Punti, 3, "Alta", 2, "Media", "Bassa") = locIdx) && (IsBlank(rn_txtCerca.Text) || rn_txtCerca.Text in r.RagSoc || rn_txtCerca.Text in r.IdEsp || rn_txtCerca.Text in r.StandPrec))) & " espositori"
+            Width: =180
+            X: =1138
+            Y: =276
+      - rn_galRinn:
+          Control: Gallery@2.15.0
+          Variant: BrowseLayout_Flexible_SocialFeed_ver5.0
+          Properties:
+            AccessibleLabel: ="Espositori da riconfermare"
+            Height: =450
+            Items: =SortByColumns(Filter(colRinn As r, (locRin = "Tutti" || (locRin = "Da contattare" && IsBlank(LookUp(colContratti, IdEsp = r.IdEsp && AnnoEd = gblAnno && StatoTxt <> "annullato"))) || (locRin = "Rinnovati" && !IsBlank(LookUp(colContratti, IdEsp = r.IdEsp && AnnoEd = gblAnno && StatoTxt <> "annullato")))) && (locIdx = "Tutti" || Switch(r.Punti, 3, "Alta", 2, "Media", "Bassa") = locIdx) && (IsBlank(rn_txtCerca.Text) || rn_txtCerca.Text in r.RagSoc || rn_txtCerca.Text in r.IdEsp || rn_txtCerca.Text in r.StandPrec)), "Punti", SortOrder.Descending, "ImpPrec", SortOrder.Descending)
+            TabIndex: =0
+            TemplatePadding: =0
+            TemplateSize: =60
+            Width: =1092
+            X: =249
+            Y: =300
+          Children:
+            - rn_recRiga:
+                Control: Rectangle@2.3.0
+                Properties:
+                  AccessibleLabel: ="Elemento grafico"
+                  Fill: =nfCard
+                  Height: =Parent.TemplateHeight
+                  Width: =Parent.TemplateWidth
+            - rn_lblRag:
+                Control: Label@2.5.1
+                Properties:
+                  Color: =nfTesto
+                  FocusedBorderThickness: =2
+                  Font: =nfFont
+                  FontWeight: =FontWeight.Semibold
+                  Height: =22
+                  Size: =12
+                  Text: =ThisItem.RagSoc
+                  Width: =300
+                  X: =20
+                  Y: =6
+            - rn_lblInfo:
+                Control: Label@2.5.1
+                Properties:
+                  Color: =nfTestoSec
+                  FocusedBorderThickness: =2
+                  Font: =nfFont
+                  Height: =20
+                  Size: =10
+                  Text: =ThisItem.IdEsp & " · " & If(ThisItem.Fedele, "presente anche nel " & Text(Value(gblAnno) - 2, "0"), "prima volta nel " & Text(Value(gblAnno) - 1, "0"))
+                  Width: =300
+                  X: =20
+                  Y: =30
+            - rn_lblStand:
+                Control: Label@2.5.1
+                Properties:
+                  Color: =nfTesto
+                  FocusedBorderThickness: =2
+                  Font: =nfFont
+                  FontWeight: =FontWeight.Semibold
+                  Height: =22
+                  Size: =12
+                  Text: ="Stand " & ThisItem.StandPrec
+                  Width: =130
+                  X: =330
+                  Y: =6
+            - rn_lblLibero:
+                Control: Label@2.5.1
+                Properties:
+                  Color: =If(IsBlank(LookUp(colContratti, AnnoEd = gblAnno && CodStand = ThisItem.StandPrec && StatoTxt <> "annullato")), nfVerde, nfRosso)
+                  FocusedBorderThickness: =2
+                  Font: =nfFont
+                  FontWeight: =FontWeight.Semibold
+                  Height: =20
+                  Size: =10
+                  Text: |-
+                    =If(IsBlank(LookUp(colContratti, AnnoEd = gblAnno && CodStand = ThisItem.StandPrec && StatoTxt <> "annullato")), "Libero: prelazione", "Già venduto")
+                  Width: =130
+                  X: =330
+                  Y: =30
+            - rn_lblImp:
+                Control: Label@2.5.1
+                Properties:
+                  Color: =nfTesto
+                  FocusedBorderThickness: =2
+                  Font: =nfFont
+                  FontWeight: =FontWeight.Semibold
+                  Height: =22
+                  Size: =12
+                  Text: |-
+                    =Text(ThisItem.ImpPrec, "[$-it-IT]€ #,##0")
+                  Width: =110
+                  X: =470
+                  Y: =6
+            - rn_lblSco:
+                Control: Label@2.5.1
+                Properties:
+                  Color: =nfTestoSec
+                  FocusedBorderThickness: =2
+                  Font: =nfFont
+                  Height: =20
+                  Size: =10
+                  Text: ="sconto " & Text(ThisItem.ScoPrec, "0%")
+                  Width: =110
+                  X: =470
+                  Y: =30
+            - rn_lblIdx:
+                Control: Label@2.5.1
+                Properties:
+                  Align: =Align.Center
+                  Color: =Switch(ThisItem.Punti, 3, nfVerde, 2, nfAmbra, nfTestoSec)
+                  Fill: =Switch(ThisItem.Punti, 3, nfVerdeChiaro, 2, nfAmbraChiaro, nfBordo)
+                  FocusedBorderThickness: =2
+                  Font: =nfFont
+                  FontWeight: =FontWeight.Semibold
+                  Height: =22
+                  Size: =10
+                  Text: =Switch(ThisItem.Punti, 3, "Alta", 2, "Media", "Bassa")
+                  Width: =80
+                  X: =590
+                  Y: =8
+            - rn_lblMotivi:
+                Control: Label@2.5.1
+                Properties:
+                  Color: =nfTestoSec
+                  FocusedBorderThickness: =2
+                  Font: =nfFont
+                  Height: =18
+                  Size: =9
+                  Text: =If(ThisItem.Fedele, "Fedele", "Nuovo") & " · " & If(ThisItem.Puntuale, "Puntuale", "Ritardi") & " · " & If(ThisItem.ScoPrec <= 0.05, "Sconto basso", "Sconto alto")
+                  Width: =240
+                  X: =590
+                  Y: =32
+            - rn_btnPrepara:
+                Control: Classic/Button@2.2.0
+                Properties:
+                  BorderThickness: =0
+                  Color: =Color.White
+                  Fill: =nfAccento
+                  Font: =nfFont
+                  Height: =32
+                  HoverColor: =Color.White
+                  HoverFill: =ColorFade(nfAccento, -10%)
+                  OnSelect: |-
+                    =Set(gblEspIniz, LookUp(Espositori, 'ID espositore' = ThisItem.IdEsp));
+                    Set(gblStandIniz, LookUp(colStand, 'Codice stand' = ThisItem.StandPrec));
+                    Navigate(scrNuovo, ScreenTransition.None)
+                  PressedFill: =ColorFade(nfAccento, -20%)
+                  RadiusBottomLeft: =8
+                  RadiusBottomRight: =8
+                  RadiusTopLeft: =8
+                  RadiusTopRight: =8
+                  Size: =11
+                  Text: ="Prepara preventivo"
+                  Visible: =gblAnno = "2026" && IsBlank(LookUp(colContratti, IdEsp = ThisItem.IdEsp && AnnoEd = gblAnno && StatoTxt <> "annullato"))
+                  Width: =200
+                  X: =840
+                  Y: =14
+            - rn_lblRinn:
+                Control: Label@2.5.1
+                Properties:
+                  Color: =nfVerde
+                  FocusedBorderThickness: =2
+                  Font: =nfFont
+                  FontWeight: =FontWeight.Semibold
+                  Height: =32
+                  Size: =11
+                  Text: ="Rinnovato · " & LookUp(colContratti, IdEsp = ThisItem.IdEsp && AnnoEd = gblAnno && StatoTxt <> "annullato").'ID contratto'
+                  Visible: =!IsBlank(LookUp(colContratti, IdEsp = ThisItem.IdEsp && AnnoEd = gblAnno && StatoTxt <> "annullato"))
+                  Width: =220
+                  X: =840
+                  Y: =14
+            - rn_recRigaSep:
+                Control: Rectangle@2.3.0
+                Properties:
+                  AccessibleLabel: ="Elemento grafico"
+                  Fill: =nfBordo
+                  Height: =1
+                  Width: =Parent.TemplateWidth
+                  Y: =Parent.TemplateHeight - 1
+      - rn_lblVuoto:
+          Control: Label@2.5.1
+          Properties:
+            Align: =Align.Center
+            Color: =nfTestoSec
+            FocusedBorderThickness: =2
+            Font: =nfFont
+            Size: =12
+            Text: ="Nessun espositore con questi filtri"
+            Visible: =IsEmpty(Filter(colRinn As r, (locRin = "Tutti" || (locRin = "Da contattare" && IsBlank(LookUp(colContratti, IdEsp = r.IdEsp && AnnoEd = gblAnno && StatoTxt <> "annullato"))) || (locRin = "Rinnovati" && !IsBlank(LookUp(colContratti, IdEsp = r.IdEsp && AnnoEd = gblAnno && StatoTxt <> "annullato")))) && (locIdx = "Tutti" || Switch(r.Punti, 3, "Alta", 2, "Media", "Bassa") = locIdx) && (IsBlank(rn_txtCerca.Text) || rn_txtCerca.Text in r.RagSoc || rn_txtCerca.Text in r.IdEsp || rn_txtCerca.Text in r.StandPrec)))
+            Width: =1046
+            X: =272
+            Y: =340

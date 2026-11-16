@@ -1,0 +1,54 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<savedqueries xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <savedquery>
+    <IsCustomizable>1</IsCustomizable>
+    <CanBeDeleted>0</CanBeDeleted>
+    <isquickfindquery>1</isquickfindquery>
+    <isprivate>0</isprivate>
+    <isdefault>1</isdefault>
+    <savedqueryid>{728449bf-df6c-4f07-95aa-bcffca9b8360}</savedqueryid>
+    <layoutxml>
+      <grid name="resultset" jump="g5_id_espositore" select="1" icon="1" preview="1">
+        <row name="result" id="g5_espositoreid">
+          <cell name="g5_id_espositore" width="300" />
+          <cell name="g5_ragione_sociale" width="150" />
+          <cell name="g5_partita_iva" width="150" />
+          <cell name="g5_settore" width="150" />
+          <cell name="g5_citta" width="150" />
+          <cell name="g5_referente" width="150" />
+          <cell name="g5_email_referente" width="150" />
+        </row>
+      </grid>
+    </layoutxml>
+    <querytype>4</querytype>
+    <fetchxml>
+      <fetch version="1.0" mapping="logical">
+        <entity name="g5_espositore">
+          <attribute name="g5_espositoreid" />
+          <attribute name="g5_id_espositore" />
+          <attribute name="createdon" />
+          <attribute name="g5_ragione_sociale" />
+          <attribute name="g5_partita_iva" />
+          <attribute name="g5_settore" />
+          <attribute name="g5_citta" />
+          <attribute name="g5_referente" />
+          <attribute name="g5_email_referente" />
+          <order attribute="g5_id_espositore" descending="false" />
+          <filter type="and">
+            <condition attribute="statecode" operator="eq" value="0" />
+          </filter>
+          <filter type="or" isquickfindfields="1">
+            <condition attribute="g5_id_espositore" operator="like" value="{0}" />
+            <condition attribute="g5_ragione_sociale" operator="like" value="{0}" />
+            <condition attribute="g5_partita_iva" operator="like" value="{0}" />
+            <condition attribute="g5_citta" operator="like" value="{0}" />
+          </filter>
+        </entity>
+      </fetch>
+    </fetchxml>
+    <IntroducedVersion>1.0.0.0</IntroducedVersion>
+    <LocalizedNames>
+      <LocalizedName description="Ricerca rapida Espositori attivi/e" languagecode="1040" />
+    </LocalizedNames>
+  </savedquery>
+</savedqueries>

@@ -1,0 +1,52 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<savedqueries xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <savedquery>
+    <IsCustomizable>1</IsCustomizable>
+    <CanBeDeleted>0</CanBeDeleted>
+    <isquickfindquery>1</isquickfindquery>
+    <isprivate>0</isprivate>
+    <isdefault>1</isdefault>
+    <savedqueryid>{9b2daadf-7dc5-4d43-9a7b-a92a62a21405}</savedqueryid>
+    <layoutxml>
+      <grid name="resultset" jump="g5_descrizione" select="1" icon="1" preview="1">
+        <row name="result" id="g5_riga_contrattoid">
+          <cell name="g5_descrizione" width="300" />
+          <cell name="g5_contratto" width="150" />
+          <cell name="g5_riga" width="150" />
+          <cell name="g5_codice_voce" width="150" />
+          <cell name="g5_quantita" width="150" />
+          <cell name="g5_prezzo_unitario" width="150" />
+          <cell name="g5_importo" width="150" />
+        </row>
+      </grid>
+    </layoutxml>
+    <querytype>4</querytype>
+    <fetchxml>
+      <fetch version="1.0" mapping="logical">
+        <entity name="g5_riga_contratto">
+          <attribute name="g5_riga_contrattoid" />
+          <attribute name="g5_descrizione" />
+          <attribute name="createdon" />
+          <attribute name="g5_contratto" />
+          <attribute name="g5_riga" />
+          <attribute name="g5_codice_voce" />
+          <attribute name="g5_quantita" />
+          <attribute name="g5_prezzo_unitario" />
+          <attribute name="g5_importo" />
+          <order attribute="g5_descrizione" descending="false" />
+          <filter type="and">
+            <condition attribute="statecode" operator="eq" value="0" />
+          </filter>
+          <filter type="or" isquickfindfields="1">
+            <condition attribute="g5_descrizione" operator="like" value="{0}" />
+            <condition attribute="g5_codice_voce" operator="like" value="{0}" />
+          </filter>
+        </entity>
+      </fetch>
+    </fetchxml>
+    <IntroducedVersion>1.0.0.0</IntroducedVersion>
+    <LocalizedNames>
+      <LocalizedName description="Ricerca rapida Righe contratto attivi/e" languagecode="1040" />
+    </LocalizedNames>
+  </savedquery>
+</savedqueries>

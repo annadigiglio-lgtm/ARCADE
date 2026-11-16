@@ -1,0 +1,1088 @@
+# Generato da power-platform/canvas-src/genera_schermate.py
+Screens:
+  scrHome:
+    Properties:
+      Fill: =nfSfondo
+      OnVisible: |-
+        =If(IsEmpty(colStand), Set(gblAnno, Coalesce(gblAnno, "2026"));
+        ClearCollect(colContratti, AddColumns(Contratti,
+            AnnoEd, ThisRecord.Edizione.Anno,
+            CodStand, ThisRecord.Stand.'Codice stand',
+            IdEsp, ThisRecord.Espositore.'ID espositore',
+            RagSoc, ThisRecord.Espositore.'Ragione sociale',
+            StatoTxt, Text(ThisRecord.'Stato (g5_stato)')));
+        ClearCollect(colStand, AddColumns(Stand,
+            CodPad, ThisRecord.Padiglione.Codice,
+            AnnoAtt, Value(ThisRecord.'Attivo dal'.Anno),
+            PosTxt, Text(ThisRecord.Posizione))))
+    Children:
+      - hm_recSidebar:
+          Control: Rectangle
+          Properties:
+            X: =0
+            Y: =0
+            Width: =220
+            Height: =768
+            Fill: =nfBlu
+            AccessibleLabel: |-
+              ="Elemento grafico"
+            TabIndex: =-1
+      - hm_lblLogo:
+          Control: Label
+          Properties:
+            Text: |-
+              ="ARCADE"
+            X: =24
+            Y: =24
+            Width: =172
+            Height: =36
+            Size: =20
+            Color: =Color.White
+            Font: =nfFont
+            FontWeight: =FontWeight.Semibold
+            Align: =Align.Left
+            VerticalAlign: =VerticalAlign.Middle
+            TabIndex: =-1
+            FocusedBorderThickness: =2
+      - hm_lblLogoSub:
+          Control: Label
+          Properties:
+            Text: |-
+              ="Back-office commerciale"
+            X: =24
+            Y: =58
+            Width: =172
+            Height: =20
+            Size: =10
+            Color: |-
+              =ColorValue("#94A3B8")
+            Font: =nfFont
+            FontWeight: =FontWeight.Normal
+            Align: =Align.Left
+            VerticalAlign: =VerticalAlign.Middle
+            TabIndex: =-1
+            FocusedBorderThickness: =2
+      - hm_recSep:
+          Control: Rectangle
+          Properties:
+            X: =24
+            Y: =96
+            Width: =172
+            Height: =1
+            Fill: =nfBlu2
+            AccessibleLabel: |-
+              ="Elemento grafico"
+            TabIndex: =-1
+      - hm_btnNavHome:
+          Control: Classic/Button
+          Properties:
+            Text: |-
+              ="Panoramica"
+            X: =12
+            Y: =116
+            Width: =196
+            Height: =40
+            OnSelect: |-
+              =Navigate(scrHome, ScreenTransition.None)
+            Fill: =nfAccento
+            Color: =Color.White
+            HoverFill: |-
+              =ColorFade(nfAccento, -10%)
+            PressedFill: |-
+              =ColorFade(nfAccento, -20%)
+            HoverColor: =Color.White
+            BorderThickness: =0
+            Font: =nfFont
+            Size: =12
+            FontWeight: =FontWeight.Semibold
+            RadiusTopLeft: =8
+            RadiusTopRight: =8
+            RadiusBottomLeft: =8
+            RadiusBottomRight: =8
+            Align: =Align.Left
+            PaddingLeft: =16
+            DisplayMode: =DisplayMode.Edit
+            DisabledFill: =nfBlu
+            DisabledColor: |-
+              =ColorValue("#64748B")
+      - hm_btnNavStand:
+          Control: Classic/Button
+          Properties:
+            Text: |-
+              ="Planimetria stand"
+            X: =12
+            Y: =164
+            Width: =196
+            Height: =40
+            OnSelect: |-
+              =Navigate(scrStand, ScreenTransition.None)
+            Fill: =nfBlu
+            Color: =Color.White
+            HoverFill: |-
+              =ColorFade(nfBlu, -10%)
+            PressedFill: |-
+              =ColorFade(nfBlu, -20%)
+            HoverColor: =Color.White
+            BorderThickness: =0
+            Font: =nfFont
+            Size: =12
+            FontWeight: =FontWeight.Semibold
+            RadiusTopLeft: =8
+            RadiusTopRight: =8
+            RadiusBottomLeft: =8
+            RadiusBottomRight: =8
+            Align: =Align.Left
+            PaddingLeft: =16
+            DisplayMode: =DisplayMode.Edit
+            DisabledFill: =nfBlu
+            DisabledColor: |-
+              =ColorValue("#64748B")
+      - hm_btnNavEspositori:
+          Control: Classic/Button
+          Properties:
+            Text: |-
+              ="Espositori"
+            X: =12
+            Y: =212
+            Width: =196
+            Height: =40
+            OnSelect: |-
+              =Navigate(scrEspositori, ScreenTransition.None)
+            Fill: =nfBlu
+            Color: =Color.White
+            HoverFill: |-
+              =ColorFade(nfBlu, -10%)
+            PressedFill: |-
+              =ColorFade(nfBlu, -20%)
+            HoverColor: =Color.White
+            BorderThickness: =0
+            Font: =nfFont
+            Size: =12
+            FontWeight: =FontWeight.Semibold
+            RadiusTopLeft: =8
+            RadiusTopRight: =8
+            RadiusBottomLeft: =8
+            RadiusBottomRight: =8
+            Align: =Align.Left
+            PaddingLeft: =16
+            DisplayMode: =DisplayMode.Edit
+            DisabledFill: =nfBlu
+            DisabledColor: |-
+              =ColorValue("#64748B")
+      - hm_btnNavContratti:
+          Control: Classic/Button
+          Properties:
+            Text: |-
+              ="Contratti"
+            X: =12
+            Y: =260
+            Width: =196
+            Height: =40
+            OnSelect: |-
+              =Navigate(scrContratti, ScreenTransition.None)
+            Fill: =nfBlu
+            Color: =Color.White
+            HoverFill: |-
+              =ColorFade(nfBlu, -10%)
+            PressedFill: |-
+              =ColorFade(nfBlu, -20%)
+            HoverColor: =Color.White
+            BorderThickness: =0
+            Font: =nfFont
+            Size: =12
+            FontWeight: =FontWeight.Semibold
+            RadiusTopLeft: =8
+            RadiusTopRight: =8
+            RadiusBottomLeft: =8
+            RadiusBottomRight: =8
+            Align: =Align.Left
+            PaddingLeft: =16
+            DisplayMode: =DisplayMode.Edit
+            DisabledFill: =nfBlu
+            DisabledColor: |-
+              =ColorValue("#64748B")
+      - hm_btnNavNuovo:
+          Control: Classic/Button
+          Properties:
+            Text: |-
+              ="Nuovo contratto"
+            X: =12
+            Y: =308
+            Width: =196
+            Height: =40
+            OnSelect: |-
+              =Navigate(scrNuovo, ScreenTransition.None)
+            Fill: =nfBlu
+            Color: =Color.White
+            HoverFill: |-
+              =ColorFade(nfBlu, -10%)
+            PressedFill: |-
+              =ColorFade(nfBlu, -20%)
+            HoverColor: =Color.White
+            BorderThickness: =0
+            Font: =nfFont
+            Size: =12
+            FontWeight: =FontWeight.Semibold
+            RadiusTopLeft: =8
+            RadiusTopRight: =8
+            RadiusBottomLeft: =8
+            RadiusBottomRight: =8
+            Align: =Align.Left
+            PaddingLeft: =16
+            DisplayMode: =DisplayMode.Edit
+            DisabledFill: =nfBlu
+            DisabledColor: |-
+              =ColorValue("#64748B")
+      - hm_btnNavScadenze:
+          Control: Classic/Button
+          Properties:
+            Text: |-
+              ="Scadenze e incassi"
+            X: =12
+            Y: =356
+            Width: =196
+            Height: =40
+            OnSelect: |-
+              =Navigate(scrScadenze, ScreenTransition.None)
+            Fill: =nfBlu
+            Color: =Color.White
+            HoverFill: |-
+              =ColorFade(nfBlu, -10%)
+            PressedFill: |-
+              =ColorFade(nfBlu, -20%)
+            HoverColor: =Color.White
+            BorderThickness: =0
+            Font: =nfFont
+            Size: =12
+            FontWeight: =FontWeight.Semibold
+            RadiusTopLeft: =8
+            RadiusTopRight: =8
+            RadiusBottomLeft: =8
+            RadiusBottomRight: =8
+            Align: =Align.Left
+            PaddingLeft: =16
+            DisplayMode: =DisplayMode.Edit
+            DisabledFill: =nfBlu
+            DisabledColor: |-
+              =ColorValue("#64748B")
+      - hm_btnNavRinnovi:
+          Control: Classic/Button
+          Properties:
+            Text: |-
+              ="Rinnovi e prelazione"
+            X: =12
+            Y: =404
+            Width: =196
+            Height: =40
+            OnSelect: |-
+              =Navigate(scrRinnovi, ScreenTransition.None)
+            Fill: =nfBlu
+            Color: =Color.White
+            HoverFill: |-
+              =ColorFade(nfBlu, -10%)
+            PressedFill: |-
+              =ColorFade(nfBlu, -20%)
+            HoverColor: =Color.White
+            BorderThickness: =0
+            Font: =nfFont
+            Size: =12
+            FontWeight: =FontWeight.Semibold
+            RadiusTopLeft: =8
+            RadiusTopRight: =8
+            RadiusBottomLeft: =8
+            RadiusBottomRight: =8
+            Align: =Align.Left
+            PaddingLeft: =16
+            DisplayMode: =DisplayMode.Edit
+            DisabledFill: =nfBlu
+            DisabledColor: |-
+              =ColorValue("#64748B")
+      - hm_btnNavListino:
+          Control: Classic/Button
+          Properties:
+            Text: |-
+              ="Listino 2026"
+            X: =12
+            Y: =452
+            Width: =196
+            Height: =40
+            OnSelect: |-
+              =Navigate(scrListino, ScreenTransition.None)
+            Fill: =nfBlu
+            Color: =Color.White
+            HoverFill: |-
+              =ColorFade(nfBlu, -10%)
+            PressedFill: |-
+              =ColorFade(nfBlu, -20%)
+            HoverColor: =Color.White
+            BorderThickness: =0
+            Font: =nfFont
+            Size: =12
+            FontWeight: =FontWeight.Semibold
+            RadiusTopLeft: =8
+            RadiusTopRight: =8
+            RadiusBottomLeft: =8
+            RadiusBottomRight: =8
+            Align: =Align.Left
+            PaddingLeft: =16
+            DisplayMode: =DisplayMode.Edit
+            DisabledFill: =nfBlu
+            DisabledColor: |-
+              =ColorValue("#64748B")
+      - hm_btnNavControlli:
+          Control: Classic/Button
+          Properties:
+            Text: |-
+              ="Controlli dati"
+            X: =12
+            Y: =500
+            Width: =196
+            Height: =40
+            OnSelect: |-
+              =Navigate(scrControlli, ScreenTransition.None)
+            Fill: =nfBlu
+            Color: =Color.White
+            HoverFill: |-
+              =ColorFade(nfBlu, -10%)
+            PressedFill: |-
+              =ColorFade(nfBlu, -20%)
+            HoverColor: =Color.White
+            BorderThickness: =0
+            Font: =nfFont
+            Size: =12
+            FontWeight: =FontWeight.Semibold
+            RadiusTopLeft: =8
+            RadiusTopRight: =8
+            RadiusBottomLeft: =8
+            RadiusBottomRight: =8
+            Align: =Align.Left
+            PaddingLeft: =16
+            DisplayMode: =DisplayMode.Edit
+            DisabledFill: =nfBlu
+            DisabledColor: |-
+              =ColorValue("#64748B")
+      - hm_lblUtente:
+          Control: Label
+          Properties:
+            Text: =User().FullName
+            X: =24
+            Y: =712
+            Width: =172
+            Height: =20
+            Size: =10
+            Color: =Color.White
+            Font: =nfFont
+            FontWeight: =FontWeight.Normal
+            Align: =Align.Left
+            VerticalAlign: =VerticalAlign.Middle
+            TabIndex: =-1
+            FocusedBorderThickness: =2
+      - hm_lblEdizioneSide:
+          Control: Label
+          Properties:
+            Text: |-
+              ="Edizione " & gblAnno
+            X: =24
+            Y: =734
+            Width: =172
+            Height: =18
+            Size: =9
+            Color: |-
+              =ColorValue("#94A3B8")
+            Font: =nfFont
+            FontWeight: =FontWeight.Normal
+            Align: =Align.Left
+            VerticalAlign: =VerticalAlign.Middle
+            TabIndex: =-1
+            FocusedBorderThickness: =2
+      - hm_lblTitolo:
+          Control: Label
+          Properties:
+            Text: |-
+              ="Panoramica"
+            X: =248
+            Y: =18
+            Width: =700
+            Height: =40
+            Size: =22
+            Color: =nfTesto
+            Font: =nfFont
+            FontWeight: =FontWeight.Semibold
+            Align: =Align.Left
+            VerticalAlign: =VerticalAlign.Middle
+            TabIndex: =-1
+            FocusedBorderThickness: =2
+      - hm_lblSottotitolo:
+          Control: Label
+          Properties:
+            Text: |-
+              ="ARCADE Milano · edizione " & gblAnno & " · dati Dataverse"
+            X: =248
+            Y: =56
+            Width: =800
+            Height: =22
+            Size: =11
+            Color: =nfTestoSec
+            Font: =nfFont
+            FontWeight: =FontWeight.Normal
+            Align: =Align.Left
+            VerticalAlign: =VerticalAlign.Middle
+            TabIndex: =-1
+            FocusedBorderThickness: =2
+      - hm_lblEd:
+          Control: Label
+          Properties:
+            Text: |-
+              ="Edizione"
+            X: =1060
+            Y: =26
+            Width: =90
+            Height: =40
+            Size: =11
+            Color: =nfTestoSec
+            Font: =nfFont
+            FontWeight: =FontWeight.Normal
+            Align: =Align.Right
+            VerticalAlign: =VerticalAlign.Middle
+            TabIndex: =-1
+            FocusedBorderThickness: =2
+      - hm_ddEdizione:
+          Control: Classic/DropDown
+          Properties:
+            Items: |-
+              =["2026", "2025", "2024"]
+            Default: =gblAnno
+            X: =1160
+            Y: =26
+            Width: =170
+            Height: =40
+            OnChange: |-
+              =Set(gblAnno, Self.Selected.Value)
+            Font: =nfFont
+            Size: =12
+            BorderColor: =nfBordo
+            Fill: =nfCard
+            ChevronBackground: =nfCard
+            ChevronFill: =nfTesto
+            AccessibleLabel: |-
+              ="Edizione"
+      - hm_recKpi0:
+          Control: Rectangle
+          Properties:
+            X: =248
+            Y: =104
+            Width: =259
+            Height: =116
+            Fill: =nfCard
+            BorderColor: =nfBordo
+            BorderThickness: =1
+            AccessibleLabel: |-
+              ="Elemento grafico"
+            TabIndex: =-1
+      - hm_recKpiBar0:
+          Control: Rectangle
+          Properties:
+            X: =248
+            Y: =104
+            Width: =259
+            Height: =4
+            Fill: =nfAccento
+            AccessibleLabel: |-
+              ="Elemento grafico"
+            TabIndex: =-1
+      - hm_lblKpiCap0:
+          Control: Label
+          Properties:
+            Text: |-
+              ="Stand venduti"
+            X: =268
+            Y: =120
+            Width: =219
+            Height: =20
+            Size: =11
+            Color: =nfTestoSec
+            Font: =nfFont
+            FontWeight: =FontWeight.Normal
+            Align: =Align.Left
+            VerticalAlign: =VerticalAlign.Middle
+            TabIndex: =-1
+            FocusedBorderThickness: =2
+      - hm_lblKpiVal0:
+          Control: Label
+          Properties:
+            Text: |-
+              =CountRows(Filter(colContratti, AnnoEd = gblAnno && StatoTxt <> "annullato")) & " / " & CountRows(Filter(colStand, AnnoAtt <= Value(gblAnno)))
+            X: =268
+            Y: =144
+            Width: =219
+            Height: =40
+            Size: =24
+            Color: =nfTesto
+            Font: =nfFont
+            FontWeight: =FontWeight.Semibold
+            Align: =Align.Left
+            VerticalAlign: =VerticalAlign.Middle
+            TabIndex: =-1
+            FocusedBorderThickness: =2
+      - hm_lblKpiSub0:
+          Control: Label
+          Properties:
+            Text: |-
+              ="Occupazione " & Text(CountRows(Filter(colContratti, AnnoEd = gblAnno && StatoTxt <> "annullato")) / Max(1, CountRows(Filter(colStand, AnnoAtt <= Value(gblAnno)))), "0%")
+            X: =268
+            Y: =186
+            Width: =219
+            Height: =20
+            Size: =10
+            Color: =nfTestoSec
+            Font: =nfFont
+            FontWeight: =FontWeight.Normal
+            Align: =Align.Left
+            VerticalAlign: =VerticalAlign.Middle
+            TabIndex: =-1
+            FocusedBorderThickness: =2
+      - hm_recKpi1:
+          Control: Rectangle
+          Properties:
+            X: =523
+            Y: =104
+            Width: =259
+            Height: =116
+            Fill: =nfCard
+            BorderColor: =nfBordo
+            BorderThickness: =1
+            AccessibleLabel: |-
+              ="Elemento grafico"
+            TabIndex: =-1
+      - hm_recKpiBar1:
+          Control: Rectangle
+          Properties:
+            X: =523
+            Y: =104
+            Width: =259
+            Height: =4
+            Fill: =nfVerde
+            AccessibleLabel: |-
+              ="Elemento grafico"
+            TabIndex: =-1
+      - hm_lblKpiCap1:
+          Control: Label
+          Properties:
+            Text: |-
+              ="Contratti firmati"
+            X: =543
+            Y: =120
+            Width: =219
+            Height: =20
+            Size: =11
+            Color: =nfTestoSec
+            Font: =nfFont
+            FontWeight: =FontWeight.Normal
+            Align: =Align.Left
+            VerticalAlign: =VerticalAlign.Middle
+            TabIndex: =-1
+            FocusedBorderThickness: =2
+      - hm_lblKpiVal1:
+          Control: Label
+          Properties:
+            Text: |-
+              =CountRows(Filter(colContratti, AnnoEd = gblAnno && StatoTxt = "firmato"))
+            X: =543
+            Y: =144
+            Width: =219
+            Height: =40
+            Size: =24
+            Color: =nfTesto
+            Font: =nfFont
+            FontWeight: =FontWeight.Semibold
+            Align: =Align.Left
+            VerticalAlign: =VerticalAlign.Middle
+            TabIndex: =-1
+            FocusedBorderThickness: =2
+      - hm_lblKpiSub1:
+          Control: Label
+          Properties:
+            Text: |-
+              =CountRows(Filter(colContratti, AnnoEd = gblAnno && StatoTxt = "preventivo")) & " preventivi aperti"
+            X: =543
+            Y: =186
+            Width: =219
+            Height: =20
+            Size: =10
+            Color: =nfTestoSec
+            Font: =nfFont
+            FontWeight: =FontWeight.Normal
+            Align: =Align.Left
+            VerticalAlign: =VerticalAlign.Middle
+            TabIndex: =-1
+            FocusedBorderThickness: =2
+      - hm_recKpi2:
+          Control: Rectangle
+          Properties:
+            X: =798
+            Y: =104
+            Width: =259
+            Height: =116
+            Fill: =nfCard
+            BorderColor: =nfBordo
+            BorderThickness: =1
+            AccessibleLabel: |-
+              ="Elemento grafico"
+            TabIndex: =-1
+      - hm_recKpiBar2:
+          Control: Rectangle
+          Properties:
+            X: =798
+            Y: =104
+            Width: =259
+            Height: =4
+            Fill: =nfBlu
+            AccessibleLabel: |-
+              ="Elemento grafico"
+            TabIndex: =-1
+      - hm_lblKpiCap2:
+          Control: Label
+          Properties:
+            Text: |-
+              ="Imponibile venduto"
+            X: =818
+            Y: =120
+            Width: =219
+            Height: =20
+            Size: =11
+            Color: =nfTestoSec
+            Font: =nfFont
+            FontWeight: =FontWeight.Normal
+            Align: =Align.Left
+            VerticalAlign: =VerticalAlign.Middle
+            TabIndex: =-1
+            FocusedBorderThickness: =2
+      - hm_lblKpiVal2:
+          Control: Label
+          Properties:
+            Text: |-
+              =Text(Sum(Filter(colContratti, AnnoEd = gblAnno && StatoTxt <> "annullato"), Imponibile), "[$-it-IT]€ #,##0")
+            X: =818
+            Y: =144
+            Width: =219
+            Height: =40
+            Size: =24
+            Color: =nfTesto
+            Font: =nfFont
+            FontWeight: =FontWeight.Semibold
+            Align: =Align.Left
+            VerticalAlign: =VerticalAlign.Middle
+            TabIndex: =-1
+            FocusedBorderThickness: =2
+      - hm_lblKpiSub2:
+          Control: Label
+          Properties:
+            Text: |-
+              =If(CountRows(Filter(colContratti, AnnoEd = gblAnno && StatoTxt <> "annullato")) = 0, "Nessun contratto ancora", "Sconto medio " & Text(Average(Filter(colContratti, AnnoEd = gblAnno && StatoTxt <> "annullato"), Sconto), "0.0%"))
+            X: =818
+            Y: =186
+            Width: =219
+            Height: =20
+            Size: =10
+            Color: =nfTestoSec
+            Font: =nfFont
+            FontWeight: =FontWeight.Normal
+            Align: =Align.Left
+            VerticalAlign: =VerticalAlign.Middle
+            TabIndex: =-1
+            FocusedBorderThickness: =2
+      - hm_recKpi3:
+          Control: Rectangle
+          Properties:
+            X: =1073
+            Y: =104
+            Width: =259
+            Height: =116
+            Fill: =nfCard
+            BorderColor: =nfBordo
+            BorderThickness: =1
+            AccessibleLabel: |-
+              ="Elemento grafico"
+            TabIndex: =-1
+      - hm_recKpiBar3:
+          Control: Rectangle
+          Properties:
+            X: =1073
+            Y: =104
+            Width: =259
+            Height: =4
+            Fill: =nfAmbra
+            AccessibleLabel: |-
+              ="Elemento grafico"
+            TabIndex: =-1
+      - hm_lblKpiCap3:
+          Control: Label
+          Properties:
+            Text: |-
+              ="Acconti da incassare"
+            X: =1093
+            Y: =120
+            Width: =219
+            Height: =20
+            Size: =11
+            Color: =nfTestoSec
+            Font: =nfFont
+            FontWeight: =FontWeight.Normal
+            Align: =Align.Left
+            VerticalAlign: =VerticalAlign.Middle
+            TabIndex: =-1
+            FocusedBorderThickness: =2
+      - hm_lblKpiVal3:
+          Control: Label
+          Properties:
+            Text: |-
+              =CountRows(Filter(Filter(colContratti, AnnoEd = gblAnno && StatoTxt <> "annullato"), IsBlank('Acconto pagato il')))
+            X: =1093
+            Y: =144
+            Width: =219
+            Height: =40
+            Size: =24
+            Color: =nfTesto
+            Font: =nfFont
+            FontWeight: =FontWeight.Semibold
+            Align: =Align.Left
+            VerticalAlign: =VerticalAlign.Middle
+            TabIndex: =-1
+            FocusedBorderThickness: =2
+      - hm_lblKpiSub3:
+          Control: Label
+          Properties:
+            Text: |-
+              =CountRows(Filter(Filter(colContratti, AnnoEd = gblAnno && StatoTxt <> "annullato"), IsBlank('Saldo pagato il'))) & " saldi da incassare"
+            X: =1093
+            Y: =186
+            Width: =219
+            Height: =20
+            Size: =10
+            Color: =nfTestoSec
+            Font: =nfFont
+            FontWeight: =FontWeight.Normal
+            Align: =Align.Left
+            VerticalAlign: =VerticalAlign.Middle
+            TabIndex: =-1
+            FocusedBorderThickness: =2
+      - hm_recPanUltimi:
+          Control: Rectangle
+          Properties:
+            X: =248
+            Y: =240
+            Width: =660
+            Height: =508
+            Fill: =nfCard
+            BorderColor: =nfBordo
+            BorderThickness: =1
+            AccessibleLabel: |-
+              ="Elemento grafico"
+            TabIndex: =-1
+      - hm_lblPanUltimi:
+          Control: Label
+          Properties:
+            Text: |-
+              ="Ultimi contratti firmati"
+            X: =268
+            Y: =254
+            Width: =400
+            Height: =28
+            Size: =14
+            Color: =nfTesto
+            Font: =nfFont
+            FontWeight: =FontWeight.Semibold
+            Align: =Align.Left
+            VerticalAlign: =VerticalAlign.Middle
+            TabIndex: =-1
+            FocusedBorderThickness: =2
+      - hm_galUltimi:
+          Control: Gallery
+          Variant: BrowseLayout_Flexible_SocialFeed_ver5.0
+          Properties:
+            Items: |-
+              =FirstN(Sort(Filter(colContratti, AnnoEd = gblAnno), 'Data firma', SortOrder.Descending), 7)
+            X: =268
+            Y: =292
+            Width: =620
+            Height: =444
+            TemplateSize: =60
+            TemplatePadding: =0
+            ShowScrollbar: =false
+            TabIndex: =0
+            AccessibleLabel: |-
+              ="Ultimi contratti firmati"
+          Children:
+            - hm_lblCId:
+                Control: Label
+                Properties:
+                  Text: |-
+                    =ThisItem.'ID contratto'
+                  X: =16
+                  Y: =8
+                  Width: =120
+                  Height: =22
+                  Size: =12
+                  Color: =nfTesto
+                  Font: =nfFont
+                  FontWeight: =FontWeight.Semibold
+                  Align: =Align.Left
+                  VerticalAlign: =VerticalAlign.Middle
+                  TabIndex: =-1
+                  FocusedBorderThickness: =2
+            - hm_lblCEsp:
+                Control: Label
+                Properties:
+                  Text: =ThisItem.RagSoc
+                  X: =16
+                  Y: =30
+                  Width: =330
+                  Height: =20
+                  Size: =11
+                  Color: =nfTestoSec
+                  Font: =nfFont
+                  FontWeight: =FontWeight.Normal
+                  Align: =Align.Left
+                  VerticalAlign: =VerticalAlign.Middle
+                  TabIndex: =-1
+                  FocusedBorderThickness: =2
+            - hm_lblCStand:
+                Control: Label
+                Properties:
+                  Text: |-
+                    ="Stand " & ThisItem.CodStand
+                  X: =350
+                  Y: =8
+                  Width: =110
+                  Height: =22
+                  Size: =11
+                  Color: =nfTesto
+                  Font: =nfFont
+                  FontWeight: =FontWeight.Normal
+                  Align: =Align.Left
+                  VerticalAlign: =VerticalAlign.Middle
+                  TabIndex: =-1
+                  FocusedBorderThickness: =2
+            - hm_lblCData:
+                Control: Label
+                Properties:
+                  Text: |-
+                    =Text(ThisItem.'Data firma', "dd/mm/yyyy")
+                  X: =350
+                  Y: =30
+                  Width: =110
+                  Height: =20
+                  Size: =10
+                  Color: =nfTestoSec
+                  Font: =nfFont
+                  FontWeight: =FontWeight.Normal
+                  Align: =Align.Left
+                  VerticalAlign: =VerticalAlign.Middle
+                  TabIndex: =-1
+                  FocusedBorderThickness: =2
+            - hm_lblCImp:
+                Control: Label
+                Properties:
+                  Text: |-
+                    =Text(ThisItem.Imponibile, "[$-it-IT]€ #,##0")
+                  X: =460
+                  Y: =8
+                  Width: =120
+                  Height: =22
+                  Size: =12
+                  Color: =nfTesto
+                  Font: =nfFont
+                  FontWeight: =FontWeight.Semibold
+                  Align: =Align.Right
+                  VerticalAlign: =VerticalAlign.Middle
+                  TabIndex: =-1
+                  FocusedBorderThickness: =2
+            - hm_lblCStato:
+                Control: Label
+                Properties:
+                  Text: =Proper(ThisItem.StatoTxt)
+                  X: =500
+                  Y: =32
+                  Width: =80
+                  Height: =18
+                  Size: =9
+                  Color: |-
+                    =Switch(ThisItem.StatoTxt, "firmato", nfVerde, "preventivo", nfAmbra, nfRosso)
+                  Font: =nfFont
+                  FontWeight: =FontWeight.Semibold
+                  Align: =Align.Center
+                  VerticalAlign: =VerticalAlign.Middle
+                  Fill: |-
+                    =Switch(ThisItem.StatoTxt, "firmato", nfVerdeChiaro, "preventivo", nfAmbraChiaro, nfRossoChiaro)
+                  TabIndex: =-1
+                  FocusedBorderThickness: =2
+            - hm_recCSep:
+                Control: Rectangle
+                Properties:
+                  X: =0
+                  Y: =Parent.TemplateHeight - 1
+                  Width: =Parent.TemplateWidth
+                  Height: =1
+                  Fill: =nfBordo
+                  AccessibleLabel: |-
+                    ="Elemento grafico"
+                  TabIndex: =-1
+      - hm_lblUltimiVuoto:
+          Control: Label
+          Properties:
+            Text: |-
+              ="Nessun contratto per l'edizione " & gblAnno & ". Le vendite partiranno dal back-office."
+            X: =268
+            Y: =300
+            Width: =620
+            Height: =40
+            Size: =11
+            Color: =nfTestoSec
+            Font: =nfFont
+            FontWeight: =FontWeight.Normal
+            Align: =Align.Left
+            VerticalAlign: =VerticalAlign.Middle
+            Visible: |-
+              =IsEmpty(Filter(colContratti, AnnoEd = gblAnno))
+            TabIndex: =-1
+            FocusedBorderThickness: =2
+      - hm_recPanPad:
+          Control: Rectangle
+          Properties:
+            X: =924
+            Y: =240
+            Width: =410
+            Height: =508
+            Fill: =nfCard
+            BorderColor: =nfBordo
+            BorderThickness: =1
+            AccessibleLabel: |-
+              ="Elemento grafico"
+            TabIndex: =-1
+      - hm_lblPanPad:
+          Control: Label
+          Properties:
+            Text: |-
+              ="Occupazione per padiglione"
+            X: =944
+            Y: =254
+            Width: =370
+            Height: =28
+            Size: =14
+            Color: =nfTesto
+            Font: =nfFont
+            FontWeight: =FontWeight.Semibold
+            Align: =Align.Left
+            VerticalAlign: =VerticalAlign.Middle
+            TabIndex: =-1
+            FocusedBorderThickness: =2
+      - hm_galPad:
+          Control: Gallery
+          Variant: BrowseLayout_Flexible_SocialFeed_ver5.0
+          Properties:
+            Items: |-
+              =Sort(Padiglioni, Codice)
+            X: =944
+            Y: =300
+            Width: =370
+            Height: =290
+            TemplateSize: =92
+            TemplatePadding: =0
+            ShowScrollbar: =false
+            TabIndex: =0
+            AccessibleLabel: |-
+              ="Occupazione per padiglione"
+          Children:
+            - hm_lblPCod:
+                Control: Label
+                Properties:
+                  Text: |-
+                    =ThisItem.Codice & " · " & ThisItem.Nome
+                  X: =0
+                  Y: =6
+                  Width: =370
+                  Height: =24
+                  Size: =12
+                  Color: =nfTesto
+                  Font: =nfFont
+                  FontWeight: =FontWeight.Semibold
+                  Align: =Align.Left
+                  VerticalAlign: =VerticalAlign.Middle
+                  TabIndex: =-1
+                  FocusedBorderThickness: =2
+            - hm_lblPNum:
+                Control: Label
+                Properties:
+                  Text: |-
+                    =CountRows(Filter(colContratti, AnnoEd = gblAnno && Left(CodStand, 2) = ThisItem.Codice && StatoTxt <> "annullato")) & " venduti su " & CountRows(Filter(colStand, CodPad = ThisItem.Codice && AnnoAtt <= Value(gblAnno)))
+                  X: =0
+                  Y: =30
+                  Width: =370
+                  Height: =20
+                  Size: =10
+                  Color: =nfTestoSec
+                  Font: =nfFont
+                  FontWeight: =FontWeight.Normal
+                  Align: =Align.Left
+                  VerticalAlign: =VerticalAlign.Middle
+                  TabIndex: =-1
+                  FocusedBorderThickness: =2
+            - hm_recPBg:
+                Control: Rectangle
+                Properties:
+                  X: =0
+                  Y: =58
+                  Width: =370
+                  Height: =10
+                  Fill: =nfSfondo
+                  AccessibleLabel: |-
+                    ="Elemento grafico"
+                  TabIndex: =-1
+            - hm_recPFg:
+                Control: Rectangle
+                Properties:
+                  X: =0
+                  Y: =58
+                  Width: |-
+                    =(Parent.TemplateWidth) * CountRows(Filter(colContratti, AnnoEd = gblAnno && Left(CodStand, 2) = ThisItem.Codice && StatoTxt <> "annullato")) / Max(1, CountRows(Filter(colStand, CodPad = ThisItem.Codice && AnnoAtt <= Value(gblAnno))))
+                  Height: =10
+                  Fill: =nfAccento
+                  AccessibleLabel: |-
+                    ="Elemento grafico"
+                  TabIndex: =-1
+      - hm_btnAggiorna:
+          Control: Classic/Button
+          Properties:
+            Text: |-
+              ="Aggiorna dati"
+            X: =944
+            Y: =688
+            Width: =370
+            Height: =40
+            OnSelect: |-
+              =Refresh(Contratti); Refresh(Stand);
+              ClearCollect(colContratti, AddColumns(Contratti,
+                  AnnoEd, ThisRecord.Edizione.Anno,
+                  CodStand, ThisRecord.Stand.'Codice stand',
+                  IdEsp, ThisRecord.Espositore.'ID espositore',
+                  RagSoc, ThisRecord.Espositore.'Ragione sociale',
+                  StatoTxt, Text(ThisRecord.'Stato (g5_stato)')));
+              ClearCollect(colStand, AddColumns(Stand,
+                  CodPad, ThisRecord.Padiglione.Codice,
+                  AnnoAtt, Value(ThisRecord.'Attivo dal'.Anno),
+                  PosTxt, Text(ThisRecord.Posizione)))
+            Fill: =nfAccentoChiaro
+            Color: =nfAccento
+            HoverFill: |-
+              =ColorFade(nfAccentoChiaro, -10%)
+            PressedFill: |-
+              =ColorFade(nfAccentoChiaro, -20%)
+            HoverColor: =nfAccento
+            BorderThickness: =0
+            Font: =nfFont
+            Size: =12
+            FontWeight: =FontWeight.Semibold
+            RadiusTopLeft: =8
+            RadiusTopRight: =8
+            RadiusBottomLeft: =8
+            RadiusBottomRight: =8

@@ -1,0 +1,31 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<EntityRelationships xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <EntityRelationship Name="g5_contratto_g5_riga_contratto_g5_contratto" />
+  <EntityRelationship Name="g5_edizione_g5_contratto_g5_edizione" />
+  <EntityRelationship Name="g5_edizione_g5_stand_g5_attivo_dal" />
+  <EntityRelationship Name="g5_edizione_g5_voce_listino_g5_edizione" />
+  <EntityRelationship Name="g5_espositore_g5_contratto_g5_espositore" />
+  <EntityRelationship Name="g5_padiglione_g5_stand_g5_padiglione" />
+  <EntityRelationship Name="g5_stand_g5_contratto_g5_stand" />
+  <EntityRelationship Name="lk_g5_contratto_createdby" />
+  <EntityRelationship Name="lk_g5_contratto_modifiedby" />
+  <EntityRelationship Name="lk_g5_edizione_createdby" />
+  <EntityRelationship Name="lk_g5_edizione_modifiedby" />
+  <EntityRelationship Name="lk_g5_espositore_createdby" />
+  <EntityRelationship Name="lk_g5_espositore_modifiedby" />
+  <EntityRelationship Name="lk_g5_padiglione_createdby" />
+  <EntityRelationship Name="lk_g5_padiglione_modifiedby" />
+  <EntityRelationship Name="lk_g5_riga_contratto_createdby" />
+  <EntityRelationship Name="lk_g5_riga_contratto_modifiedby" />
+  <EntityRelationship Name="lk_g5_stand_createdby" />
+  <EntityRelationship Name="lk_g5_stand_modifiedby" />
+  <EntityRelationship Name="lk_g5_voce_listino_createdby" />
+  <EntityRelationship Name="lk_g5_voce_listino_modifiedby" />
+  <EntityRelationship Name="organization_g5_contratto" />
+  <EntityRelationship Name="organization_g5_edizione" />
+  <EntityRelationship Name="organization_g5_espositore" />
+  <EntityRelationship Name="organization_g5_padiglione" />
+  <EntityRelationship Name="organization_g5_riga_contratto" />
+  <EntityRelationship Name="organization_g5_stand" />
+  <EntityRelationship Name="organization_g5_voce_listino" />
+</EntityRelationships>

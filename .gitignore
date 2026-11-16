@@ -29,3 +29,6 @@ desktop.ini
 # Python: verifiche e script ETL
 __pycache__/
 *.pyc
+
+# Dati reali del cliente (Power Platform): non committare
+power-platform/data/

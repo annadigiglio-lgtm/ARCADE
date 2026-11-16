@@ -22,3 +22,8 @@
 | **Imponibile** | Importo del contratto al netto dell'IVA |
 | **Lead / contatto** | Visitatore che lascia i propri dati a uno stand |
 | **Saturazione** | Quota di spazio espositivo venduto rispetto a quello disponibile |
+| **Dataverse** | Database di Power Platform dove BAD gestisce i dati commerciali |
+| **Soluzione** | Contenitore di Power Platform con tabelle, app e flussi, che si esporta e si importa come un file |
+| **Chiave alternativa** | Codice di business unico in una tabella Dataverse (es. `g5_id_contratto`), usato per caricare senza duplicati |
+| **Flusso** | Automazione di Power Automate che parte da un evento o a un orario |
+| **Preventivo** | Contratto non ancora firmato; diventa `firmato` con la data di firma |

@@ -1,0 +1,62 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<savedqueries xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <savedquery>
+    <IsCustomizable>1</IsCustomizable>
+    <CanBeDeleted>0</CanBeDeleted>
+    <isquickfindquery>0</isquickfindquery>
+    <isprivate>0</isprivate>
+    <isdefault>0</isdefault>
+    <savedqueryid>{fe77aa7a-2ba3-4456-8910-ac4586dbe256}</savedqueryid>
+    <layoutxml>
+      <grid name="resultset" jump="g5_id_contratto" select="1" icon="1" preview="1">
+        <row name="result" id="g5_contrattoid">
+          <cell name="g5_id_contratto" width="300" />
+          <cell name="g5_edizione" width="150" />
+          <cell name="g5_espositore" width="150" />
+          <cell name="g5_stand" width="150" />
+          <cell name="g5_stato" width="150" />
+          <cell name="g5_data_firma" width="150" />
+          <cell name="g5_imponibile_listino" width="150" />
+          <cell name="g5_sconto_pct" width="150" />
+          <cell name="g5_imponibile" width="150" />
+          <cell name="g5_acconto_scadenza" width="150" />
+          <cell name="g5_acconto_pagato_il" width="150" />
+          <cell name="g5_saldo_scadenza" width="150" />
+          <cell name="g5_saldo_pagato_il" width="150" />
+          <cell name="g5_rinnovo" width="150" />
+        </row>
+      </grid>
+    </layoutxml>
+    <querytype>0</querytype>
+    <fetchxml>
+      <fetch version="1.0" mapping="logical">
+        <entity name="g5_contratto">
+          <attribute name="g5_contrattoid" />
+          <attribute name="g5_id_contratto" />
+          <attribute name="createdon" />
+          <attribute name="g5_edizione" />
+          <attribute name="g5_espositore" />
+          <attribute name="g5_stand" />
+          <attribute name="g5_stato" />
+          <attribute name="g5_data_firma" />
+          <attribute name="g5_imponibile_listino" />
+          <attribute name="g5_sconto_pct" />
+          <attribute name="g5_imponibile" />
+          <attribute name="g5_acconto_scadenza" />
+          <attribute name="g5_acconto_pagato_il" />
+          <attribute name="g5_saldo_scadenza" />
+          <attribute name="g5_saldo_pagato_il" />
+          <attribute name="g5_rinnovo" />
+          <order attribute="g5_id_contratto" descending="false" />
+          <filter type="and">
+            <condition attribute="statecode" operator="eq" value="1" />
+          </filter>
+        </entity>
+      </fetch>
+    </fetchxml>
+    <IntroducedVersion>1.0.0.0</IntroducedVersion>
+    <LocalizedNames>
+      <LocalizedName description="Contratti inattivi/e" languagecode="1040" />
+    </LocalizedNames>
+  </savedquery>
+</savedqueries>
