@@ -1,12 +1,15 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <EntityRelationships xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <EntityRelationship Name="business_unit_g5_scansione_stand" />
   <EntityRelationship Name="g5_contratto_g5_riga_contratto_g5_contratto" />
   <EntityRelationship Name="g5_edizione_g5_contratto_g5_edizione" />
+  <EntityRelationship Name="g5_edizione_g5_scansione_stand_g5_edizione" />
   <EntityRelationship Name="g5_edizione_g5_stand_g5_attivo_dal" />
   <EntityRelationship Name="g5_edizione_g5_voce_listino_g5_edizione" />
   <EntityRelationship Name="g5_espositore_g5_contratto_g5_espositore" />
   <EntityRelationship Name="g5_padiglione_g5_stand_g5_padiglione" />
   <EntityRelationship Name="g5_stand_g5_contratto_g5_stand" />
+  <EntityRelationship Name="g5_stand_g5_scansione_stand_g5_stand" />
   <EntityRelationship Name="lk_g5_contratto_createdby" />
   <EntityRelationship Name="lk_g5_contratto_modifiedby" />
   <EntityRelationship Name="lk_g5_edizione_createdby" />
@@ -28,7 +31,9 @@
   <EntityRelationship Name="organization_g5_espositore" />
   <EntityRelationship Name="organization_g5_padiglione" />
   <EntityRelationship Name="organization_g5_riga_contratto" />
-  <EntityRelationship Name="organization_g5_scansione_stand" />
   <EntityRelationship Name="organization_g5_stand" />
   <EntityRelationship Name="organization_g5_voce_listino" />
+  <EntityRelationship Name="owner_g5_scansione_stand" />
+  <EntityRelationship Name="team_g5_scansione_stand" />
+  <EntityRelationship Name="user_g5_scansione_stand" />
 </EntityRelationships>

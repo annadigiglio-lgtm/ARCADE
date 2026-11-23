@@ -3,38 +3,35 @@
   <savedquery>
     <IsCustomizable>1</IsCustomizable>
     <CanBeDeleted>0</CanBeDeleted>
-    <isquickfindquery>1</isquickfindquery>
+    <isquickfindquery>0</isquickfindquery>
     <isprivate>0</isprivate>
     <isdefault>1</isdefault>
-    <savedqueryid>{cbbea79c-28c8-4732-9566-a39b5f29c58e}</savedqueryid>
+    <savedqueryid>{b318cfbb-1448-4a91-91df-1d84f8d226b2}</savedqueryid>
     <layoutxml>
-      <grid name="resultset" jump="g5_g5_id_scansione" select="1" icon="1" preview="1">
-        <row name="result" id="g5_scansione_standid">
-          <cell name="g5_g5_id_scansione" width="300" />
+      <grid name="g5_scansione_stands" jump="g5_id_scansione" select="1" icon="1" preview="1">
+        <row name="g5_scansione_stand" id="g5_scansione_standid">
+          <cell name="g5_id_scansione" width="300" />
           <cell name="createdon" width="125" />
         </row>
       </grid>
     </layoutxml>
-    <querytype>4</querytype>
+    <querytype>2</querytype>
     <fetchxml>
       <fetch version="1.0" mapping="logical">
         <entity name="g5_scansione_stand">
           <attribute name="g5_scansione_standid" />
-          <attribute name="g5_g5_id_scansione" />
+          <attribute name="g5_id_scansione" />
           <attribute name="createdon" />
-          <order attribute="g5_g5_id_scansione" descending="false" />
+          <order attribute="g5_id_scansione" descending="false" />
           <filter type="and">
             <condition attribute="statecode" operator="eq" value="0" />
-          </filter>
-          <filter type="or" isquickfindfields="1">
-            <condition attribute="g5_g5_id_scansione" operator="like" value="{0}" />
           </filter>
         </entity>
       </fetch>
     </fetchxml>
-    <IntroducedVersion>1.0</IntroducedVersion>
+    <IntroducedVersion>1.0.0.0</IntroducedVersion>
     <LocalizedNames>
-      <LocalizedName description="Ricerca rapida Scansioni stand attivi/e" languagecode="1040" />
+      <LocalizedName description="Visualizzazione associata Scansione stand" languagecode="1040" />
     </LocalizedNames>
   </savedquery>
 </savedqueries>

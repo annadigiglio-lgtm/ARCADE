@@ -1,6 +1,6 @@
 # Stato Dataverse – Solution ARCADE BAD
 
-Generato da `power-platform/solution-src/inventario.py` su `ARCADEBAD_1_0_0_5.zip` (versione 1.0.0.5, editore Gruppo5BAD, prefisso `g5`). Sola lettura.
+Generato da `power-platform/solution-src/inventario.py` su `ARCADEBAD_1_0_0_6.zip` (versione 1.0.0.6, editore Gruppo5BAD, prefisso `g5`). Sola lettura.
 
 Colonne di sistema (`createdon`, `ownerid`, `statecode`, GUID `g5_<tabella>id`…) escluse: non fanno parte di `schema.sql`.
 
@@ -96,15 +96,20 @@ Relazioni N:1: `g5_contratto` → `g5_contratto` (eliminazione: Cascade)
 
 ## `g5_scansione_stand` – Scansione stand
 
-Proprietà: OrgOwned; change tracking: sì; entity set Web API: `g5_scansione_stands`.
+Proprietà: UserOwned; change tracking: sì; entity set Web API: `g5_scansione_stands`.
 
 | Colonna | Nome | Tipo | Obbl. | Dettaglio |
 |---|---|---|---|---|
-| `g5_g5_id_scansione` **(primaria)** | ID scansione | Testo | No | max 850 |
+| `g5_edizione` | Edizione | Lookup | Sì |  |
+| `g5_id_scansione` **(primaria)** | ID scansione | Testo | Sì | max 36 |
+| `g5_origine` | Origine | Testo | Sì | max 20 |
+| `g5_quantita` | Quantità | Numero intero | Sì | min 0, max 1000 |
+| `g5_rilevato_il` | Rilevato il | Data | Sì | Data e ora, ora locale utente (salvata in UTC) |
+| `g5_stand` | Stand | Lookup | Sì |  |
 
-Chiavi alternative: nessuna
+Chiavi alternative: `g5_key_scansione_stand` = (g5_id_scansione)
 
-Relazioni N:1: nessuna
+Relazioni N:1: `g5_edizione` → `g5_edizione` (eliminazione: Restrict); `g5_stand` → `g5_stand` (eliminazione: Restrict)
 
 ## `g5_stand` – Stand
 
@@ -178,4 +183,4 @@ I valori non si riportano qui: contengono indirizzi email del team.
 | `g5_ModalitaProva` | Sì/No | sì | no |
 | `g5_g5_EmailProva` | Testo | sì | sì |
 
-Totale: 8 tabelle, 48 colonne custom, 9 chiavi, 7 relazioni, 9 flussi.
+Totale: 8 tabelle, 53 colonne custom, 10 chiavi, 9 relazioni, 9 flussi.

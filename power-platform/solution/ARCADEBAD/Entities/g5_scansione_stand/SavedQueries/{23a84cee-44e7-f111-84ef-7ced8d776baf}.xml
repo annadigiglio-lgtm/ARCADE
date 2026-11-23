@@ -6,7 +6,7 @@
     <isquickfindquery>0</isquickfindquery>
     <isprivate>0</isprivate>
     <isdefault>1</isdefault>
-    <savedqueryid>{35f32c83-2886-445b-92d4-b20ba5cc452b}</savedqueryid>
+    <savedqueryid>{23a84cee-44e7-f111-84ef-7ced8d776baf}</savedqueryid>
     <querytype>8192</querytype>
     <fetchxml>
       <fetch version="1.0" mapping="logical" output-format="xml-platform">
@@ -14,16 +14,17 @@
           <attribute name="g5_scansione_standid" />
           <filter type="and">
             <condition attribute="statecode" operator="eq" value="0" />
+            <condition attribute="ownerid" operator="eq-userid" />
           </filter>
         </entity>
       </fetch>
     </fetchxml>
-    <IntroducedVersion>1.0</IntroducedVersion>
+    <IntroducedVersion>1.0.0.0</IntroducedVersion>
     <LocalizedNames>
       <LocalizedName description="Entità Scansioni stand personali" languagecode="1040" />
     </LocalizedNames>
     <Descriptions>
-      <Description description="Tutte le entità Scansioni stand attive" languagecode="1040" />
+      <Description description="Entità Scansioni stand attive di proprietà dell'utente corrente" languagecode="1040" />
     </Descriptions>
   </savedquery>
 </savedqueries>

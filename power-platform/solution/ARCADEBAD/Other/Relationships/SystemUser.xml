@@ -203,7 +203,7 @@
   <EntityRelationship Name="lk_g5_scansione_stand_createdby">
     <EntityRelationshipType>OneToMany</EntityRelationshipType>
     <IsCustomizable>1</IsCustomizable>
-    <IntroducedVersion>1.0</IntroducedVersion>
+    <IntroducedVersion>1.0.0.0</IntroducedVersion>
     <IsHierarchical>0</IsHierarchical>
     <ReferencingEntityName>g5_scansione_stand</ReferencingEntityName>
     <ReferencedEntityName>SystemUser</ReferencedEntityName>
@@ -223,7 +223,7 @@
   <EntityRelationship Name="lk_g5_scansione_stand_modifiedby">
     <EntityRelationshipType>OneToMany</EntityRelationshipType>
     <IsCustomizable>1</IsCustomizable>
-    <IntroducedVersion>1.0</IntroducedVersion>
+    <IntroducedVersion>1.0.0.0</IntroducedVersion>
     <IsHierarchical>0</IsHierarchical>
     <ReferencingEntityName>g5_scansione_stand</ReferencingEntityName>
     <ReferencedEntityName>SystemUser</ReferencedEntityName>
@@ -317,6 +317,26 @@
     <RelationshipDescription>
       <Descriptions>
         <Description description="Identificatore univoco dell'utente che ha modificato il record." languagecode="1040" />
+      </Descriptions>
+    </RelationshipDescription>
+  </EntityRelationship>
+  <EntityRelationship Name="user_g5_scansione_stand">
+    <EntityRelationshipType>OneToMany</EntityRelationshipType>
+    <IsCustomizable>1</IsCustomizable>
+    <IntroducedVersion>1.0.0.0</IntroducedVersion>
+    <IsHierarchical>0</IsHierarchical>
+    <ReferencingEntityName>g5_scansione_stand</ReferencingEntityName>
+    <ReferencedEntityName>SystemUser</ReferencedEntityName>
+    <CascadeAssign>NoCascade</CascadeAssign>
+    <CascadeDelete>NoCascade</CascadeDelete>
+    <CascadeArchive>NoCascade</CascadeArchive>
+    <CascadeReparent>NoCascade</CascadeReparent>
+    <CascadeShare>NoCascade</CascadeShare>
+    <CascadeUnshare>NoCascade</CascadeUnshare>
+    <ReferencingAttributeName>OwningUser</ReferencingAttributeName>
+    <RelationshipDescription>
+      <Descriptions>
+        <Description description="Identificatore univoco dell'utente a cui appartiene il record." languagecode="1040" />
       </Descriptions>
     </RelationshipDescription>
   </EntityRelationship>

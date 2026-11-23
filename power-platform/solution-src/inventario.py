@@ -27,7 +27,8 @@ def dettaglio(a):
     if t == "int":
         return f"min {a.findtext('MinValue')}, max {a.findtext('MaxValue')}"
     if t == "datetime":
-        return "Solo data" if a.findtext("Behavior") == "2" else f"comportamento {a.findtext('Behavior')}"
+        return {"1": "Data e ora, ora locale utente (salvata in UTC)", "2": "Solo data",
+                "3": "Data e ora, indipendente dal fuso"}.get(a.findtext("Behavior"), f"comportamento {a.findtext('Behavior')}")
     if t in ("picklist", "bit"):
         return ", ".join(o.find("labels/label").get("description") for o in a.findall("optionset/options/option"))
     return ""

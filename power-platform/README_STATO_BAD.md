@@ -35,4 +35,8 @@ pac solution export --name ARCADEBAD --path solution-build/ARCADEBAD_x_y_z_w.zip
 pac solution unpack --zipfile solution-build/ARCADEBAD_x_y_z_w.zip --folder solution/ARCADEBAD --packagetype Unmanaged --processCanvasApps
 ```
 
-Poi, dalla cartella `solution-src/`, `python -I inventario.py ../solution-build/ARCADEBAD_x_y_z_w.zip` per aggiornare l'inventario.
+Prima di `unpack` conviene svuotare `solution/ARCADEBAD/`, così non restano file di componenti eliminati. Poi, dalla cartella `solution-src/`:
+
+1. `python -I segnaposto_email.py ../solution/ARCADEBAD`: toglie gli indirizzi email dalle variabili d'ambiente (il repository è pubblico; i valori veri restano nell'ambiente);
+2. `python -I inventario.py ../solution-build/ARCADEBAD_x_y_z_w.zip` per aggiornare l'inventario;
+3. aggiungere lo zip nuovo a `solution-build/.gitignore`: contiene i valori originali.
