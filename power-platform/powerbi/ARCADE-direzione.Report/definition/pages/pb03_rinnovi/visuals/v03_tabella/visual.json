@@ -1,0 +1,144 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.0.0/schema.json",
+  "name": "v03_tabella",
+  "position": {
+    "x": 20,
+    "y": 440,
+    "z": 0,
+    "width": 1240,
+    "height": 260,
+    "tabOrder": 0
+  },
+  "visual": {
+    "visualType": "tableEx",
+    "query": {
+      "queryState": {
+        "Values": {
+          "projections": [
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Edizione"
+                    }
+                  },
+                  "Property": "edizione"
+                }
+              },
+              "queryRef": "Edizione.edizione",
+              "nativeQueryRef": "edizione"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Edizione"
+                    }
+                  },
+                  "Property": "edizione_precedente"
+                }
+              },
+              "queryRef": "Edizione.edizione_precedente",
+              "nativeQueryRef": "edizione_precedente"
+            },
+            {
+              "field": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Edizione"
+                    }
+                  },
+                  "Property": "Espositori attuali"
+                }
+              },
+              "queryRef": "Edizione.Espositori attuali",
+              "nativeQueryRef": "Espositori attuali"
+            },
+            {
+              "field": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Edizione"
+                    }
+                  },
+                  "Property": "Espositori rinnovati"
+                }
+              },
+              "queryRef": "Edizione.Espositori rinnovati",
+              "nativeQueryRef": "Espositori rinnovati"
+            },
+            {
+              "field": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Edizione"
+                    }
+                  },
+                  "Property": "Espositori persi"
+                }
+              },
+              "queryRef": "Edizione.Espositori persi",
+              "nativeQueryRef": "Espositori persi"
+            },
+            {
+              "field": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Edizione"
+                    }
+                  },
+                  "Property": "Espositori nuovi"
+                }
+              },
+              "queryRef": "Edizione.Espositori nuovi",
+              "nativeQueryRef": "Espositori nuovi"
+            },
+            {
+              "field": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Edizione"
+                    }
+                  },
+                  "Property": "Tasso di rinnovo"
+                }
+              },
+              "queryRef": "Edizione.Tasso di rinnovo",
+              "nativeQueryRef": "Tasso di rinnovo"
+            }
+          ]
+        }
+      }
+    },
+    "drillFilterOtherVisuals": true,
+    "visualContainerObjects": {
+      "title": [
+        {
+          "properties": {
+            "show": {
+              "expr": {
+                "Literal": {
+                  "Value": "true"
+                }
+              }
+            },
+            "text": {
+              "expr": {
+                "Literal": {
+                  "Value": "'Rinnovi per edizione (2026 provvisorio fino al caricamento dei contratti)'"
+                }
+              }
+            }
+          }
+        }
+      ]
+    }
+  }
+}

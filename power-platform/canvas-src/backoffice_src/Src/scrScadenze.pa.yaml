@@ -1,0 +1,1307 @@
+# Generato da power-platform/canvas-src/genera_schermate.py
+Screens:
+  scrScadenze:
+    Properties:
+      Fill: =nfSfondo
+      OnVisible: |-
+        =If(IsBlank(locEdiz), UpdateContext({locEdiz: "Tutte", locEsito: "Aperti"}));
+        ClearCollect(colPagBase, ForAll(Filter(colContratti, StatoTxt = "firmato") As c,
+            {IdC: c.'ID contratto', RagSoc: c.RagSoc, CodStand: c.CodStand, IdEsp: c.IdEsp, AnnoEd: c.AnnoEd,
+             Tipo: "Acconto", Importo: Round(c.Imponibile * 0.3, 2), Scad: c.'Scadenza acconto', Pagato: c.'Acconto pagato il'}));
+        Collect(colPagBase, ForAll(Filter(colContratti, StatoTxt = "firmato") As c,
+            {IdC: c.'ID contratto', RagSoc: c.RagSoc, CodStand: c.CodStand, IdEsp: c.IdEsp, AnnoEd: c.AnnoEd,
+             Tipo: "Saldo", Importo: c.Imponibile - Round(c.Imponibile * 0.3, 2), Scad: c.'Scadenza saldo', Pagato: c.'Saldo pagato il'}));
+        ClearCollect(colPag, AddColumns(colPagBase,
+            Esito, If(!IsBlank(Pagato), If(Pagato > Scad, "Pagato in ritardo", "Pagato"),
+                      If(Scad < Today(), "Scaduto", If(Scad <= DateAdd(Today(), 30, TimeUnit.Days), "In scadenza", "Da pagare"))),
+            Giorni, If(IsBlank(Pagato), DateDiff(Scad, Today(), TimeUnit.Days), 0)))
+    Children:
+      - sc_recSidebar:
+          Control: Rectangle
+          Properties:
+            X: =0
+            Y: =0
+            Width: =220
+            Height: =768
+            Fill: =nfBlu
+            AccessibleLabel: |-
+              ="Elemento grafico"
+            TabIndex: =-1
+      - sc_lblLogo:
+          Control: Label
+          Properties:
+            Text: |-
+              ="ARCADE"
+            X: =24
+            Y: =24
+            Width: =172
+            Height: =36
+            Size: =20
+            Color: =Color.White
+            Font: =nfFont
+            FontWeight: =FontWeight.Semibold
+            Align: =Align.Left
+            VerticalAlign: =VerticalAlign.Middle
+            TabIndex: =-1
+            FocusedBorderThickness: =2
+      - sc_lblLogoSub:
+          Control: Label
+          Properties:
+            Text: |-
+              ="Back-office commerciale"
+            X: =24
+            Y: =58
+            Width: =172
+            Height: =20
+            Size: =10
+            Color: |-
+              =ColorValue("#94A3B8")
+            Font: =nfFont
+            FontWeight: =FontWeight.Normal
+            Align: =Align.Left
+            VerticalAlign: =VerticalAlign.Middle
+            TabIndex: =-1
+            FocusedBorderThickness: =2
+      - sc_recSep:
+          Control: Rectangle
+          Properties:
+            X: =24
+            Y: =96
+            Width: =172
+            Height: =1
+            Fill: =nfBlu2
+            AccessibleLabel: |-
+              ="Elemento grafico"
+            TabIndex: =-1
+      - sc_btnNavHome:
+          Control: Classic/Button
+          Properties:
+            Text: |-
+              ="Panoramica"
+            X: =12
+            Y: =116
+            Width: =196
+            Height: =40
+            OnSelect: |-
+              =Navigate(scrHome, ScreenTransition.None)
+            Fill: =nfBlu
+            Color: =Color.White
+            HoverFill: |-
+              =ColorFade(nfBlu, -10%)
+            PressedFill: |-
+              =ColorFade(nfBlu, -20%)
+            HoverColor: =Color.White
+            BorderThickness: =0
+            Font: =nfFont
+            Size: =12
+            FontWeight: =FontWeight.Semibold
+            RadiusTopLeft: =8
+            RadiusTopRight: =8
+            RadiusBottomLeft: =8
+            RadiusBottomRight: =8
+            Align: =Align.Left
+            PaddingLeft: =16
+            DisplayMode: =DisplayMode.Edit
+            DisabledFill: =nfBlu
+            DisabledColor: |-
+              =ColorValue("#64748B")
+      - sc_btnNavStand:
+          Control: Classic/Button
+          Properties:
+            Text: |-
+              ="Planimetria stand"
+            X: =12
+            Y: =164
+            Width: =196
+            Height: =40
+            OnSelect: |-
+              =Navigate(scrStand, ScreenTransition.None)
+            Fill: =nfBlu
+            Color: =Color.White
+            HoverFill: |-
+              =ColorFade(nfBlu, -10%)
+            PressedFill: |-
+              =ColorFade(nfBlu, -20%)
+            HoverColor: =Color.White
+            BorderThickness: =0
+            Font: =nfFont
+            Size: =12
+            FontWeight: =FontWeight.Semibold
+            RadiusTopLeft: =8
+            RadiusTopRight: =8
+            RadiusBottomLeft: =8
+            RadiusBottomRight: =8
+            Align: =Align.Left
+            PaddingLeft: =16
+            DisplayMode: =DisplayMode.Edit
+            DisabledFill: =nfBlu
+            DisabledColor: |-
+              =ColorValue("#64748B")
+      - sc_btnNavEspositori:
+          Control: Classic/Button
+          Properties:
+            Text: |-
+              ="Espositori"
+            X: =12
+            Y: =212
+            Width: =196
+            Height: =40
+            OnSelect: |-
+              =Navigate(scrEspositori, ScreenTransition.None)
+            Fill: =nfBlu
+            Color: =Color.White
+            HoverFill: |-
+              =ColorFade(nfBlu, -10%)
+            PressedFill: |-
+              =ColorFade(nfBlu, -20%)
+            HoverColor: =Color.White
+            BorderThickness: =0
+            Font: =nfFont
+            Size: =12
+            FontWeight: =FontWeight.Semibold
+            RadiusTopLeft: =8
+            RadiusTopRight: =8
+            RadiusBottomLeft: =8
+            RadiusBottomRight: =8
+            Align: =Align.Left
+            PaddingLeft: =16
+            DisplayMode: =DisplayMode.Edit
+            DisabledFill: =nfBlu
+            DisabledColor: |-
+              =ColorValue("#64748B")
+      - sc_btnNavContratti:
+          Control: Classic/Button
+          Properties:
+            Text: |-
+              ="Contratti"
+            X: =12
+            Y: =260
+            Width: =196
+            Height: =40
+            OnSelect: |-
+              =Navigate(scrContratti, ScreenTransition.None)
+            Fill: =nfBlu
+            Color: =Color.White
+            HoverFill: |-
+              =ColorFade(nfBlu, -10%)
+            PressedFill: |-
+              =ColorFade(nfBlu, -20%)
+            HoverColor: =Color.White
+            BorderThickness: =0
+            Font: =nfFont
+            Size: =12
+            FontWeight: =FontWeight.Semibold
+            RadiusTopLeft: =8
+            RadiusTopRight: =8
+            RadiusBottomLeft: =8
+            RadiusBottomRight: =8
+            Align: =Align.Left
+            PaddingLeft: =16
+            DisplayMode: =DisplayMode.Edit
+            DisabledFill: =nfBlu
+            DisabledColor: |-
+              =ColorValue("#64748B")
+      - sc_btnNavNuovo:
+          Control: Classic/Button
+          Properties:
+            Text: |-
+              ="Nuovo contratto"
+            X: =12
+            Y: =308
+            Width: =196
+            Height: =40
+            OnSelect: |-
+              =Navigate(scrNuovo, ScreenTransition.None)
+            Fill: =nfBlu
+            Color: =Color.White
+            HoverFill: |-
+              =ColorFade(nfBlu, -10%)
+            PressedFill: |-
+              =ColorFade(nfBlu, -20%)
+            HoverColor: =Color.White
+            BorderThickness: =0
+            Font: =nfFont
+            Size: =12
+            FontWeight: =FontWeight.Semibold
+            RadiusTopLeft: =8
+            RadiusTopRight: =8
+            RadiusBottomLeft: =8
+            RadiusBottomRight: =8
+            Align: =Align.Left
+            PaddingLeft: =16
+            DisplayMode: =DisplayMode.Edit
+            DisabledFill: =nfBlu
+            DisabledColor: |-
+              =ColorValue("#64748B")
+      - sc_btnNavScadenze:
+          Control: Classic/Button
+          Properties:
+            Text: |-
+              ="Scadenze e incassi"
+            X: =12
+            Y: =356
+            Width: =196
+            Height: =40
+            OnSelect: |-
+              =Navigate(scrScadenze, ScreenTransition.None)
+            Fill: =nfAccento
+            Color: =Color.White
+            HoverFill: |-
+              =ColorFade(nfAccento, -10%)
+            PressedFill: |-
+              =ColorFade(nfAccento, -20%)
+            HoverColor: =Color.White
+            BorderThickness: =0
+            Font: =nfFont
+            Size: =12
+            FontWeight: =FontWeight.Semibold
+            RadiusTopLeft: =8
+            RadiusTopRight: =8
+            RadiusBottomLeft: =8
+            RadiusBottomRight: =8
+            Align: =Align.Left
+            PaddingLeft: =16
+            DisplayMode: =DisplayMode.Edit
+            DisabledFill: =nfBlu
+            DisabledColor: |-
+              =ColorValue("#64748B")
+      - sc_btnNavRinnovi:
+          Control: Classic/Button
+          Properties:
+            Text: |-
+              ="Rinnovi e prelazione"
+            X: =12
+            Y: =404
+            Width: =196
+            Height: =40
+            OnSelect: |-
+              =Navigate(scrRinnovi, ScreenTransition.None)
+            Fill: =nfBlu
+            Color: =Color.White
+            HoverFill: |-
+              =ColorFade(nfBlu, -10%)
+            PressedFill: |-
+              =ColorFade(nfBlu, -20%)
+            HoverColor: =Color.White
+            BorderThickness: =0
+            Font: =nfFont
+            Size: =12
+            FontWeight: =FontWeight.Semibold
+            RadiusTopLeft: =8
+            RadiusTopRight: =8
+            RadiusBottomLeft: =8
+            RadiusBottomRight: =8
+            Align: =Align.Left
+            PaddingLeft: =16
+            DisplayMode: =DisplayMode.Edit
+            DisabledFill: =nfBlu
+            DisabledColor: |-
+              =ColorValue("#64748B")
+      - sc_btnNavListino:
+          Control: Classic/Button
+          Properties:
+            Text: |-
+              ="Listino 2026"
+            X: =12
+            Y: =452
+            Width: =196
+            Height: =40
+            OnSelect: |-
+              =Navigate(scrListino, ScreenTransition.None)
+            Fill: =nfBlu
+            Color: =Color.White
+            HoverFill: |-
+              =ColorFade(nfBlu, -10%)
+            PressedFill: |-
+              =ColorFade(nfBlu, -20%)
+            HoverColor: =Color.White
+            BorderThickness: =0
+            Font: =nfFont
+            Size: =12
+            FontWeight: =FontWeight.Semibold
+            RadiusTopLeft: =8
+            RadiusTopRight: =8
+            RadiusBottomLeft: =8
+            RadiusBottomRight: =8
+            Align: =Align.Left
+            PaddingLeft: =16
+            DisplayMode: =DisplayMode.Edit
+            DisabledFill: =nfBlu
+            DisabledColor: |-
+              =ColorValue("#64748B")
+      - sc_btnNavControlli:
+          Control: Classic/Button
+          Properties:
+            Text: |-
+              ="Controlli dati"
+            X: =12
+            Y: =500
+            Width: =196
+            Height: =40
+            OnSelect: |-
+              =Navigate(scrControlli, ScreenTransition.None)
+            Fill: =nfBlu
+            Color: =Color.White
+            HoverFill: |-
+              =ColorFade(nfBlu, -10%)
+            PressedFill: |-
+              =ColorFade(nfBlu, -20%)
+            HoverColor: =Color.White
+            BorderThickness: =0
+            Font: =nfFont
+            Size: =12
+            FontWeight: =FontWeight.Semibold
+            RadiusTopLeft: =8
+            RadiusTopRight: =8
+            RadiusBottomLeft: =8
+            RadiusBottomRight: =8
+            Align: =Align.Left
+            PaddingLeft: =16
+            DisplayMode: =DisplayMode.Edit
+            DisabledFill: =nfBlu
+            DisabledColor: |-
+              =ColorValue("#64748B")
+      - sc_lblUtente:
+          Control: Label
+          Properties:
+            Text: =User().FullName
+            X: =24
+            Y: =712
+            Width: =172
+            Height: =20
+            Size: =10
+            Color: =Color.White
+            Font: =nfFont
+            FontWeight: =FontWeight.Normal
+            Align: =Align.Left
+            VerticalAlign: =VerticalAlign.Middle
+            TabIndex: =-1
+            FocusedBorderThickness: =2
+      - sc_lblEdizioneSide:
+          Control: Label
+          Properties:
+            Text: |-
+              ="Edizione " & gblAnno
+            X: =24
+            Y: =734
+            Width: =172
+            Height: =18
+            Size: =9
+            Color: |-
+              =ColorValue("#94A3B8")
+            Font: =nfFont
+            FontWeight: =FontWeight.Normal
+            Align: =Align.Left
+            VerticalAlign: =VerticalAlign.Middle
+            TabIndex: =-1
+            FocusedBorderThickness: =2
+      - sc_lblTitolo:
+          Control: Label
+          Properties:
+            Text: |-
+              ="Scadenze e incassi"
+            X: =248
+            Y: =18
+            Width: =700
+            Height: =40
+            Size: =22
+            Color: =nfTesto
+            Font: =nfFont
+            FontWeight: =FontWeight.Semibold
+            Align: =Align.Left
+            VerticalAlign: =VerticalAlign.Middle
+            TabIndex: =-1
+            FocusedBorderThickness: =2
+      - sc_lblSottotitolo:
+          Control: Label
+          Properties:
+            Text: |-
+              ="Acconti e saldi dei contratti firmati · oggi " & Text(Today(), "dd/mm/yyyy")
+            X: =248
+            Y: =56
+            Width: =800
+            Height: =22
+            Size: =11
+            Color: =nfTestoSec
+            Font: =nfFont
+            FontWeight: =FontWeight.Normal
+            Align: =Align.Left
+            VerticalAlign: =VerticalAlign.Middle
+            TabIndex: =-1
+            FocusedBorderThickness: =2
+      - sc_lblEd:
+          Control: Label
+          Properties:
+            Text: |-
+              ="Edizione"
+            X: =1060
+            Y: =26
+            Width: =90
+            Height: =40
+            Size: =11
+            Color: =nfTestoSec
+            Font: =nfFont
+            FontWeight: =FontWeight.Normal
+            Align: =Align.Right
+            VerticalAlign: =VerticalAlign.Middle
+            TabIndex: =-1
+            FocusedBorderThickness: =2
+      - sc_ddEdizione:
+          Control: Classic/DropDown
+          Properties:
+            Items: |-
+              =["Tutte", "2026", "2025", "2024"]
+            Default: =locEdiz
+            X: =1160
+            Y: =26
+            Width: =170
+            Height: =40
+            OnChange: |-
+              =UpdateContext({locEdiz: Self.Selected.Value})
+            Font: =nfFont
+            Size: =12
+            BorderColor: =nfBordo
+            Fill: =nfCard
+            ChevronBackground: =nfCard
+            ChevronFill: =nfTesto
+            AccessibleLabel: |-
+              ="Edizione"
+      - sc_recKpi0:
+          Control: Rectangle
+          Properties:
+            X: =248
+            Y: =96
+            Width: =259
+            Height: =104
+            Fill: =nfCard
+            BorderColor: =nfBordo
+            BorderThickness: =1
+            AccessibleLabel: |-
+              ="Elemento grafico"
+            TabIndex: =-1
+      - sc_recKpiBar0:
+          Control: Rectangle
+          Properties:
+            X: =248
+            Y: =96
+            Width: =259
+            Height: =4
+            Fill: =nfBlu
+            AccessibleLabel: |-
+              ="Elemento grafico"
+            TabIndex: =-1
+      - sc_lblKpiCap0:
+          Control: Label
+          Properties:
+            Text: |-
+              ="Da incassare"
+            X: =268
+            Y: =110
+            Width: =219
+            Height: =20
+            Size: =11
+            Color: =nfTestoSec
+            Font: =nfFont
+            FontWeight: =FontWeight.Normal
+            Align: =Align.Left
+            VerticalAlign: =VerticalAlign.Middle
+            TabIndex: =-1
+            FocusedBorderThickness: =2
+      - sc_lblKpiVal0:
+          Control: Label
+          Properties:
+            Text: |-
+              =Text(Sum(Filter(Filter(colPag, locEdiz = "Tutte" || AnnoEd = locEdiz), IsBlank(Pagato)), Importo), "[$-it-IT]€ #,##0")
+            X: =268
+            Y: =132
+            Width: =219
+            Height: =36
+            Size: =22
+            Color: =nfTesto
+            Font: =nfFont
+            FontWeight: =FontWeight.Semibold
+            Align: =Align.Left
+            VerticalAlign: =VerticalAlign.Middle
+            TabIndex: =-1
+            FocusedBorderThickness: =2
+      - sc_lblKpiSub0:
+          Control: Label
+          Properties:
+            Text: |-
+              =CountRows(Filter(Filter(colPag, locEdiz = "Tutte" || AnnoEd = locEdiz), IsBlank(Pagato))) & " pagamenti aperti"
+            X: =268
+            Y: =170
+            Width: =219
+            Height: =20
+            Size: =10
+            Color: =nfTestoSec
+            Font: =nfFont
+            FontWeight: =FontWeight.Normal
+            Align: =Align.Left
+            VerticalAlign: =VerticalAlign.Middle
+            TabIndex: =-1
+            FocusedBorderThickness: =2
+      - sc_recKpi1:
+          Control: Rectangle
+          Properties:
+            X: =523
+            Y: =96
+            Width: =259
+            Height: =104
+            Fill: =nfCard
+            BorderColor: =nfBordo
+            BorderThickness: =1
+            AccessibleLabel: |-
+              ="Elemento grafico"
+            TabIndex: =-1
+      - sc_recKpiBar1:
+          Control: Rectangle
+          Properties:
+            X: =523
+            Y: =96
+            Width: =259
+            Height: =4
+            Fill: =nfRosso
+            AccessibleLabel: |-
+              ="Elemento grafico"
+            TabIndex: =-1
+      - sc_lblKpiCap1:
+          Control: Label
+          Properties:
+            Text: |-
+              ="In ritardo"
+            X: =543
+            Y: =110
+            Width: =219
+            Height: =20
+            Size: =11
+            Color: =nfTestoSec
+            Font: =nfFont
+            FontWeight: =FontWeight.Normal
+            Align: =Align.Left
+            VerticalAlign: =VerticalAlign.Middle
+            TabIndex: =-1
+            FocusedBorderThickness: =2
+      - sc_lblKpiVal1:
+          Control: Label
+          Properties:
+            Text: |-
+              =Text(Sum(Filter(Filter(colPag, locEdiz = "Tutte" || AnnoEd = locEdiz), Esito = "Scaduto"), Importo), "[$-it-IT]€ #,##0")
+            X: =543
+            Y: =132
+            Width: =219
+            Height: =36
+            Size: =22
+            Color: =nfTesto
+            Font: =nfFont
+            FontWeight: =FontWeight.Semibold
+            Align: =Align.Left
+            VerticalAlign: =VerticalAlign.Middle
+            TabIndex: =-1
+            FocusedBorderThickness: =2
+      - sc_lblKpiSub1:
+          Control: Label
+          Properties:
+            Text: |-
+              =CountRows(Filter(Filter(colPag, locEdiz = "Tutte" || AnnoEd = locEdiz), Esito = "Scaduto")) & " pagamenti scaduti"
+            X: =543
+            Y: =170
+            Width: =219
+            Height: =20
+            Size: =10
+            Color: =nfTestoSec
+            Font: =nfFont
+            FontWeight: =FontWeight.Normal
+            Align: =Align.Left
+            VerticalAlign: =VerticalAlign.Middle
+            TabIndex: =-1
+            FocusedBorderThickness: =2
+      - sc_recKpi2:
+          Control: Rectangle
+          Properties:
+            X: =798
+            Y: =96
+            Width: =259
+            Height: =104
+            Fill: =nfCard
+            BorderColor: =nfBordo
+            BorderThickness: =1
+            AccessibleLabel: |-
+              ="Elemento grafico"
+            TabIndex: =-1
+      - sc_recKpiBar2:
+          Control: Rectangle
+          Properties:
+            X: =798
+            Y: =96
+            Width: =259
+            Height: =4
+            Fill: =nfAmbra
+            AccessibleLabel: |-
+              ="Elemento grafico"
+            TabIndex: =-1
+      - sc_lblKpiCap2:
+          Control: Label
+          Properties:
+            Text: |-
+              ="In scadenza entro 30 giorni"
+            X: =818
+            Y: =110
+            Width: =219
+            Height: =20
+            Size: =11
+            Color: =nfTestoSec
+            Font: =nfFont
+            FontWeight: =FontWeight.Normal
+            Align: =Align.Left
+            VerticalAlign: =VerticalAlign.Middle
+            TabIndex: =-1
+            FocusedBorderThickness: =2
+      - sc_lblKpiVal2:
+          Control: Label
+          Properties:
+            Text: |-
+              =Text(Sum(Filter(Filter(colPag, locEdiz = "Tutte" || AnnoEd = locEdiz), Esito = "In scadenza"), Importo), "[$-it-IT]€ #,##0")
+            X: =818
+            Y: =132
+            Width: =219
+            Height: =36
+            Size: =22
+            Color: =nfTesto
+            Font: =nfFont
+            FontWeight: =FontWeight.Semibold
+            Align: =Align.Left
+            VerticalAlign: =VerticalAlign.Middle
+            TabIndex: =-1
+            FocusedBorderThickness: =2
+      - sc_lblKpiSub2:
+          Control: Label
+          Properties:
+            Text: |-
+              =CountRows(Filter(Filter(colPag, locEdiz = "Tutte" || AnnoEd = locEdiz), Esito = "In scadenza")) & " pagamenti"
+            X: =818
+            Y: =170
+            Width: =219
+            Height: =20
+            Size: =10
+            Color: =nfTestoSec
+            Font: =nfFont
+            FontWeight: =FontWeight.Normal
+            Align: =Align.Left
+            VerticalAlign: =VerticalAlign.Middle
+            TabIndex: =-1
+            FocusedBorderThickness: =2
+      - sc_recKpi3:
+          Control: Rectangle
+          Properties:
+            X: =1073
+            Y: =96
+            Width: =259
+            Height: =104
+            Fill: =nfCard
+            BorderColor: =nfBordo
+            BorderThickness: =1
+            AccessibleLabel: |-
+              ="Elemento grafico"
+            TabIndex: =-1
+      - sc_recKpiBar3:
+          Control: Rectangle
+          Properties:
+            X: =1073
+            Y: =96
+            Width: =259
+            Height: =4
+            Fill: =nfVerde
+            AccessibleLabel: |-
+              ="Elemento grafico"
+            TabIndex: =-1
+      - sc_lblKpiCap3:
+          Control: Label
+          Properties:
+            Text: |-
+              ="Incassato"
+            X: =1093
+            Y: =110
+            Width: =219
+            Height: =20
+            Size: =11
+            Color: =nfTestoSec
+            Font: =nfFont
+            FontWeight: =FontWeight.Normal
+            Align: =Align.Left
+            VerticalAlign: =VerticalAlign.Middle
+            TabIndex: =-1
+            FocusedBorderThickness: =2
+      - sc_lblKpiVal3:
+          Control: Label
+          Properties:
+            Text: |-
+              =Text(Sum(Filter(Filter(colPag, locEdiz = "Tutte" || AnnoEd = locEdiz), !IsBlank(Pagato)), Importo), "[$-it-IT]€ #,##0")
+            X: =1093
+            Y: =132
+            Width: =219
+            Height: =36
+            Size: =22
+            Color: =nfTesto
+            Font: =nfFont
+            FontWeight: =FontWeight.Semibold
+            Align: =Align.Left
+            VerticalAlign: =VerticalAlign.Middle
+            TabIndex: =-1
+            FocusedBorderThickness: =2
+      - sc_lblKpiSub3:
+          Control: Label
+          Properties:
+            Text: |-
+              =CountRows(Filter(Filter(colPag, locEdiz = "Tutte" || AnnoEd = locEdiz), !IsBlank(Pagato))) & " pagati · " & CountRows(Filter(Filter(colPag, locEdiz = "Tutte" || AnnoEd = locEdiz), Esito = "Pagato in ritardo")) & " in ritardo"
+            X: =1093
+            Y: =170
+            Width: =219
+            Height: =20
+            Size: =10
+            Color: =nfTestoSec
+            Font: =nfFont
+            FontWeight: =FontWeight.Normal
+            Align: =Align.Left
+            VerticalAlign: =VerticalAlign.Middle
+            TabIndex: =-1
+            FocusedBorderThickness: =2
+      - sc_txtCerca:
+          Control: Classic/TextInput
+          Properties:
+            Default: |-
+              =""
+            HintText: |-
+              ="Cerca per espositore, contratto o stand"
+            DelayOutput: =true
+            X: =248
+            Y: =214
+            Width: =300
+            Height: =40
+            Font: =nfFont
+            Size: =12
+            BorderColor: =nfBordo
+            Fill: =nfCard
+            RadiusTopLeft: =8
+            RadiusTopRight: =8
+            RadiusBottomLeft: =8
+            RadiusBottomRight: =8
+            AccessibleLabel: |-
+              ="Cerca pagamento"
+      - sc_btnFiltro0:
+          Control: Classic/Button
+          Properties:
+            Text: |-
+              ="Da incassare"
+            X: =564
+            Y: =214
+            Width: =130
+            Height: =40
+            OnSelect: |-
+              =UpdateContext({locEsito: "Aperti"})
+            Fill: |-
+              =If(locEsito = "Aperti", nfAccento, nfCard)
+            Color: |-
+              =If(locEsito = "Aperti", Color.White, nfTesto)
+            HoverFill: |-
+              =ColorFade(If(locEsito = "Aperti", nfAccento, nfCard), -10%)
+            PressedFill: |-
+              =ColorFade(If(locEsito = "Aperti", nfAccento, nfCard), -20%)
+            HoverColor: |-
+              =If(locEsito = "Aperti", Color.White, nfTesto)
+            BorderThickness: =1
+            Font: =nfFont
+            Size: =12
+            FontWeight: =FontWeight.Semibold
+            RadiusTopLeft: =8
+            RadiusTopRight: =8
+            RadiusBottomLeft: =8
+            RadiusBottomRight: =8
+            BorderColor: =nfBordo
+      - sc_btnFiltro1:
+          Control: Classic/Button
+          Properties:
+            Text: |-
+              ="Scaduti"
+            X: =702
+            Y: =214
+            Width: =130
+            Height: =40
+            OnSelect: |-
+              =UpdateContext({locEsito: "Scaduto"})
+            Fill: |-
+              =If(locEsito = "Scaduto", nfAccento, nfCard)
+            Color: |-
+              =If(locEsito = "Scaduto", Color.White, nfTesto)
+            HoverFill: |-
+              =ColorFade(If(locEsito = "Scaduto", nfAccento, nfCard), -10%)
+            PressedFill: |-
+              =ColorFade(If(locEsito = "Scaduto", nfAccento, nfCard), -20%)
+            HoverColor: |-
+              =If(locEsito = "Scaduto", Color.White, nfTesto)
+            BorderThickness: =1
+            Font: =nfFont
+            Size: =12
+            FontWeight: =FontWeight.Semibold
+            RadiusTopLeft: =8
+            RadiusTopRight: =8
+            RadiusBottomLeft: =8
+            RadiusBottomRight: =8
+            BorderColor: =nfBordo
+      - sc_btnFiltro2:
+          Control: Classic/Button
+          Properties:
+            Text: |-
+              ="In scadenza"
+            X: =840
+            Y: =214
+            Width: =130
+            Height: =40
+            OnSelect: |-
+              =UpdateContext({locEsito: "In scadenza"})
+            Fill: |-
+              =If(locEsito = "In scadenza", nfAccento, nfCard)
+            Color: |-
+              =If(locEsito = "In scadenza", Color.White, nfTesto)
+            HoverFill: |-
+              =ColorFade(If(locEsito = "In scadenza", nfAccento, nfCard), -10%)
+            PressedFill: |-
+              =ColorFade(If(locEsito = "In scadenza", nfAccento, nfCard), -20%)
+            HoverColor: |-
+              =If(locEsito = "In scadenza", Color.White, nfTesto)
+            BorderThickness: =1
+            Font: =nfFont
+            Size: =12
+            FontWeight: =FontWeight.Semibold
+            RadiusTopLeft: =8
+            RadiusTopRight: =8
+            RadiusBottomLeft: =8
+            RadiusBottomRight: =8
+            BorderColor: =nfBordo
+      - sc_btnFiltro3:
+          Control: Classic/Button
+          Properties:
+            Text: |-
+              ="Pagati"
+            X: =978
+            Y: =214
+            Width: =130
+            Height: =40
+            OnSelect: |-
+              =UpdateContext({locEsito: "Pagati"})
+            Fill: |-
+              =If(locEsito = "Pagati", nfAccento, nfCard)
+            Color: |-
+              =If(locEsito = "Pagati", Color.White, nfTesto)
+            HoverFill: |-
+              =ColorFade(If(locEsito = "Pagati", nfAccento, nfCard), -10%)
+            PressedFill: |-
+              =ColorFade(If(locEsito = "Pagati", nfAccento, nfCard), -20%)
+            HoverColor: |-
+              =If(locEsito = "Pagati", Color.White, nfTesto)
+            BorderThickness: =1
+            Font: =nfFont
+            Size: =12
+            FontWeight: =FontWeight.Semibold
+            RadiusTopLeft: =8
+            RadiusTopRight: =8
+            RadiusBottomLeft: =8
+            RadiusBottomRight: =8
+            BorderColor: =nfBordo
+      - sc_btnFiltro4:
+          Control: Classic/Button
+          Properties:
+            Text: |-
+              ="Tutti"
+            X: =1116
+            Y: =214
+            Width: =130
+            Height: =40
+            OnSelect: |-
+              =UpdateContext({locEsito: "Tutti"})
+            Fill: |-
+              =If(locEsito = "Tutti", nfAccento, nfCard)
+            Color: |-
+              =If(locEsito = "Tutti", Color.White, nfTesto)
+            HoverFill: |-
+              =ColorFade(If(locEsito = "Tutti", nfAccento, nfCard), -10%)
+            PressedFill: |-
+              =ColorFade(If(locEsito = "Tutti", nfAccento, nfCard), -20%)
+            HoverColor: |-
+              =If(locEsito = "Tutti", Color.White, nfTesto)
+            BorderThickness: =1
+            Font: =nfFont
+            Size: =12
+            FontWeight: =FontWeight.Semibold
+            RadiusTopLeft: =8
+            RadiusTopRight: =8
+            RadiusBottomLeft: =8
+            RadiusBottomRight: =8
+            BorderColor: =nfBordo
+      - sc_recLista:
+          Control: Rectangle
+          Properties:
+            X: =248
+            Y: =270
+            Width: =1094
+            Height: =482
+            Fill: =nfCard
+            BorderColor: =nfBordo
+            BorderThickness: =1
+            AccessibleLabel: |-
+              ="Elemento grafico"
+            TabIndex: =-1
+      - sc_lblH20:
+          Control: Label
+          Properties:
+            Text: |-
+              ="Espositore · contratto"
+            X: =269
+            Y: =276
+            Width: =360
+            Height: =20
+            Size: =9
+            Color: =nfTestoSec
+            Font: =nfFont
+            FontWeight: =FontWeight.Normal
+            Align: =Align.Left
+            VerticalAlign: =VerticalAlign.Middle
+            TabIndex: =-1
+            FocusedBorderThickness: =2
+      - sc_lblH390:
+          Control: Label
+          Properties:
+            Text: |-
+              ="Pagamento"
+            X: =639
+            Y: =276
+            Width: =120
+            Height: =20
+            Size: =9
+            Color: =nfTestoSec
+            Font: =nfFont
+            FontWeight: =FontWeight.Normal
+            Align: =Align.Left
+            VerticalAlign: =VerticalAlign.Middle
+            TabIndex: =-1
+            FocusedBorderThickness: =2
+      - sc_lblH520:
+          Control: Label
+          Properties:
+            Text: |-
+              ="Scadenza"
+            X: =769
+            Y: =276
+            Width: =130
+            Height: =20
+            Size: =9
+            Color: =nfTestoSec
+            Font: =nfFont
+            FontWeight: =FontWeight.Normal
+            Align: =Align.Left
+            VerticalAlign: =VerticalAlign.Middle
+            TabIndex: =-1
+            FocusedBorderThickness: =2
+      - sc_lblH660:
+          Control: Label
+          Properties:
+            Text: |-
+              ="Stato"
+            X: =909
+            Y: =276
+            Width: =170
+            Height: =20
+            Size: =9
+            Color: =nfTestoSec
+            Font: =nfFont
+            FontWeight: =FontWeight.Normal
+            Align: =Align.Left
+            VerticalAlign: =VerticalAlign.Middle
+            TabIndex: =-1
+            FocusedBorderThickness: =2
+      - sc_lblConta:
+          Control: Label
+          Properties:
+            Text: |-
+              =CountRows(Filter(Filter(colPag, locEdiz = "Tutte" || AnnoEd = locEdiz), (locEsito = "Tutti" || (locEsito = "Aperti" && IsBlank(Pagato)) || (locEsito = "Pagati" && !IsBlank(Pagato)) || Esito = locEsito) && (IsBlank(sc_txtCerca.Text) || sc_txtCerca.Text in IdC || sc_txtCerca.Text in RagSoc || sc_txtCerca.Text in CodStand))) & " pagamenti · " & Text(Sum(Filter(Filter(colPag, locEdiz = "Tutte" || AnnoEd = locEdiz), (locEsito = "Tutti" || (locEsito = "Aperti" && IsBlank(Pagato)) || (locEsito = "Pagati" && !IsBlank(Pagato)) || Esito = locEsito) && (IsBlank(sc_txtCerca.Text) || sc_txtCerca.Text in IdC || sc_txtCerca.Text in RagSoc || sc_txtCerca.Text in CodStand)), Importo), "[$-it-IT]€ #,##0")
+            X: =1088
+            Y: =276
+            Width: =240
+            Height: =20
+            Size: =10
+            Color: =nfAccento
+            Font: =nfFont
+            FontWeight: =FontWeight.Semibold
+            Align: =Align.Right
+            VerticalAlign: =VerticalAlign.Middle
+            TabIndex: =-1
+            FocusedBorderThickness: =2
+      - sc_galPag:
+          Control: Gallery
+          Variant: BrowseLayout_Flexible_SocialFeed_ver5.0
+          Properties:
+            Items: |-
+              =Sort(Filter(Filter(colPag, locEdiz = "Tutte" || AnnoEd = locEdiz), (locEsito = "Tutti" || (locEsito = "Aperti" && IsBlank(Pagato)) || (locEsito = "Pagati" && !IsBlank(Pagato)) || Esito = locEsito) && (IsBlank(sc_txtCerca.Text) || sc_txtCerca.Text in IdC || sc_txtCerca.Text in RagSoc || sc_txtCerca.Text in CodStand)), Scad)
+            X: =249
+            Y: =300
+            Width: =1092
+            Height: =450
+            TemplateSize: =56
+            TemplatePadding: =0
+            ShowScrollbar: =true
+            TabIndex: =0
+            AccessibleLabel: |-
+              ="Elenco pagamenti"
+          Children:
+            - sc_recRiga:
+                Control: Rectangle
+                Properties:
+                  X: =0
+                  Y: =0
+                  Width: =Parent.TemplateWidth
+                  Height: =Parent.TemplateHeight
+                  Fill: =nfCard
+                  AccessibleLabel: |-
+                    ="Elemento grafico"
+                  TabIndex: =-1
+            - sc_lblRag:
+                Control: Label
+                Properties:
+                  Text: =ThisItem.RagSoc
+                  X: =20
+                  Y: =6
+                  Width: =360
+                  Height: =22
+                  Size: =12
+                  Color: =nfTesto
+                  Font: =nfFont
+                  FontWeight: =FontWeight.Semibold
+                  Align: =Align.Left
+                  VerticalAlign: =VerticalAlign.Middle
+                  TabIndex: =-1
+                  FocusedBorderThickness: =2
+            - sc_lblIdc:
+                Control: Label
+                Properties:
+                  Text: |-
+                    =ThisItem.IdC & " · stand " & ThisItem.CodStand & " · ed. " & ThisItem.AnnoEd
+                  X: =20
+                  Y: =30
+                  Width: =360
+                  Height: =20
+                  Size: =10
+                  Color: =nfTestoSec
+                  Font: =nfFont
+                  FontWeight: =FontWeight.Normal
+                  Align: =Align.Left
+                  VerticalAlign: =VerticalAlign.Middle
+                  TabIndex: =-1
+                  FocusedBorderThickness: =2
+            - sc_lblTipo:
+                Control: Label
+                Properties:
+                  Text: =ThisItem.Tipo
+                  X: =390
+                  Y: =6
+                  Width: =120
+                  Height: =22
+                  Size: =12
+                  Color: =nfTesto
+                  Font: =nfFont
+                  FontWeight: =FontWeight.Semibold
+                  Align: =Align.Left
+                  VerticalAlign: =VerticalAlign.Middle
+                  TabIndex: =-1
+                  FocusedBorderThickness: =2
+            - sc_lblImp:
+                Control: Label
+                Properties:
+                  Text: |-
+                    =Text(ThisItem.Importo, "[$-it-IT]€ #,##0.00")
+                  X: =390
+                  Y: =30
+                  Width: =120
+                  Height: =20
+                  Size: =10
+                  Color: =nfTestoSec
+                  Font: =nfFont
+                  FontWeight: =FontWeight.Normal
+                  Align: =Align.Left
+                  VerticalAlign: =VerticalAlign.Middle
+                  TabIndex: =-1
+                  FocusedBorderThickness: =2
+            - sc_lblScad:
+                Control: Label
+                Properties:
+                  Text: |-
+                    =Text(ThisItem.Scad, "dd/mm/yyyy")
+                  X: =520
+                  Y: =6
+                  Width: =130
+                  Height: =22
+                  Size: =12
+                  Color: =nfTesto
+                  Font: =nfFont
+                  FontWeight: =FontWeight.Normal
+                  Align: =Align.Left
+                  VerticalAlign: =VerticalAlign.Middle
+                  TabIndex: =-1
+                  FocusedBorderThickness: =2
+            - sc_lblPag:
+                Control: Label
+                Properties:
+                  Text: |-
+                    =If(IsBlank(ThisItem.Pagato), "Non pagato", "Pagato il " & Text(ThisItem.Pagato, "dd/mm/yyyy"))
+                  X: =520
+                  Y: =30
+                  Width: =130
+                  Height: =20
+                  Size: =10
+                  Color: =nfTestoSec
+                  Font: =nfFont
+                  FontWeight: =FontWeight.Normal
+                  Align: =Align.Left
+                  VerticalAlign: =VerticalAlign.Middle
+                  TabIndex: =-1
+                  FocusedBorderThickness: =2
+            - sc_lblBadge:
+                Control: Label
+                Properties:
+                  Text: |-
+                    =Switch(ThisItem.Esito, "Scaduto", "Scaduto da " & ThisItem.Giorni & " gg", "In scadenza", If(ThisItem.Giorni = 0, "Scade oggi", "Scade tra " & Abs(ThisItem.Giorni) & " gg"), ThisItem.Esito)
+                  X: =660
+                  Y: =14
+                  Width: =170
+                  Height: =26
+                  Size: =10
+                  Color: |-
+                    =Switch(ThisItem.Esito, "Scaduto", nfRosso, "In scadenza", nfAmbra, "Pagato", nfVerde, "Pagato in ritardo", nfAmbra, nfTestoSec)
+                  Font: =nfFont
+                  FontWeight: =FontWeight.Semibold
+                  Align: =Align.Center
+                  VerticalAlign: =VerticalAlign.Middle
+                  Fill: |-
+                    =Switch(ThisItem.Esito, "Scaduto", nfRossoChiaro, "In scadenza", nfAmbraChiaro, "Pagato", nfVerdeChiaro, "Pagato in ritardo", nfAmbraChiaro, nfBordo)
+                  TabIndex: =-1
+                  FocusedBorderThickness: =2
+            - sc_btnPagato:
+                Control: Classic/Button
+                Properties:
+                  Text: |-
+                    ="Segna pagato"
+                  X: =840
+                  Y: =12
+                  Width: =120
+                  Height: =30
+                  OnSelect: |-
+                    =IfError(
+                        With({rec: LookUp(Contratti, 'ID contratto' = ThisItem.IdC)},
+                            If(ThisItem.Tipo = "Acconto",
+                                Patch(Contratti, rec, {'Acconto pagato il': Today()}),
+                                Patch(Contratti, rec, {'Saldo pagato il': Today()})));
+                        Notify(ThisItem.Tipo & " registrato", NotificationType.Success);
+                        Refresh(Contratti);
+                    ClearCollect(colContratti, AddColumns(Contratti,
+                        AnnoEd, ThisRecord.Edizione.Anno,
+                        CodStand, ThisRecord.Stand.'Codice stand',
+                        IdEsp, ThisRecord.Espositore.'ID espositore',
+                        RagSoc, ThisRecord.Espositore.'Ragione sociale',
+                        StatoTxt, Text(ThisRecord.'Stato (g5_stato)')));
+                    ClearCollect(colStand, AddColumns(Stand,
+                        CodPad, ThisRecord.Padiglione.Codice,
+                        AnnoAtt, Value(ThisRecord.'Attivo dal'.Anno),
+                        PosTxt, Text(ThisRecord.Posizione)));
+                        ClearCollect(colPagBase, ForAll(Filter(colContratti, StatoTxt = "firmato") As c,
+                        {IdC: c.'ID contratto', RagSoc: c.RagSoc, CodStand: c.CodStand, IdEsp: c.IdEsp, AnnoEd: c.AnnoEd,
+                         Tipo: "Acconto", Importo: Round(c.Imponibile * 0.3, 2), Scad: c.'Scadenza acconto', Pagato: c.'Acconto pagato il'}));
+                    Collect(colPagBase, ForAll(Filter(colContratti, StatoTxt = "firmato") As c,
+                        {IdC: c.'ID contratto', RagSoc: c.RagSoc, CodStand: c.CodStand, IdEsp: c.IdEsp, AnnoEd: c.AnnoEd,
+                         Tipo: "Saldo", Importo: c.Imponibile - Round(c.Imponibile * 0.3, 2), Scad: c.'Scadenza saldo', Pagato: c.'Saldo pagato il'}));
+                    ClearCollect(colPag, AddColumns(colPagBase,
+                        Esito, If(!IsBlank(Pagato), If(Pagato > Scad, "Pagato in ritardo", "Pagato"),
+                                  If(Scad < Today(), "Scaduto", If(Scad <= DateAdd(Today(), 30, TimeUnit.Days), "In scadenza", "Da pagare"))),
+                        Giorni, If(IsBlank(Pagato), DateDiff(Scad, Today(), TimeUnit.Days), 0))),
+                        Notify("Registrazione non riuscita: " & FirstError.Message, NotificationType.Error)
+                    )
+                  Fill: =nfAccento
+                  Color: =Color.White
+                  HoverFill: |-
+                    =ColorFade(nfAccento, -10%)
+                  PressedFill: |-
+                    =ColorFade(nfAccento, -20%)
+                  HoverColor: =Color.White
+                  BorderThickness: =0
+                  Font: =nfFont
+                  Size: =11
+                  FontWeight: =FontWeight.Semibold
+                  RadiusTopLeft: =8
+                  RadiusTopRight: =8
+                  RadiusBottomLeft: =8
+                  RadiusBottomRight: =8
+                  Visible: =IsBlank(ThisItem.Pagato)
+            - sc_btnSollecito:
+                Control: Classic/Button
+                Properties:
+                  Text: |-
+                    =If(ThisItem.Esito = "Scaduto", "Sollecito", "Promemoria")
+                  X: =970
+                  Y: =12
+                  Width: =110
+                  Height: =30
+                  OnSelect: |-
+                    =With({em: LookUp(Espositori, 'ID espositore' = ThisItem.IdEsp)},
+                        Launch("mailto:" & em.'Email referente' & "?subject="
+                            & EncodeUrl(If(ThisItem.Esito = "Scaduto", "Sollecito di pagamento", "Promemoria di pagamento") & " - contratto " & ThisItem.IdC)
+                            & "&body=" & EncodeUrl("Gentile " & em.Referente & "," & Char(10) & Char(10)
+                            & If(ThisItem.Esito = "Scaduto", "ci risulta ancora da incassare ", "ricordiamo che sta per scadere ")
+                            & If(ThisItem.Tipo = "Acconto", "l'acconto del 30%", "il saldo") & " del contratto " & ThisItem.IdC
+                            & " (stand " & ThisItem.CodStand & "), pari a € " & Text(ThisItem.Importo, "#,##0.00")
+                            & ", con scadenza " & Text(ThisItem.Scad, "dd/mm/yyyy") & "." & Char(10) & Char(10)
+                            & "Cordiali saluti," & Char(10) & "Ufficio commerciale ARCADE Milano")))
+                  Fill: =nfAccentoChiaro
+                  Color: =nfAccento
+                  HoverFill: |-
+                    =ColorFade(nfAccentoChiaro, -10%)
+                  PressedFill: |-
+                    =ColorFade(nfAccentoChiaro, -20%)
+                  HoverColor: =nfAccento
+                  BorderThickness: =0
+                  Font: =nfFont
+                  Size: =11
+                  FontWeight: =FontWeight.Semibold
+                  RadiusTopLeft: =8
+                  RadiusTopRight: =8
+                  RadiusBottomLeft: =8
+                  RadiusBottomRight: =8
+                  Visible: |-
+                    =IsBlank(ThisItem.Pagato) && (ThisItem.Esito = "Scaduto" || ThisItem.Esito = "In scadenza")
+            - sc_recRigaSep:
+                Control: Rectangle
+                Properties:
+                  X: =0
+                  Y: =Parent.TemplateHeight - 1
+                  Width: =Parent.TemplateWidth
+                  Height: =1
+                  Fill: =nfBordo
+                  AccessibleLabel: |-
+                    ="Elemento grafico"
+                  TabIndex: =-1
+      - sc_lblVuoto:
+          Control: Label
+          Properties:
+            Text: |-
+              ="Nessun pagamento con questi filtri"
+            X: =272
+            Y: =340
+            Width: =1046
+            Height: =40
+            Size: =12
+            Color: =nfTestoSec
+            Font: =nfFont
+            FontWeight: =FontWeight.Normal
+            Align: =Align.Center
+            VerticalAlign: =VerticalAlign.Middle
+            Visible: |-
+              =IsEmpty(Filter(Filter(colPag, locEdiz = "Tutte" || AnnoEd = locEdiz), (locEsito = "Tutti" || (locEsito = "Aperti" && IsBlank(Pagato)) || (locEsito = "Pagati" && !IsBlank(Pagato)) || Esito = locEsito) && (IsBlank(sc_txtCerca.Text) || sc_txtCerca.Text in IdC || sc_txtCerca.Text in RagSoc || sc_txtCerca.Text in CodStand)))
+            TabIndex: =-1
+            FocusedBorderThickness: =2

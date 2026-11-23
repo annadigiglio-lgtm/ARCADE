@@ -76,6 +76,26 @@ Materiali: la cartella `docs/presentazioni/stato-2026-11-06/` non è presente ne
 
 - [ ] Ripristinare presentazione, scaletta e inventario del 6/11 e aggiornare il calendario dei materiali al 4/12.
 
+## BAD (Power Platform)
+
+Piano giorno per giorno fino al SAL del 4/12: [piano-bad.md](piano-bad.md). Stato: [power-platform.md](power-platform.md).
+
+- [ ] Branch BAD allineato al main, push e pull request (Alessandro) — 2026-11-17
+- [ ] Aggiungere Anna, Yassin e Daniel all'ambiente con i ruoli ARCADE Lettura e ARCADE Commerciale ([guida](guida-ambiente-power-platform.md)) (Alessandro) — 2026-11-17
+- [ ] CSV con i record di C2026-0200 e delle sue righe per l'importatore di BID (Alessandro + Anna) — 2026-11-17
+- [ ] Password `bad_powerbi` a Cristian e Yenje e collegamento da Power BI Desktop (Anna, Cristian, Yenje) — 2026-11-17
+- [ ] Correzioni chieste da BID nella [verifica del 9/11](verifica-bad-2026-11-09.md) (Lorenzo) — 2026-11-20
+- [ ] C2026-0200 in PostgreSQL e nella pagina Vendite 2026 di Power BI (Alessandro, Anna, Cristian, Yenje) — 2026-11-20
+- [ ] App di scansione con QR e scansioni importate senza duplicati ([analisi](../../power-platform/app-scansione/README.md)) (Alessandro, Lorenzo) — 2026-11-23
+- [ ] Flussi FL-01…FL-08 provati nella soluzione ([elenco](../../power-platform/power-automate/README.md)) (Adam) — 2026-11-25
+- [ ] Report Power BI con le 7 pagine, pubblicato e collegato al back-office ([pagine](../../power-platform/powerbi/README.md)) (Cristian, Yenje) — 2026-11-25
+- [ ] Numeri uguali in app, PostgreSQL, web e Power BI (tutti) — 2026-11-27
+- [ ] Prova generale della demo con BID (tutti) — 2026-12-01
+- [ ] Export finale di soluzione e report prima della sospensione dell'ambiente (Alessandro) — 2026-12-03
+- [x] Tabella `g5_scansione_stand` creata nella soluzione (Alessandro) — 2026-11-16
+- [x] Tabelle Dataverse e storico caricato e verificato (Alessandro) — 2026-11-03
+- [x] App back-office con 9 schermate e contratto 2026 venduto (Alessandro, Lorenzo) — 2026-11-04
+
 ## Ambiente di sviluppo del gruppo
 
 - [x] Documentare installazione e primo avvio per Yassin e Daniel in [ambiente-sviluppo.md](ambiente-sviluppo.md).

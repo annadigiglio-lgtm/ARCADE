@@ -1,0 +1,24 @@
+model Model
+	culture: it-IT
+	defaultPowerBIDataSourceVersion: powerBI_V3
+	sourceQueryCulture: it-IT
+	dataAccessOptions
+		legacyRedirects
+		returnErrorValuesAsNull
+
+ref table Edizione
+ref table Visitatori
+ref table 'Visitatori giorno'
+ref table Presenze
+ref table 'Picco padiglione'
+ref table 'Picco fiera'
+ref table 'Saturazione fiera'
+ref table 'Saturazione padiglione'
+ref table 'Ricavo fiera'
+ref table 'Ricavo padiglione'
+ref table 'Costo contatto'
+ref table 'Costo contatto fiera'
+ref table 'Visite stand'
+ref table Contratti
+ref table 'Vendite biglietti'
+ref table Conversione

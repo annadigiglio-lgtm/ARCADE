@@ -1,0 +1,78 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.0.0/schema.json",
+  "name": "v01_saturazione",
+  "position": {
+    "x": 860,
+    "y": 20,
+    "z": 0,
+    "width": 400,
+    "height": 330,
+    "tabOrder": 0
+  },
+  "visual": {
+    "visualType": "clusteredColumnChart",
+    "query": {
+      "queryState": {
+        "Category": {
+          "projections": [
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Edizione"
+                    }
+                  },
+                  "Property": "edizione"
+                }
+              },
+              "queryRef": "Edizione.edizione",
+              "nativeQueryRef": "edizione"
+            }
+          ]
+        },
+        "Y": {
+          "projections": [
+            {
+              "field": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Saturazione fiera"
+                    }
+                  },
+                  "Property": "Saturazione della fiera"
+                }
+              },
+              "queryRef": "Saturazione fiera.Saturazione della fiera",
+              "nativeQueryRef": "Saturazione della fiera"
+            }
+          ]
+        }
+      }
+    },
+    "drillFilterOtherVisuals": true,
+    "visualContainerObjects": {
+      "title": [
+        {
+          "properties": {
+            "show": {
+              "expr": {
+                "Literal": {
+                  "Value": "true"
+                }
+              }
+            },
+            "text": {
+              "expr": {
+                "Literal": {
+                  "Value": "'Saturazione degli spazi (mq)'"
+                }
+              }
+            }
+          }
+        }
+      ]
+    }
+  }
+}

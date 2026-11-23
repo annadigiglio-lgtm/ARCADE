@@ -1,0 +1,712 @@
+# ************************************************************************************************
+# Warning: YAML source code for Canvas Apps should only be used to review changes made within Power Apps Studio and for minor edits (Preview).
+# Use the maker portal to create and edit your Power Apps.
+# 
+# The schema file for Canvas Apps is available at https://go.microsoft.com/fwlink/?linkid=2304907
+# 
+# For more information, visit https://go.microsoft.com/fwlink/?linkid=2292623
+# ************************************************************************************************
+Screens:
+  scrEspositori:
+    Properties:
+      Fill: =nfSfondo
+      OnVisible: |-
+        =UpdateContext({locNuovo: false})
+    Children:
+      - es_recSidebar:
+          Control: Rectangle@2.3.0
+          Properties:
+            AccessibleLabel: ="Elemento grafico"
+            Fill: =nfBlu
+            Height: =768
+            Width: =220
+      - es_lblLogo:
+          Control: Label@2.5.1
+          Properties:
+            Color: =Color.White
+            FocusedBorderThickness: =2
+            Font: =nfFont
+            FontWeight: =FontWeight.Semibold
+            Height: =36
+            Size: =20
+            Text: ="ARCADE"
+            Width: =172
+            X: =24
+            Y: =24
+      - es_lblLogoSub:
+          Control: Label@2.5.1
+          Properties:
+            Color: =ColorValue("#94A3B8")
+            FocusedBorderThickness: =2
+            Font: =nfFont
+            Height: =20
+            Size: =10
+            Text: ="Back-office commerciale"
+            Width: =172
+            X: =24
+            Y: =58
+      - es_recSep:
+          Control: Rectangle@2.3.0
+          Properties:
+            AccessibleLabel: ="Elemento grafico"
+            Fill: =nfBlu2
+            Height: =1
+            Width: =172
+            X: =24
+            Y: =96
+      - es_btnNavHome:
+          Control: Classic/Button@2.2.0
+          Properties:
+            Align: =Align.Left
+            BorderThickness: =0
+            Color: =Color.White
+            DisabledColor: =ColorValue("#64748B")
+            DisabledFill: =nfBlu
+            Fill: =nfBlu
+            Font: =nfFont
+            HoverColor: =Color.White
+            HoverFill: =ColorFade(nfBlu, -10%)
+            OnSelect: =Navigate(scrHome, ScreenTransition.None)
+            PaddingLeft: =16
+            PressedFill: =ColorFade(nfBlu, -20%)
+            RadiusBottomLeft: =8
+            RadiusBottomRight: =8
+            RadiusTopLeft: =8
+            RadiusTopRight: =8
+            Size: =12
+            Text: ="Panoramica"
+            Width: =196
+            X: =12
+            Y: =116
+      - es_btnNavStand:
+          Control: Classic/Button@2.2.0
+          Properties:
+            Align: =Align.Left
+            BorderThickness: =0
+            Color: =Color.White
+            DisabledColor: =ColorValue("#64748B")
+            DisabledFill: =nfBlu
+            Fill: =nfBlu
+            Font: =nfFont
+            HoverColor: =Color.White
+            HoverFill: =ColorFade(nfBlu, -10%)
+            OnSelect: =Navigate(scrStand, ScreenTransition.None)
+            PaddingLeft: =16
+            PressedFill: =ColorFade(nfBlu, -20%)
+            RadiusBottomLeft: =8
+            RadiusBottomRight: =8
+            RadiusTopLeft: =8
+            RadiusTopRight: =8
+            Size: =12
+            Text: ="Planimetria stand"
+            Width: =196
+            X: =12
+            Y: =164
+      - es_btnNavEspositori:
+          Control: Classic/Button@2.2.0
+          Properties:
+            Align: =Align.Left
+            BorderThickness: =0
+            Color: =Color.White
+            DisabledColor: =ColorValue("#64748B")
+            DisabledFill: =nfBlu
+            Fill: =nfAccento
+            Font: =nfFont
+            HoverColor: =Color.White
+            HoverFill: =ColorFade(nfAccento, -10%)
+            OnSelect: =Navigate(scrEspositori, ScreenTransition.None)
+            PaddingLeft: =16
+            PressedFill: =ColorFade(nfAccento, -20%)
+            RadiusBottomLeft: =8
+            RadiusBottomRight: =8
+            RadiusTopLeft: =8
+            RadiusTopRight: =8
+            Size: =12
+            Text: ="Espositori"
+            Width: =196
+            X: =12
+            Y: =212
+      - es_btnNavContratti:
+          Control: Classic/Button@2.2.0
+          Properties:
+            Align: =Align.Left
+            BorderThickness: =0
+            Color: =Color.White
+            DisabledColor: =ColorValue("#64748B")
+            DisabledFill: =nfBlu
+            Fill: =nfBlu
+            Font: =nfFont
+            HoverColor: =Color.White
+            HoverFill: =ColorFade(nfBlu, -10%)
+            OnSelect: =Navigate(scrContratti, ScreenTransition.None)
+            PaddingLeft: =16
+            PressedFill: =ColorFade(nfBlu, -20%)
+            RadiusBottomLeft: =8
+            RadiusBottomRight: =8
+            RadiusTopLeft: =8
+            RadiusTopRight: =8
+            Size: =12
+            Text: ="Contratti"
+            Width: =196
+            X: =12
+            Y: =260
+      - es_btnNavNuovo:
+          Control: Classic/Button@2.2.0
+          Properties:
+            Align: =Align.Left
+            BorderThickness: =0
+            Color: =Color.White
+            DisabledColor: =ColorValue("#64748B")
+            DisabledFill: =nfBlu
+            Fill: =nfBlu
+            Font: =nfFont
+            HoverColor: =Color.White
+            HoverFill: =ColorFade(nfBlu, -10%)
+            OnSelect: =Navigate(scrNuovo, ScreenTransition.None)
+            PaddingLeft: =16
+            PressedFill: =ColorFade(nfBlu, -20%)
+            RadiusBottomLeft: =8
+            RadiusBottomRight: =8
+            RadiusTopLeft: =8
+            RadiusTopRight: =8
+            Size: =12
+            Text: ="Nuovo contratto"
+            Width: =196
+            X: =12
+            Y: =308
+      - es_btnNavScadenze:
+          Control: Classic/Button@2.2.0
+          Properties:
+            Align: =Align.Left
+            BorderThickness: =0
+            Color: =Color.White
+            DisabledColor: =ColorValue("#64748B")
+            DisabledFill: =nfBlu
+            Fill: =nfBlu
+            Font: =nfFont
+            HoverColor: =Color.White
+            HoverFill: =ColorFade(nfBlu, -10%)
+            OnSelect: =Navigate(scrScadenze, ScreenTransition.None)
+            PaddingLeft: =16
+            PressedFill: =ColorFade(nfBlu, -20%)
+            RadiusBottomLeft: =8
+            RadiusBottomRight: =8
+            RadiusTopLeft: =8
+            RadiusTopRight: =8
+            Size: =12
+            Text: ="Scadenze e incassi"
+            Width: =196
+            X: =12
+            Y: =356
+      - es_btnNavRinnovi:
+          Control: Classic/Button@2.2.0
+          Properties:
+            Align: =Align.Left
+            BorderThickness: =0
+            Color: =Color.White
+            DisabledColor: =ColorValue("#64748B")
+            DisabledFill: =nfBlu
+            Fill: =nfBlu
+            Font: =nfFont
+            HoverColor: =Color.White
+            HoverFill: =ColorFade(nfBlu, -10%)
+            OnSelect: =Navigate(scrRinnovi, ScreenTransition.None)
+            PaddingLeft: =16
+            PressedFill: =ColorFade(nfBlu, -20%)
+            RadiusBottomLeft: =8
+            RadiusBottomRight: =8
+            RadiusTopLeft: =8
+            RadiusTopRight: =8
+            Size: =12
+            Text: ="Rinnovi e prelazione"
+            Width: =196
+            X: =12
+            Y: =404
+      - es_btnNavListino:
+          Control: Classic/Button@2.2.0
+          Properties:
+            Align: =Align.Left
+            BorderThickness: =0
+            Color: =Color.White
+            DisabledColor: =ColorValue("#64748B")
+            DisabledFill: =nfBlu
+            Fill: =nfBlu
+            Font: =nfFont
+            HoverColor: =Color.White
+            HoverFill: =ColorFade(nfBlu, -10%)
+            OnSelect: =Navigate(scrListino, ScreenTransition.None)
+            PaddingLeft: =16
+            PressedFill: =ColorFade(nfBlu, -20%)
+            RadiusBottomLeft: =8
+            RadiusBottomRight: =8
+            RadiusTopLeft: =8
+            RadiusTopRight: =8
+            Size: =12
+            Text: ="Listino 2026"
+            Width: =196
+            X: =12
+            Y: =452
+      - es_btnNavControlli:
+          Control: Classic/Button@2.2.0
+          Properties:
+            Align: =Align.Left
+            BorderThickness: =0
+            Color: =Color.White
+            DisabledColor: =ColorValue("#64748B")
+            DisabledFill: =nfBlu
+            Fill: =nfBlu
+            Font: =nfFont
+            HoverColor: =Color.White
+            HoverFill: =ColorFade(nfBlu, -10%)
+            OnSelect: =Navigate(scrControlli, ScreenTransition.None)
+            PaddingLeft: =16
+            PressedFill: =ColorFade(nfBlu, -20%)
+            RadiusBottomLeft: =8
+            RadiusBottomRight: =8
+            RadiusTopLeft: =8
+            RadiusTopRight: =8
+            Size: =12
+            Text: ="Controlli dati"
+            Width: =196
+            X: =12
+            Y: =500
+      - es_lblUtente:
+          Control: Label@2.5.1
+          Properties:
+            Color: =Color.White
+            FocusedBorderThickness: =2
+            Font: =nfFont
+            Height: =20
+            Size: =10
+            Text: =User().FullName
+            Width: =172
+            X: =24
+            Y: =712
+      - es_lblEdizioneSide:
+          Control: Label@2.5.1
+          Properties:
+            Color: =ColorValue("#94A3B8")
+            FocusedBorderThickness: =2
+            Font: =nfFont
+            Height: =18
+            Size: =9
+            Text: ="Edizione " & gblAnno
+            Width: =172
+            X: =24
+            Y: =734
+      - es_lblTitolo:
+          Control: Label@2.5.1
+          Properties:
+            Color: =nfTesto
+            FocusedBorderThickness: =2
+            Font: =nfFont
+            FontWeight: =FontWeight.Semibold
+            Size: =22
+            Text: ="Espositori"
+            Width: =700
+            X: =248
+            Y: =18
+      - es_lblSottotitolo:
+          Control: Label@2.5.1
+          Properties:
+            Color: =nfTestoSec
+            FocusedBorderThickness: =2
+            Font: =nfFont
+            Height: =22
+            Size: =11
+            Text: =CountRows(Espositori) & " aziende in anagrafica · dati Dataverse"
+            Width: =800
+            X: =248
+            Y: =56
+      - es_txtCerca:
+          Control: Classic/TextInput@2.3.2
+          Properties:
+            AccessibleLabel: ="Cerca espositore"
+            BorderColor: =nfBordo
+            Default: =""
+            DelayOutput: =true
+            Fill: =nfCard
+            Font: =nfFont
+            HintText: ="Cerca per ragione sociale, ID o città"
+            RadiusBottomLeft: =8
+            RadiusBottomRight: =8
+            RadiusTopLeft: =8
+            RadiusTopRight: =8
+            Size: =12
+            Width: =520
+            X: =248
+            Y: =96
+      - es_btnNuovo:
+          Control: Classic/Button@2.2.0
+          Properties:
+            BorderThickness: =0
+            Color: =Color.White
+            Fill: =nfAccento
+            Font: =nfFont
+            HoverColor: =Color.White
+            HoverFill: =ColorFade(nfAccento, -10%)
+            OnSelect: |-
+              =UpdateContext({locNuovo: true})
+            PressedFill: =ColorFade(nfAccento, -20%)
+            RadiusBottomLeft: =8
+            RadiusBottomRight: =8
+            RadiusTopLeft: =8
+            RadiusTopRight: =8
+            Size: =12
+            Text: ="+ Nuovo espositore"
+            Width: =200
+            X: =1142
+            Y: =96
+      - es_recLista:
+          Control: Rectangle@2.3.0
+          Properties:
+            AccessibleLabel: ="Elemento grafico"
+            BorderColor: =nfBordo
+            BorderThickness: =1
+            Fill: =nfCard
+            Height: =600
+            Width: =520
+            X: =248
+            Y: =152
+      - es_galEsp:
+          Control: Gallery@2.15.0
+          Variant: BrowseLayout_Flexible_SocialFeed_ver5.0
+          Properties:
+            AccessibleLabel: ="Elenco espositori"
+            Height: =598
+            Items: =Sort(Filter(Espositori, IsBlank(es_txtCerca.Text) || es_txtCerca.Text in 'Ragione sociale' || es_txtCerca.Text in 'ID espositore' || es_txtCerca.Text in Città), 'Ragione sociale')
+            OnSelect: |-
+              =UpdateContext({locNuovo: false})
+            TabIndex: =0
+            TemplatePadding: =0
+            TemplateSize: =60
+            Width: =518
+            X: =249
+            Y: =153
+          Children:
+            - es_recRiga:
+                Control: Rectangle@2.3.0
+                Properties:
+                  AccessibleLabel: ="Elemento grafico"
+                  Fill: =If(ThisItem.IsSelected && !locNuovo, nfAccentoChiaro, nfCard)
+                  Height: =Parent.TemplateHeight
+                  Width: =Parent.TemplateWidth
+            - es_lblRag:
+                Control: Label@2.5.1
+                Properties:
+                  Color: =nfTesto
+                  FocusedBorderThickness: =2
+                  Font: =nfFont
+                  FontWeight: =FontWeight.Semibold
+                  Height: =24
+                  Size: =12
+                  Text: =ThisItem.'Ragione sociale'
+                  Width: =380
+                  X: =16
+                  Y: =8
+            - es_lblInfo:
+                Control: Label@2.5.1
+                Properties:
+                  Color: =nfTestoSec
+                  FocusedBorderThickness: =2
+                  Font: =nfFont
+                  Height: =20
+                  Size: =10
+                  Text: =ThisItem.'ID espositore' & " · " & ThisItem.Settore & " · " & ThisItem.Città
+                  Width: =470
+                  X: =16
+                  Y: =32
+            - es_lblNContr:
+                Control: Label@2.5.1
+                Properties:
+                  Align: =Align.Right
+                  Color: =nfAccento
+                  FocusedBorderThickness: =2
+                  Font: =nfFont
+                  FontWeight: =FontWeight.Semibold
+                  Height: =24
+                  Size: =11
+                  Text: =CountRows(Filter(colContratti, IdEsp = ThisItem.'ID espositore'))
+                  Width: =64
+                  X: =420
+                  Y: =8
+            - es_recRigaSep:
+                Control: Rectangle@2.3.0
+                Properties:
+                  AccessibleLabel: ="Elemento grafico"
+                  Fill: =nfBordo
+                  Height: =1
+                  Width: =Parent.TemplateWidth
+                  Y: =Parent.TemplateHeight - 1
+      - es_recScheda:
+          Control: Rectangle@2.3.0
+          Properties:
+            AccessibleLabel: ="Elemento grafico"
+            BorderColor: =nfBordo
+            BorderThickness: =1
+            Fill: =nfCard
+            Height: =600
+            Width: =558
+            X: =784
+            Y: =152
+      - es_lblSchedaTit:
+          Control: Label@2.5.1
+          Properties:
+            Color: =nfTesto
+            FocusedBorderThickness: =2
+            Font: =nfFont
+            FontWeight: =FontWeight.Semibold
+            Height: =32
+            Size: =16
+            Text: =If(locNuovo, "Nuovo espositore", es_galEsp.Selected.'Ragione sociale')
+            Width: =510
+            X: =808
+            Y: =168
+      - es_lblSchedaSub:
+          Control: Label@2.5.1
+          Properties:
+            Color: =nfTestoSec
+            FocusedBorderThickness: =2
+            Font: =nfFont
+            Height: =20
+            Size: =10
+            Text: =If(locNuovo, "L'ID viene assegnato al salvataggio", es_galEsp.Selected.'ID espositore' & " · " & CountRows(Filter(colContratti, IdEsp = es_galEsp.Selected.'ID espositore')) & " contratti · " & CountRows(Filter(colContratti, IdEsp = es_galEsp.Selected.'ID espositore' && Rinnovo)) & " rinnovi")
+            Width: =510
+            X: =808
+            Y: =200
+      - es_lblCapRag:
+          Control: Label@2.5.1
+          Properties:
+            Color: =nfTestoSec
+            FocusedBorderThickness: =2
+            Font: =nfFont
+            Height: =20
+            Size: =10
+            Text: ="Ragione sociale"
+            Width: =247
+            X: =808
+            Y: =236
+      - es_txtRag:
+          Control: Classic/TextInput@2.3.2
+          Properties:
+            AccessibleLabel: ="Ragione sociale"
+            BorderColor: =nfBordo
+            Default: =If(locNuovo, "", es_galEsp.Selected.'Ragione sociale')
+            Fill: =nfCard
+            Font: =nfFont
+            RadiusBottomLeft: =6
+            RadiusBottomRight: =6
+            RadiusTopLeft: =6
+            RadiusTopRight: =6
+            Size: =12
+            Width: =247
+            X: =808
+            Y: =258
+      - es_lblCapPiva:
+          Control: Label@2.5.1
+          Properties:
+            Color: =nfTestoSec
+            FocusedBorderThickness: =2
+            Font: =nfFont
+            Height: =20
+            Size: =10
+            Text: ="Partita IVA"
+            Width: =247
+            X: =1071
+            Y: =236
+      - es_txtPiva:
+          Control: Classic/TextInput@2.3.2
+          Properties:
+            AccessibleLabel: ="Partita IVA"
+            BorderColor: =If(IsMatch(es_txtPiva.Text, "\d{11}"), nfBordo, nfRosso)
+            Default: =If(locNuovo, "", es_galEsp.Selected.'Partita IVA')
+            Fill: =nfCard
+            Font: =nfFont
+            RadiusBottomLeft: =6
+            RadiusBottomRight: =6
+            RadiusTopLeft: =6
+            RadiusTopRight: =6
+            Size: =12
+            Width: =247
+            X: =1071
+            Y: =258
+      - es_lblCapSett:
+          Control: Label@2.5.1
+          Properties:
+            Color: =nfTestoSec
+            FocusedBorderThickness: =2
+            Font: =nfFont
+            Height: =20
+            Size: =10
+            Text: ="Settore"
+            Width: =247
+            X: =808
+            Y: =320
+      - es_txtSett:
+          Control: Classic/TextInput@2.3.2
+          Properties:
+            AccessibleLabel: ="Settore"
+            BorderColor: =nfBordo
+            Default: =If(locNuovo, "", es_galEsp.Selected.Settore)
+            Fill: =nfCard
+            Font: =nfFont
+            RadiusBottomLeft: =6
+            RadiusBottomRight: =6
+            RadiusTopLeft: =6
+            RadiusTopRight: =6
+            Size: =12
+            Width: =247
+            X: =808
+            Y: =342
+      - es_lblCapCitta:
+          Control: Label@2.5.1
+          Properties:
+            Color: =nfTestoSec
+            FocusedBorderThickness: =2
+            Font: =nfFont
+            Height: =20
+            Size: =10
+            Text: ="Città"
+            Width: =247
+            X: =1071
+            Y: =320
+      - es_txtCitta:
+          Control: Classic/TextInput@2.3.2
+          Properties:
+            AccessibleLabel: ="Città"
+            BorderColor: =nfBordo
+            Default: =If(locNuovo, "", es_galEsp.Selected.Città)
+            Fill: =nfCard
+            Font: =nfFont
+            RadiusBottomLeft: =6
+            RadiusBottomRight: =6
+            RadiusTopLeft: =6
+            RadiusTopRight: =6
+            Size: =12
+            Width: =247
+            X: =1071
+            Y: =342
+      - es_lblCapRef:
+          Control: Label@2.5.1
+          Properties:
+            Color: =nfTestoSec
+            FocusedBorderThickness: =2
+            Font: =nfFont
+            Height: =20
+            Size: =10
+            Text: ="Referente"
+            Width: =247
+            X: =808
+            Y: =404
+      - es_txtRef:
+          Control: Classic/TextInput@2.3.2
+          Properties:
+            AccessibleLabel: ="Referente"
+            BorderColor: =nfBordo
+            Default: =If(locNuovo, "", es_galEsp.Selected.Referente)
+            Fill: =nfCard
+            Font: =nfFont
+            RadiusBottomLeft: =6
+            RadiusBottomRight: =6
+            RadiusTopLeft: =6
+            RadiusTopRight: =6
+            Size: =12
+            Width: =247
+            X: =808
+            Y: =426
+      - es_lblCapMail:
+          Control: Label@2.5.1
+          Properties:
+            Color: =nfTestoSec
+            FocusedBorderThickness: =2
+            Font: =nfFont
+            Height: =20
+            Size: =10
+            Text: ="Email referente"
+            Width: =247
+            X: =1071
+            Y: =404
+      - es_txtMail:
+          Control: Classic/TextInput@2.3.2
+          Properties:
+            AccessibleLabel: ="Email referente"
+            BorderColor: =nfBordo
+            Default: =If(locNuovo, "", es_galEsp.Selected.'Email referente')
+            Fill: =nfCard
+            Font: =nfFont
+            RadiusBottomLeft: =6
+            RadiusBottomRight: =6
+            RadiusTopLeft: =6
+            RadiusTopRight: =6
+            Size: =12
+            Width: =247
+            X: =1071
+            Y: =426
+      - es_lblPivaErr:
+          Control: Label@2.5.1
+          Properties:
+            Color: =nfRosso
+            FocusedBorderThickness: =2
+            Font: =nfFont
+            Height: =18
+            Size: =9
+            Text: ="La partita IVA deve avere esattamente 11 cifre"
+            Visible: =!IsBlank(es_txtPiva.Text) && !IsMatch(es_txtPiva.Text, "\d{11}")
+            Width: =494
+            X: =808
+            Y: =384
+      - es_btnSalva:
+          Control: Classic/Button@2.2.0
+          Properties:
+            BorderThickness: =0
+            Color: =Color.White
+            Fill: =nfAccento
+            Font: =nfFont
+            Height: =44
+            HoverColor: =Color.White
+            HoverFill: =ColorFade(nfAccento, -10%)
+            OnSelect: |-
+              =If(
+                  IsBlank(es_txtRag.Text), Notify("La ragione sociale è obbligatoria", NotificationType.Error),
+                  !IsMatch(es_txtPiva.Text, "\d{11}"), Notify("La partita IVA deve avere esattamente 11 cifre", NotificationType.Error),
+                  IfError(
+                      If(locNuovo,
+                          Patch(Espositori, Defaults(Espositori), {'ID espositore': "ESP" & Text(Value(Right(First(Sort(Espositori, 'ID espositore', SortOrder.Descending)).'ID espositore', 3)) + 1, "000"), 'Ragione sociale': es_txtRag.Text, 'Partita IVA': es_txtPiva.Text, Settore: es_txtSett.Text, Città: es_txtCitta.Text, Referente: es_txtRef.Text, 'Email referente': es_txtMail.Text}),
+                          Patch(Espositori, es_galEsp.Selected, {'Ragione sociale': es_txtRag.Text, 'Partita IVA': es_txtPiva.Text, Settore: es_txtSett.Text, Città: es_txtCitta.Text, Referente: es_txtRef.Text, 'Email referente': es_txtMail.Text})
+                      );
+                      Notify("Espositore salvato", NotificationType.Success);
+                      UpdateContext({locNuovo: false}),
+                      Notify("Salvataggio non riuscito: " & FirstError.Message, NotificationType.Error)
+                  )
+              )
+            PressedFill: =ColorFade(nfAccento, -20%)
+            RadiusBottomLeft: =8
+            RadiusBottomRight: =8
+            RadiusTopLeft: =8
+            RadiusTopRight: =8
+            Size: =12
+            Text: ="Salva"
+            X: =808
+            Y: =688
+      - es_btnAnnulla:
+          Control: Classic/Button@2.2.0
+          Properties:
+            BorderColor: =nfBordo
+            BorderThickness: =1
+            Color: =nfTesto
+            Fill: =nfCard
+            Font: =nfFont
+            Height: =44
+            HoverColor: =nfTesto
+            HoverFill: =ColorFade(nfCard, -10%)
+            OnSelect: |-
+              =UpdateContext({locNuovo: false}); Reset(es_txtRag); Reset(es_txtPiva)
+            PressedFill: =ColorFade(nfCard, -20%)
+            RadiusBottomLeft: =8
+            RadiusBottomRight: =8
+            RadiusTopLeft: =8
+            RadiusTopRight: =8
+            Size: =12
+            Text: ="Annulla"
+            X: =984
+            Y: =688

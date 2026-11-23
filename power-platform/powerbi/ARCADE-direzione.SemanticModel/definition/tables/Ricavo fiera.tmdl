@@ -1,0 +1,45 @@
+table 'Ricavo fiera'
+
+	measure 'Ricavo per mq fiera' = MAX('Ricavo fiera'[ricavo_per_mq])
+		formatString: #,0 €
+
+	measure 'Imponibile firmato' = SUM('Ricavo fiera'[ricavo])
+		formatString: #,0 €
+
+	column edizione
+		dataType: string
+		summarizeBy: none
+		sourceColumn: edizione
+
+	column padiglione
+		dataType: string
+		isHidden
+		summarizeBy: none
+		sourceColumn: padiglione
+
+	column ricavo
+		dataType: double
+		summarizeBy: none
+		sourceColumn: ricavo
+
+	column mq_venduti
+		dataType: double
+		summarizeBy: none
+		sourceColumn: mq_venduti
+
+	column ricavo_per_mq
+		dataType: double
+		summarizeBy: none
+		sourceColumn: ricavo_per_mq
+
+	partition 'Ricavo fiera' = m
+		mode: import
+		source =
+			let
+			    Origine = PostgreSQL.Database(Server, Database),
+			    Vista = Origine{[Schema="arcade", Item="v_kpi_ricavo_mq"]}[Data],
+			    Righe = Table.SelectRows(Vista, each [padiglione] = null),
+			    Tipi = Table.TransformColumnTypes(Righe, {{"edizione", type text}, {"padiglione", type text}, {"ricavo", type number}, {"mq_venduti", type number}, {"ricavo_per_mq", type number}}),
+			    Colonne = Table.SelectColumns(Tipi, {"edizione", "padiglione", "ricavo", "mq_venduti", "ricavo_per_mq"})
+			in
+			    Colonne

@@ -1,0 +1,11 @@
+EditorState:
+  ScreensOrder:
+    - scrHome
+    - scrStand
+    - scrEspositori
+    - scrContratti
+    - scrNuovo
+    - scrScadenze
+    - scrRinnovi
+    - scrListino
+    - scrControlli

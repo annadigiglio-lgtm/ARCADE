@@ -1,0 +1,244 @@
+{
+  "properties": {
+    "connectionReferences": {
+      "shared_commondataserviceforapps": {
+        "runtimeSource": "embedded",
+        "connection": {
+          "connectionReferenceLogicalName": "g5_dataverse_flussi"
+        },
+        "api": {
+          "name": "shared_commondataserviceforapps"
+        }
+      },
+      "shared_office365": {
+        "runtimeSource": "embedded",
+        "connection": {
+          "connectionReferenceLogicalName": "g5_office365_arcade"
+        },
+        "api": {
+          "name": "shared_office365"
+        }
+      }
+    },
+    "definition": {
+      "$schema": "https://schema.management.azure.com/providers/Microsoft.Logic/schemas/2016-06-01/workflowdefinition.json#",
+      "contentVersion": "1.0.0.0",
+      "parameters": {
+        "$connections": {
+          "defaultValue": {},
+          "type": "Object"
+        },
+        "$authentication": {
+          "defaultValue": {},
+          "type": "SecureObject"
+        },
+        "g5_EmailProva (g5_g5_EmailProva)": {
+          "defaultValue": "",
+          "type": "String",
+          "metadata": {
+            "schemaName": "g5_g5_EmailProva"
+          }
+        },
+        "g5_EmailCommerciale (g5_EmailCommerciale)": {
+          "defaultValue": "",
+          "type": "String",
+          "metadata": {
+            "schemaName": "g5_EmailCommerciale"
+          }
+        },
+        "g5_ModalitaProva (g5_ModalitaProva)": {
+          "defaultValue": true,
+          "type": "Bool",
+          "metadata": {
+            "schemaName": "g5_ModalitaProva"
+          }
+        }
+      },
+      "triggers": {
+        "Quando_cambia_una_riga": {
+          "type": "OpenApiConnectionWebhook",
+          "inputs": {
+            "host": {
+              "connectionName": "shared_commondataserviceforapps",
+              "operationId": "SubscribeWebhookTrigger",
+              "apiId": "/providers/Microsoft.PowerApps/apis/shared_commondataserviceforapps"
+            },
+            "parameters": {
+              "subscriptionRequest/message": 4,
+              "subscriptionRequest/entityname": "g5_contratto",
+              "subscriptionRequest/scope": 4,
+              "subscriptionRequest/filteringattributes": "g5_stato",
+              "subscriptionRequest/filterexpression": "g5_stato eq 122540001"
+            },
+            "authentication": "@parameters('$authentication')"
+          }
+        }
+      },
+      "actions": {
+        "Principale": {
+          "type": "Scope",
+          "actions": {
+            "Leggi_espositore": {
+              "type": "OpenApiConnection",
+              "inputs": {
+                "host": {
+                  "connectionName": "shared_commondataserviceforapps",
+                  "operationId": "GetItem",
+                  "apiId": "/providers/Microsoft.PowerApps/apis/shared_commondataserviceforapps"
+                },
+                "parameters": {
+                  "entityName": "g5_espositori",
+                  "recordId": "@triggerOutputs()?['body/_g5_espositore_value']"
+                },
+                "authentication": "@parameters('$authentication')"
+              },
+              "runAfter": {}
+            },
+            "Leggi_stand": {
+              "type": "OpenApiConnection",
+              "inputs": {
+                "host": {
+                  "connectionName": "shared_commondataserviceforapps",
+                  "operationId": "GetItem",
+                  "apiId": "/providers/Microsoft.PowerApps/apis/shared_commondataserviceforapps"
+                },
+                "parameters": {
+                  "entityName": "g5_stands",
+                  "recordId": "@triggerOutputs()?['body/_g5_stand_value']"
+                },
+                "authentication": "@parameters('$authentication')"
+              },
+              "runAfter": {
+                "Leggi_espositore": [
+                  "Succeeded"
+                ]
+              }
+            },
+            "Elenca_righe": {
+              "type": "OpenApiConnection",
+              "inputs": {
+                "host": {
+                  "connectionName": "shared_commondataserviceforapps",
+                  "operationId": "ListRecords",
+                  "apiId": "/providers/Microsoft.PowerApps/apis/shared_commondataserviceforapps"
+                },
+                "parameters": {
+                  "entityName": "g5_righe_contratto",
+                  "$filter": "_g5_contratto_value eq @{triggerOutputs()?['body/g5_contrattoid']}",
+                  "$orderby": "g5_riga asc"
+                },
+                "authentication": "@parameters('$authentication')"
+              },
+              "runAfter": {
+                "Leggi_stand": [
+                  "Succeeded"
+                ]
+              }
+            },
+            "Seleziona_righe": {
+              "type": "Select",
+              "inputs": {
+                "from": "@outputs('Elenca_righe')?['body/value']",
+                "select": {
+                  "Riga": "@item()?['g5_riga']",
+                  "Codice": "@item()?['g5_codice_voce']",
+                  "Descrizione": "@item()?['g5_descrizione']",
+                  "Quantità": "@item()?['g5_quantita']",
+                  "Prezzo unitario €": "@{formatNumber(float(coalesce(item()?['g5_prezzo_unitario'],0)),'N2','it-IT')}",
+                  "Importo €": "@{formatNumber(float(coalesce(item()?['g5_importo'],0)),'N2','it-IT')}"
+                }
+              },
+              "runAfter": {
+                "Elenca_righe": [
+                  "Succeeded"
+                ]
+              }
+            },
+            "Tabella_righe": {
+              "type": "Table",
+              "inputs": {
+                "from": "@body('Seleziona_righe')",
+                "format": "HTML"
+              },
+              "runAfter": {
+                "Seleziona_righe": [
+                  "Succeeded"
+                ]
+              }
+            },
+            "Email_al_referente": {
+              "type": "OpenApiConnection",
+              "inputs": {
+                "host": {
+                  "connectionName": "shared_office365",
+                  "operationId": "SendEmailV2",
+                  "apiId": "/providers/Microsoft.PowerApps/apis/shared_office365"
+                },
+                "parameters": {
+                  "emailMessage/To": "@{if(or(or(equals(toLower(string(parameters('g5_ModalitaProva (g5_ModalitaProva)'))),'true'),equals(toLower(string(parameters('g5_ModalitaProva (g5_ModalitaProva)'))),'yes')),empty(outputs('Leggi_espositore')?['body/g5_email_referente'])),parameters('g5_EmailProva (g5_g5_EmailProva)'),outputs('Leggi_espositore')?['body/g5_email_referente'])}",
+                  "emailMessage/Subject": "@{if(or(equals(toLower(string(parameters('g5_ModalitaProva (g5_ModalitaProva)'))),'true'),equals(toLower(string(parameters('g5_ModalitaProva (g5_ModalitaProva)'))),'yes')),'[PROVA] ','')}ARCADE Milano – Conferma del contratto @{triggerOutputs()?['body/g5_id_contratto']}",
+                  "emailMessage/Body": "<style>table{border-collapse:collapse}th,td{border:1px solid #ccc;padding:4px 8px;font-family:Segoe UI,Arial;font-size:13px}th{background:#f2f2f2}</style><p>Gentile @{outputs('Leggi_espositore')?['body/g5_referente']},</p><p>confermiamo la firma del contratto <b>@{triggerOutputs()?['body/g5_id_contratto']}</b> per <b>@{outputs('Leggi_espositore')?['body/g5_ragione_sociale']}</b></p><p>Stand: <b>@{outputs('Leggi_stand')?['body/g5_codice_stand']}</b> – padiglione @{outputs('Leggi_stand')?['body']?['_g5_padiglione_value@OData.Community.Display.V1.FormattedValue']} – @{outputs('Leggi_stand')?['body/g5_mq']} mq</p>@{body('Tabella_righe')}<p>Imponibile: <b>€ @{formatNumber(float(coalesce(triggerOutputs()?['body/g5_imponibile'],0)),'N2','it-IT')}</b></p><p>Acconto 30%: € @{formatNumber(float(coalesce(mul(float(coalesce(triggerOutputs()?['body/g5_imponibile'],0)),0.3),0)),'N2','it-IT')} entro il @{if(empty(triggerOutputs()?['body/g5_acconto_scadenza']),'da definire',formatDateTime(triggerOutputs()?['body/g5_acconto_scadenza'],'dd/MM/yyyy'))}<br>Saldo 70%: € @{formatNumber(float(coalesce(mul(float(coalesce(triggerOutputs()?['body/g5_imponibile'],0)),0.7),0)),'N2','it-IT')} entro il @{if(empty(triggerOutputs()?['body/g5_saldo_scadenza']),'da definire',formatDateTime(triggerOutputs()?['body/g5_saldo_scadenza'],'dd/MM/yyyy'))}</p><p>Cordiali saluti,<br>Ufficio commerciale ARCADE Milano</p>",
+                  "emailMessage/Importance": "Normal"
+                },
+                "authentication": "@parameters('$authentication')"
+              },
+              "runAfter": {
+                "Tabella_righe": [
+                  "Succeeded"
+                ]
+              }
+            },
+            "Copia_al_commerciale": {
+              "type": "OpenApiConnection",
+              "inputs": {
+                "host": {
+                  "connectionName": "shared_office365",
+                  "operationId": "SendEmailV2",
+                  "apiId": "/providers/Microsoft.PowerApps/apis/shared_office365"
+                },
+                "parameters": {
+                  "emailMessage/To": "@{parameters('g5_EmailCommerciale (g5_EmailCommerciale)')}",
+                  "emailMessage/Subject": "@{if(or(equals(toLower(string(parameters('g5_ModalitaProva (g5_ModalitaProva)'))),'true'),equals(toLower(string(parameters('g5_ModalitaProva (g5_ModalitaProva)'))),'yes')),'[PROVA] ','')}[Copia] Contratto firmato @{triggerOutputs()?['body/g5_id_contratto']} – @{outputs('Leggi_espositore')?['body/g5_ragione_sociale']}",
+                  "emailMessage/Body": "<style>table{border-collapse:collapse}th,td{border:1px solid #ccc;padding:4px 8px;font-family:Segoe UI,Arial;font-size:13px}th{background:#f2f2f2}</style><p>Contratto <b>@{triggerOutputs()?['body/g5_id_contratto']}</b> firmato da @{outputs('Leggi_espositore')?['body/g5_ragione_sociale']} (referente @{outputs('Leggi_espositore')?['body/g5_referente']}, @{outputs('Leggi_espositore')?['body/g5_email_referente']}).</p><p>Stand @{outputs('Leggi_stand')?['body/g5_codice_stand']} – imponibile € @{formatNumber(float(coalesce(triggerOutputs()?['body/g5_imponibile'],0)),'N2','it-IT')}</p>@{body('Tabella_righe')}",
+                  "emailMessage/Importance": "Normal"
+                },
+                "authentication": "@parameters('$authentication')"
+              },
+              "runAfter": {
+                "Email_al_referente": [
+                  "Succeeded"
+                ]
+              }
+            }
+          },
+          "runAfter": {}
+        },
+        "Avviso_errore": {
+          "type": "OpenApiConnection",
+          "inputs": {
+            "host": {
+              "connectionName": "shared_office365",
+              "operationId": "SendEmailV2",
+              "apiId": "/providers/Microsoft.PowerApps/apis/shared_office365"
+            },
+            "parameters": {
+              "emailMessage/To": "@{parameters('g5_EmailProva (g5_g5_EmailProva)')}",
+              "emailMessage/Subject": "ERRORE FL-02",
+              "emailMessage/Body": "<p>Il flusso <b>@{workflow()?['tags']?['flowDisplayName']}</b> è andato in errore.</p><p>Esecuzione: @{workflow()?['run']?['name']}</p><pre>@{string(result('Principale'))}</pre>",
+              "emailMessage/Importance": "Normal"
+            },
+            "authentication": "@parameters('$authentication')"
+          },
+          "runAfter": {
+            "Principale": [
+              "Failed",
+              "TimedOut"
+            ]
+          }
+        }
+      }
+    },
+    "templateName": null
+  },
+  "schemaVersion": "1.0.0.0"
+}

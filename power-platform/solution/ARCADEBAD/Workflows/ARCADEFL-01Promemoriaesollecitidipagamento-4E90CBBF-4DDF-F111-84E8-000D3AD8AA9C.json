@@ -1,0 +1,341 @@
+{
+  "properties": {
+    "connectionReferences": {
+      "shared_commondataserviceforapps": {
+        "runtimeSource": "embedded",
+        "connection": {
+          "connectionReferenceLogicalName": "g5_dataverse_flussi"
+        },
+        "api": {
+          "name": "shared_commondataserviceforapps"
+        }
+      },
+      "shared_office365": {
+        "runtimeSource": "embedded",
+        "connection": {
+          "connectionReferenceLogicalName": "g5_office365_arcade"
+        },
+        "api": {
+          "name": "shared_office365"
+        }
+      }
+    },
+    "definition": {
+      "$schema": "https://schema.management.azure.com/providers/Microsoft.Logic/schemas/2016-06-01/workflowdefinition.json#",
+      "contentVersion": "1.0.0.0",
+      "parameters": {
+        "$connections": {
+          "defaultValue": {},
+          "type": "Object"
+        },
+        "$authentication": {
+          "defaultValue": {},
+          "type": "SecureObject"
+        },
+        "g5_EmailProva (g5_g5_EmailProva)": {
+          "defaultValue": "",
+          "type": "String",
+          "metadata": {
+            "schemaName": "g5_g5_EmailProva"
+          }
+        },
+        "g5_EmailCommerciale (g5_EmailCommerciale)": {
+          "defaultValue": "",
+          "type": "String",
+          "metadata": {
+            "schemaName": "g5_EmailCommerciale"
+          }
+        },
+        "g5_ModalitaProva (g5_ModalitaProva)": {
+          "defaultValue": true,
+          "type": "Bool",
+          "metadata": {
+            "schemaName": "g5_ModalitaProva"
+          }
+        },
+        "g5_GiorniPreavviso (g5_GiorniPreavviso)": {
+          "defaultValue": 7,
+          "type": "Int",
+          "metadata": {
+            "schemaName": "g5_GiorniPreavviso"
+          }
+        }
+      },
+      "triggers": {
+        "Ricorrenza": {
+          "type": "Recurrence",
+          "recurrence": {
+            "frequency": "Day",
+            "interval": 1,
+            "timeZone": "W. Europe Standard Time",
+            "schedule": {
+              "hours": [
+                "8"
+              ],
+              "minutes": [
+                0
+              ]
+            }
+          }
+        }
+      },
+      "actions": {
+        "Inizializza_rate": {
+          "type": "InitializeVariable",
+          "inputs": {
+            "variables": [
+              {
+                "name": "Rate",
+                "type": "array",
+                "value": []
+              }
+            ]
+          },
+          "runAfter": {}
+        },
+        "Principale": {
+          "type": "Scope",
+          "actions": {
+            "Edizione_corrente": {
+              "type": "OpenApiConnection",
+              "inputs": {
+                "host": {
+                  "connectionName": "shared_commondataserviceforapps",
+                  "operationId": "ListRecords",
+                  "apiId": "/providers/Microsoft.PowerApps/apis/shared_commondataserviceforapps"
+                },
+                "parameters": {
+                  "entityName": "g5_edizioni",
+                  "$filter": "g5_anno eq '@{formatDateTime(convertFromUtc(utcNow(),'W. Europe Standard Time'),'yyyy')}'",
+                  "$top": 1
+                },
+                "authentication": "@parameters('$authentication')"
+              },
+              "runAfter": {}
+            },
+            "Contratti_da_controllare": {
+              "type": "OpenApiConnection",
+              "inputs": {
+                "host": {
+                  "connectionName": "shared_commondataserviceforapps",
+                  "operationId": "ListRecords",
+                  "apiId": "/providers/Microsoft.PowerApps/apis/shared_commondataserviceforapps"
+                },
+                "parameters": {
+                  "entityName": "g5_contratti",
+                  "$filter": "g5_stato eq 122540001 and _g5_edizione_value eq @{first(outputs('Edizione_corrente')?['body/value'])?['g5_edizioneid']} and (g5_acconto_pagato_il eq null or g5_saldo_pagato_il eq null)"
+                },
+                "authentication": "@parameters('$authentication')"
+              },
+              "runAfter": {
+                "Edizione_corrente": [
+                  "Succeeded"
+                ]
+              },
+              "runtimeConfiguration": {
+                "paginationPolicy": {
+                  "minimumItemCount": 5000
+                }
+              }
+            },
+            "Per_ogni_contratto": {
+              "type": "Foreach",
+              "foreach": "@outputs('Contratti_da_controllare')?['body/value']",
+              "actions": {
+                "Leggi_espositore": {
+                  "type": "OpenApiConnection",
+                  "inputs": {
+                    "host": {
+                      "connectionName": "shared_commondataserviceforapps",
+                      "operationId": "GetItem",
+                      "apiId": "/providers/Microsoft.PowerApps/apis/shared_commondataserviceforapps"
+                    },
+                    "parameters": {
+                      "entityName": "g5_espositori",
+                      "recordId": "@items('Per_ogni_contratto')?['_g5_espositore_value']"
+                    },
+                    "authentication": "@parameters('$authentication')"
+                  },
+                  "runAfter": {}
+                },
+                "Rate_contratto": {
+                  "type": "Compose",
+                  "inputs": "@createArray(json(concat('{\"rata\":\"Acconto (30%)\",\"scadenza\":\"', coalesce(items('Per_ogni_contratto')?['g5_acconto_scadenza'],'9999-12-31'), '\",\"pagato\":\"', coalesce(items('Per_ogni_contratto')?['g5_acconto_pagato_il'],''), '\",\"importo\":', string(mul(float(coalesce(items('Per_ogni_contratto')?['g5_imponibile'],0)),0.3)), '}')),json(concat('{\"rata\":\"Saldo (70%)\",\"scadenza\":\"', coalesce(items('Per_ogni_contratto')?['g5_saldo_scadenza'],'9999-12-31'), '\",\"pagato\":\"', coalesce(items('Per_ogni_contratto')?['g5_saldo_pagato_il'],''), '\",\"importo\":', string(mul(float(coalesce(items('Per_ogni_contratto')?['g5_imponibile'],0)),0.7)), '}')))",
+                  "runAfter": {
+                    "Leggi_espositore": [
+                      "Succeeded"
+                    ]
+                  }
+                },
+                "Rate_da_avvisare": {
+                  "type": "Query",
+                  "inputs": {
+                    "from": "@outputs('Rate_contratto')",
+                    "where": "@and(empty(item()?['pagato']),lessOrEquals(ticks(item()?['scadenza']),ticks(addDays(utcNow(),int(string(parameters('g5_GiorniPreavviso (g5_GiorniPreavviso)')))))))"
+                  },
+                  "runAfter": {
+                    "Rate_contratto": [
+                      "Succeeded"
+                    ]
+                  }
+                },
+                "Per_ogni_rata": {
+                  "type": "Foreach",
+                  "foreach": "@body('Rate_da_avvisare')",
+                  "actions": {
+                    "Stato_rata": {
+                      "type": "Compose",
+                      "inputs": "@if(less(ticks(item()?['scadenza']),ticks(startOfDay(utcNow()))),'scaduta','in scadenza')",
+                      "runAfter": {}
+                    },
+                    "Email_promemoria": {
+                      "type": "OpenApiConnection",
+                      "inputs": {
+                        "host": {
+                          "connectionName": "shared_office365",
+                          "operationId": "SendEmailV2",
+                          "apiId": "/providers/Microsoft.PowerApps/apis/shared_office365"
+                        },
+                        "parameters": {
+                          "emailMessage/To": "@{if(or(or(equals(toLower(string(parameters('g5_ModalitaProva (g5_ModalitaProva)'))),'true'),equals(toLower(string(parameters('g5_ModalitaProva (g5_ModalitaProva)'))),'yes')),empty(outputs('Leggi_espositore')?['body/g5_email_referente'])),parameters('g5_EmailProva (g5_g5_EmailProva)'),outputs('Leggi_espositore')?['body/g5_email_referente'])}",
+                          "emailMessage/Subject": "@{if(or(equals(toLower(string(parameters('g5_ModalitaProva (g5_ModalitaProva)'))),'true'),equals(toLower(string(parameters('g5_ModalitaProva (g5_ModalitaProva)'))),'yes')),'[PROVA] ','')}ARCADE Milano – @{if(equals(outputs('Stato_rata'),'scaduta'),'Sollecito di pagamento','Promemoria di pagamento')} – contratto @{items('Per_ogni_contratto')?['g5_id_contratto']}",
+                          "emailMessage/Body": "<p>Gentile @{outputs('Leggi_espositore')?['body/g5_referente']},</p><p>@{if(equals(outputs('Stato_rata'),'scaduta'),'risulta non ancora pagata la seguente rata, già scaduta:','le ricordiamo la prossima scadenza di pagamento:')}</p><ul><li>Contratto: <b>@{items('Per_ogni_contratto')?['g5_id_contratto']}</b></li><li>Stand: @{items('Per_ogni_contratto')?['_g5_stand_value@OData.Community.Display.V1.FormattedValue']}</li><li>Rata: @{item()?['rata']}</li><li>Importo: <b>€ @{formatNumber(float(coalesce(item()?['importo'],0)),'N2','it-IT')}</b></li><li>Scadenza: <b>@{formatDateTime(item()?['scadenza'],'dd/MM/yyyy')}</b></li></ul><p>Se ha già effettuato il pagamento, ignori questo messaggio.</p><p>Cordiali saluti,<br>Ufficio commerciale ARCADE Milano</p>",
+                          "emailMessage/Importance": "Normal"
+                        },
+                        "authentication": "@parameters('$authentication')"
+                      },
+                      "runAfter": {
+                        "Stato_rata": [
+                          "Succeeded"
+                        ]
+                      }
+                    },
+                    "Aggiungi_al_riepilogo": {
+                      "type": "AppendToArrayVariable",
+                      "inputs": {
+                        "name": "Rate",
+                        "value": {
+                          "Contratto": "@{items('Per_ogni_contratto')?['g5_id_contratto']}",
+                          "Espositore": "@{outputs('Leggi_espositore')?['body/g5_ragione_sociale']}",
+                          "Stand": "@{items('Per_ogni_contratto')?['_g5_stand_value@OData.Community.Display.V1.FormattedValue']}",
+                          "Rata": "@{item()?['rata']}",
+                          "Importo €": "@{formatNumber(float(coalesce(item()?['importo'],0)),'N2','it-IT')}",
+                          "Scadenza": "@{formatDateTime(item()?['scadenza'],'dd/MM/yyyy')}",
+                          "Stato": "@{outputs('Stato_rata')}"
+                        }
+                      },
+                      "runAfter": {
+                        "Email_promemoria": [
+                          "Succeeded"
+                        ]
+                      }
+                    }
+                  },
+                  "runAfter": {
+                    "Rate_da_avvisare": [
+                      "Succeeded"
+                    ]
+                  },
+                  "runtimeConfiguration": {
+                    "concurrency": {
+                      "repetitions": 1
+                    }
+                  }
+                }
+              },
+              "runAfter": {
+                "Contratti_da_controllare": [
+                  "Succeeded"
+                ]
+              },
+              "runtimeConfiguration": {
+                "concurrency": {
+                  "repetitions": 1
+                }
+              }
+            },
+            "Se_ci_sono_rate": {
+              "type": "If",
+              "expression": {
+                "greater": [
+                  "@length(variables('Rate'))",
+                  0
+                ]
+              },
+              "actions": {
+                "Tabella_riepilogo": {
+                  "type": "Table",
+                  "inputs": {
+                    "from": "@variables('Rate')",
+                    "format": "HTML"
+                  },
+                  "runAfter": {}
+                },
+                "Riepilogo_al_commerciale": {
+                  "type": "OpenApiConnection",
+                  "inputs": {
+                    "host": {
+                      "connectionName": "shared_office365",
+                      "operationId": "SendEmailV2",
+                      "apiId": "/providers/Microsoft.PowerApps/apis/shared_office365"
+                    },
+                    "parameters": {
+                      "emailMessage/To": "@{parameters('g5_EmailCommerciale (g5_EmailCommerciale)')}",
+                      "emailMessage/Subject": "@{if(or(equals(toLower(string(parameters('g5_ModalitaProva (g5_ModalitaProva)'))),'true'),equals(toLower(string(parameters('g5_ModalitaProva (g5_ModalitaProva)'))),'yes')),'[PROVA] ','')}ARCADE – Scadenze di pagamento del @{formatDateTime(convertFromUtc(utcNow(),'W. Europe Standard Time'),'dd/MM/yyyy')}",
+                      "emailMessage/Body": "<style>table{border-collapse:collapse}th,td{border:1px solid #ccc;padding:4px 8px;font-family:Segoe UI,Arial;font-size:13px}th{background:#f2f2f2}</style><p>Rate in scadenza o scadute dei contratti firmati dell'edizione in corso:</p>@{if(empty(variables('Rate')),'<p>Nessuna rata in scadenza o scaduta.</p>',body('Tabella_riepilogo'))}",
+                      "emailMessage/Importance": "Normal"
+                    },
+                    "authentication": "@parameters('$authentication')"
+                  },
+                  "runAfter": {
+                    "Tabella_riepilogo": [
+                      "Succeeded"
+                    ]
+                  }
+                }
+              },
+              "else": {
+                "actions": {}
+              },
+              "runAfter": {
+                "Per_ogni_contratto": [
+                  "Succeeded"
+                ]
+              }
+            }
+          },
+          "runAfter": {
+            "Inizializza_rate": [
+              "Succeeded"
+            ]
+          }
+        },
+        "Avviso_errore": {
+          "type": "OpenApiConnection",
+          "inputs": {
+            "host": {
+              "connectionName": "shared_office365",
+              "operationId": "SendEmailV2",
+              "apiId": "/providers/Microsoft.PowerApps/apis/shared_office365"
+            },
+            "parameters": {
+              "emailMessage/To": "@{parameters('g5_EmailProva (g5_g5_EmailProva)')}",
+              "emailMessage/Subject": "ERRORE FL-01",
+              "emailMessage/Body": "<p>Il flusso <b>@{workflow()?['tags']?['flowDisplayName']}</b> è andato in errore.</p><p>Esecuzione: @{workflow()?['run']?['name']}</p><pre>@{string(result('Principale'))}</pre>",
+              "emailMessage/Importance": "Normal"
+            },
+            "authentication": "@parameters('$authentication')"
+          },
+          "runAfter": {
+            "Principale": [
+              "Failed",
+              "TimedOut"
+            ]
+          }
+        }
+      }
+    },
+    "templateName": null
+  },
+  "schemaVersion": "1.0.0.0"
+}

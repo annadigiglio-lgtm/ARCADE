@@ -1,0 +1,44 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<savedqueries xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <savedquery>
+    <IsCustomizable>1</IsCustomizable>
+    <CanBeDeleted>0</CanBeDeleted>
+    <isquickfindquery>0</isquickfindquery>
+    <isprivate>0</isprivate>
+    <isdefault>1</isdefault>
+    <savedqueryid>{f0126d28-64dd-4381-bd26-5c098322b30a}</savedqueryid>
+    <layoutxml>
+      <grid name="g5_stands" jump="g5_codice_stand" select="1" icon="1" preview="1">
+        <row name="g5_stand" id="g5_standid">
+          <cell name="g5_codice_stand" width="300" />
+          <cell name="g5_padiglione" width="150" />
+          <cell name="g5_mq" width="150" />
+          <cell name="g5_posizione" width="150" />
+          <cell name="g5_attivo_dal" width="150" />
+        </row>
+      </grid>
+    </layoutxml>
+    <querytype>2</querytype>
+    <fetchxml>
+      <fetch version="1.0" mapping="logical">
+        <entity name="g5_stand">
+          <attribute name="g5_standid" />
+          <attribute name="g5_codice_stand" />
+          <attribute name="createdon" />
+          <attribute name="g5_padiglione" />
+          <attribute name="g5_mq" />
+          <attribute name="g5_posizione" />
+          <attribute name="g5_attivo_dal" />
+          <order attribute="g5_codice_stand" descending="false" />
+          <filter type="and">
+            <condition attribute="statecode" operator="eq" value="0" />
+          </filter>
+        </entity>
+      </fetch>
+    </fetchxml>
+    <IntroducedVersion>1.0.0.0</IntroducedVersion>
+    <LocalizedNames>
+      <LocalizedName description="Visualizzazione associata Stand" languagecode="1040" />
+    </LocalizedNames>
+  </savedquery>
+</savedqueries>

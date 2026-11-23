@@ -18,3 +18,8 @@ Dubbi che solo il cliente può sciogliere. Quando arriva la risposta, scriverla 
 | D12 | Nelle visite agli stand un'ora mancante vale 0 scansioni? (A27) | Conteggio visite | aperta | |
 | D13 | Perché 26 stand venduti nel 2025 non hanno visite né contatti? Non avevano lo scanner? | Costo per contatto, portale espositori | aperta | |
 | D14 | Che orario di apertura e chiusura ha la fiera? (ingressi fino alle 17:30, contatti fino alle 18:50) | Modello delle presenze | aperta | |
+| D15 | Chi usa l'app di scansione allo stand (espositore o staff) e cosa si scansiona (biglietto, badge o solo un conteggio)? | App di scansione (BAD) | aperta | |
+| D16 | Un contratto nasce come preventivo e diventa firmato: è il vostro processo? Serve un documento firmato? | Back-office (BAD) | aperta | |
+| D17 | Gli sconti sono solo 0, 5, 10, 15 e 20%? | Back-office (BAD) | aperta | |
+| D18 | La disponibilità di extra e sponsorizzazioni del listino vale per tutta l'edizione? | Back-office (BAD) | aperta | |
+| D19 | Quali email possiamo mandare agli espositori (preventivo, conferma, solleciti, rinnovo) e con quale mittente? | Flussi Power Automate (BAD) | aperta | |

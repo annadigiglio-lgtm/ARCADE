@@ -1,0 +1,96 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.0.0/schema.json",
+  "name": "v07_ore",
+  "position": {
+    "x": 340,
+    "y": 20,
+    "z": 0,
+    "width": 920,
+    "height": 330,
+    "tabOrder": 0
+  },
+  "visual": {
+    "visualType": "clusteredColumnChart",
+    "query": {
+      "queryState": {
+        "Category": {
+          "projections": [
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Visite stand"
+                    }
+                  },
+                  "Property": "ora_del_giorno"
+                }
+              },
+              "queryRef": "Visite stand.ora_del_giorno",
+              "nativeQueryRef": "ora_del_giorno"
+            }
+          ]
+        },
+        "Y": {
+          "projections": [
+            {
+              "field": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Visite stand"
+                    }
+                  },
+                  "Property": "Visite agli stand"
+                }
+              },
+              "queryRef": "Visite stand.Visite agli stand",
+              "nativeQueryRef": "Visite agli stand"
+            }
+          ]
+        },
+        "Series": {
+          "projections": [
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Visite stand"
+                    }
+                  },
+                  "Property": "padiglione"
+                }
+              },
+              "queryRef": "Visite stand.padiglione",
+              "nativeQueryRef": "padiglione"
+            }
+          ]
+        }
+      }
+    },
+    "drillFilterOtherVisuals": true,
+    "visualContainerObjects": {
+      "title": [
+        {
+          "properties": {
+            "show": {
+              "expr": {
+                "Literal": {
+                  "Value": "true"
+                }
+              }
+            },
+            "text": {
+              "expr": {
+                "Literal": {
+                  "Value": "'Visite agli stand per ora del giorno'"
+                }
+              }
+            }
+          }
+        }
+      ]
+    }
+  }
+}

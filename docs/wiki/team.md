@@ -39,6 +39,19 @@ Per installare e avviare il progetto sui PC di Yassin e Daniel:
 
 Vedi [architettura.md](architettura.md) per lo schema completo.
 
+## Divisione interna BAD
+
+Team leader BAD: Alessandro Terlingo.
+
+| Area | Responsabile | Contenuto |
+| ---- | ------------ | --------- |
+| Power Apps | Alessandro, Lorenzo | Dataverse e soluzione, app back-office commerciale, app di scansione allo stand |
+| Power Automate | Adam | Flussi della soluzione ([elenco](../../power-platform/power-automate/README.md)) |
+| Power BI | Cristian, Yenje | Report per la direzione, letto da PostgreSQL ([pagine](../../power-platform/powerbi/README.md)) |
+| Sincronizzazione con BID | Alessandro (con Anna) | Export dei dati commerciali verso PostgreSQL |
+
+Stato della parte BAD: [power-platform.md](power-platform.md).
+
 ## Divisione interna BID
 
 | Area      | Responsabile | Contenuto                                                         |

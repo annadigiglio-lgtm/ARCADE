@@ -1,0 +1,503 @@
+# ************************************************************************************************
+# Warning: YAML source code for Canvas Apps should only be used to review changes made within Power Apps Studio and for minor edits (Preview).
+# Use the maker portal to create and edit your Power Apps.
+# 
+# The schema file for Canvas Apps is available at https://go.microsoft.com/fwlink/?linkid=2304907
+# 
+# For more information, visit https://go.microsoft.com/fwlink/?linkid=2292623
+# ************************************************************************************************
+Screens:
+  scrStand:
+    Properties:
+      Fill: =nfSfondo
+      OnVisible: |-
+        =If(IsBlank(locPad), UpdateContext({locPad: "P1"}))
+    Children:
+      - st_recSidebar:
+          Control: Rectangle@2.3.0
+          Properties:
+            AccessibleLabel: ="Elemento grafico"
+            Fill: =nfBlu
+            Height: =768
+            Width: =220
+      - st_lblLogo:
+          Control: Label@2.5.1
+          Properties:
+            Color: =Color.White
+            FocusedBorderThickness: =2
+            Font: =nfFont
+            FontWeight: =FontWeight.Semibold
+            Height: =36
+            Size: =20
+            Text: ="ARCADE"
+            Width: =172
+            X: =24
+            Y: =24
+      - st_lblLogoSub:
+          Control: Label@2.5.1
+          Properties:
+            Color: =ColorValue("#94A3B8")
+            FocusedBorderThickness: =2
+            Font: =nfFont
+            Height: =20
+            Size: =10
+            Text: ="Back-office commerciale"
+            Width: =172
+            X: =24
+            Y: =58
+      - st_recSep:
+          Control: Rectangle@2.3.0
+          Properties:
+            AccessibleLabel: ="Elemento grafico"
+            Fill: =nfBlu2
+            Height: =1
+            Width: =172
+            X: =24
+            Y: =96
+      - st_btnNavHome:
+          Control: Classic/Button@2.2.0
+          Properties:
+            Align: =Align.Left
+            BorderThickness: =0
+            Color: =Color.White
+            DisabledColor: =ColorValue("#64748B")
+            DisabledFill: =nfBlu
+            Fill: =nfBlu
+            Font: =nfFont
+            HoverColor: =Color.White
+            HoverFill: =ColorFade(nfBlu, -10%)
+            OnSelect: =Navigate(scrHome, ScreenTransition.None)
+            PaddingLeft: =16
+            PressedFill: =ColorFade(nfBlu, -20%)
+            RadiusBottomLeft: =8
+            RadiusBottomRight: =8
+            RadiusTopLeft: =8
+            RadiusTopRight: =8
+            Size: =12
+            Text: ="Panoramica"
+            Width: =196
+            X: =12
+            Y: =116
+      - st_btnNavStand:
+          Control: Classic/Button@2.2.0
+          Properties:
+            Align: =Align.Left
+            BorderThickness: =0
+            Color: =Color.White
+            DisabledColor: =ColorValue("#64748B")
+            DisabledFill: =nfBlu
+            Fill: =nfAccento
+            Font: =nfFont
+            HoverColor: =Color.White
+            HoverFill: =ColorFade(nfAccento, -10%)
+            OnSelect: =Navigate(scrStand, ScreenTransition.None)
+            PaddingLeft: =16
+            PressedFill: =ColorFade(nfAccento, -20%)
+            RadiusBottomLeft: =8
+            RadiusBottomRight: =8
+            RadiusTopLeft: =8
+            RadiusTopRight: =8
+            Size: =12
+            Text: ="Planimetria stand"
+            Width: =196
+            X: =12
+            Y: =164
+      - st_btnNavEspositori:
+          Control: Classic/Button@2.2.0
+          Properties:
+            Align: =Align.Left
+            BorderThickness: =0
+            Color: =Color.White
+            DisabledColor: =ColorValue("#64748B")
+            DisabledFill: =nfBlu
+            Fill: =nfBlu
+            Font: =nfFont
+            HoverColor: =Color.White
+            HoverFill: =ColorFade(nfBlu, -10%)
+            OnSelect: =Navigate(scrEspositori, ScreenTransition.None)
+            PaddingLeft: =16
+            PressedFill: =ColorFade(nfBlu, -20%)
+            RadiusBottomLeft: =8
+            RadiusBottomRight: =8
+            RadiusTopLeft: =8
+            RadiusTopRight: =8
+            Size: =12
+            Text: ="Espositori"
+            Width: =196
+            X: =12
+            Y: =212
+      - st_btnNavContratti:
+          Control: Classic/Button@2.2.0
+          Properties:
+            Align: =Align.Left
+            BorderThickness: =0
+            Color: =Color.White
+            DisabledColor: =ColorValue("#64748B")
+            DisabledFill: =nfBlu
+            Fill: =nfBlu
+            Font: =nfFont
+            HoverColor: =Color.White
+            HoverFill: =ColorFade(nfBlu, -10%)
+            OnSelect: =Navigate(scrContratti, ScreenTransition.None)
+            PaddingLeft: =16
+            PressedFill: =ColorFade(nfBlu, -20%)
+            RadiusBottomLeft: =8
+            RadiusBottomRight: =8
+            RadiusTopLeft: =8
+            RadiusTopRight: =8
+            Size: =12
+            Text: ="Contratti"
+            Width: =196
+            X: =12
+            Y: =260
+      - st_btnNavNuovo:
+          Control: Classic/Button@2.2.0
+          Properties:
+            Align: =Align.Left
+            BorderThickness: =0
+            Color: =Color.White
+            DisabledColor: =ColorValue("#64748B")
+            DisabledFill: =nfBlu
+            Fill: =nfBlu
+            Font: =nfFont
+            HoverColor: =Color.White
+            HoverFill: =ColorFade(nfBlu, -10%)
+            OnSelect: =Navigate(scrNuovo, ScreenTransition.None)
+            PaddingLeft: =16
+            PressedFill: =ColorFade(nfBlu, -20%)
+            RadiusBottomLeft: =8
+            RadiusBottomRight: =8
+            RadiusTopLeft: =8
+            RadiusTopRight: =8
+            Size: =12
+            Text: ="Nuovo contratto"
+            Width: =196
+            X: =12
+            Y: =308
+      - st_btnNavScadenze:
+          Control: Classic/Button@2.2.0
+          Properties:
+            Align: =Align.Left
+            BorderThickness: =0
+            Color: =Color.White
+            DisabledColor: =ColorValue("#64748B")
+            DisabledFill: =nfBlu
+            Fill: =nfBlu
+            Font: =nfFont
+            HoverColor: =Color.White
+            HoverFill: =ColorFade(nfBlu, -10%)
+            OnSelect: =Navigate(scrScadenze, ScreenTransition.None)
+            PaddingLeft: =16
+            PressedFill: =ColorFade(nfBlu, -20%)
+            RadiusBottomLeft: =8
+            RadiusBottomRight: =8
+            RadiusTopLeft: =8
+            RadiusTopRight: =8
+            Size: =12
+            Text: ="Scadenze e incassi"
+            Width: =196
+            X: =12
+            Y: =356
+      - st_btnNavRinnovi:
+          Control: Classic/Button@2.2.0
+          Properties:
+            Align: =Align.Left
+            BorderThickness: =0
+            Color: =Color.White
+            DisabledColor: =ColorValue("#64748B")
+            DisabledFill: =nfBlu
+            Fill: =nfBlu
+            Font: =nfFont
+            HoverColor: =Color.White
+            HoverFill: =ColorFade(nfBlu, -10%)
+            OnSelect: =Navigate(scrRinnovi, ScreenTransition.None)
+            PaddingLeft: =16
+            PressedFill: =ColorFade(nfBlu, -20%)
+            RadiusBottomLeft: =8
+            RadiusBottomRight: =8
+            RadiusTopLeft: =8
+            RadiusTopRight: =8
+            Size: =12
+            Text: ="Rinnovi e prelazione"
+            Width: =196
+            X: =12
+            Y: =404
+      - st_btnNavListino:
+          Control: Classic/Button@2.2.0
+          Properties:
+            Align: =Align.Left
+            BorderThickness: =0
+            Color: =Color.White
+            DisabledColor: =ColorValue("#64748B")
+            DisabledFill: =nfBlu
+            Fill: =nfBlu
+            Font: =nfFont
+            HoverColor: =Color.White
+            HoverFill: =ColorFade(nfBlu, -10%)
+            OnSelect: =Navigate(scrListino, ScreenTransition.None)
+            PaddingLeft: =16
+            PressedFill: =ColorFade(nfBlu, -20%)
+            RadiusBottomLeft: =8
+            RadiusBottomRight: =8
+            RadiusTopLeft: =8
+            RadiusTopRight: =8
+            Size: =12
+            Text: ="Listino 2026"
+            Width: =196
+            X: =12
+            Y: =452
+      - st_btnNavControlli:
+          Control: Classic/Button@2.2.0
+          Properties:
+            Align: =Align.Left
+            BorderThickness: =0
+            Color: =Color.White
+            DisabledColor: =ColorValue("#64748B")
+            DisabledFill: =nfBlu
+            Fill: =nfBlu
+            Font: =nfFont
+            HoverColor: =Color.White
+            HoverFill: =ColorFade(nfBlu, -10%)
+            OnSelect: =Navigate(scrControlli, ScreenTransition.None)
+            PaddingLeft: =16
+            PressedFill: =ColorFade(nfBlu, -20%)
+            RadiusBottomLeft: =8
+            RadiusBottomRight: =8
+            RadiusTopLeft: =8
+            RadiusTopRight: =8
+            Size: =12
+            Text: ="Controlli dati"
+            Width: =196
+            X: =12
+            Y: =500
+      - st_lblUtente:
+          Control: Label@2.5.1
+          Properties:
+            Color: =Color.White
+            FocusedBorderThickness: =2
+            Font: =nfFont
+            Height: =20
+            Size: =10
+            Text: =User().FullName
+            Width: =172
+            X: =24
+            Y: =712
+      - st_lblEdizioneSide:
+          Control: Label@2.5.1
+          Properties:
+            Color: =ColorValue("#94A3B8")
+            FocusedBorderThickness: =2
+            Font: =nfFont
+            Height: =18
+            Size: =9
+            Text: ="Edizione " & gblAnno
+            Width: =172
+            X: =24
+            Y: =734
+      - st_lblTitolo:
+          Control: Label@2.5.1
+          Properties:
+            Color: =nfTesto
+            FocusedBorderThickness: =2
+            Font: =nfFont
+            FontWeight: =FontWeight.Semibold
+            Size: =22
+            Text: ="Planimetria stand"
+            Width: =700
+            X: =248
+            Y: =18
+      - st_lblSottotitolo:
+          Control: Label@2.5.1
+          Properties:
+            Color: =nfTestoSec
+            FocusedBorderThickness: =2
+            Font: =nfFont
+            Height: =22
+            Size: =11
+            Text: ="Edizione " & gblAnno & " · libero o venduto calcolato dai contratti non annullati"
+            Width: =800
+            X: =248
+            Y: =56
+      - st_btnPadP1:
+          Control: Classic/Button@2.2.0
+          Properties:
+            BorderColor: =nfBordo
+            BorderThickness: =1
+            Color: =If(locPad = "P1", Color.White, nfTesto)
+            Fill: =If(locPad = "P1", nfAccento, nfCard)
+            Font: =nfFont
+            HoverColor: =If(locPad = "P1", Color.White, nfTesto)
+            HoverFill: =ColorFade(If(locPad = "P1", nfAccento, nfCard), -10%)
+            OnSelect: |-
+              =UpdateContext({locPad: "P1"})
+            PressedFill: =ColorFade(If(locPad = "P1", nfAccento, nfCard), -20%)
+            RadiusBottomLeft: =8
+            RadiusBottomRight: =8
+            RadiusTopLeft: =8
+            RadiusTopRight: =8
+            Size: =12
+            Text: =LookUp(Padiglioni, Codice = "P1").Nome
+            Width: =200
+            X: =248
+            Y: =96
+      - st_btnPadP2:
+          Control: Classic/Button@2.2.0
+          Properties:
+            BorderColor: =nfBordo
+            BorderThickness: =1
+            Color: =If(locPad = "P2", Color.White, nfTesto)
+            Fill: =If(locPad = "P2", nfAccento, nfCard)
+            Font: =nfFont
+            HoverColor: =If(locPad = "P2", Color.White, nfTesto)
+            HoverFill: =ColorFade(If(locPad = "P2", nfAccento, nfCard), -10%)
+            OnSelect: |-
+              =UpdateContext({locPad: "P2"})
+            PressedFill: =ColorFade(If(locPad = "P2", nfAccento, nfCard), -20%)
+            RadiusBottomLeft: =8
+            RadiusBottomRight: =8
+            RadiusTopLeft: =8
+            RadiusTopRight: =8
+            Size: =12
+            Text: =LookUp(Padiglioni, Codice = "P2").Nome
+            Width: =200
+            X: =460
+            Y: =96
+      - st_btnPadP3:
+          Control: Classic/Button@2.2.0
+          Properties:
+            BorderColor: =nfBordo
+            BorderThickness: =1
+            Color: =If(locPad = "P3", Color.White, nfTesto)
+            Fill: =If(locPad = "P3", nfAccento, nfCard)
+            Font: =nfFont
+            HoverColor: =If(locPad = "P3", Color.White, nfTesto)
+            HoverFill: =ColorFade(If(locPad = "P3", nfAccento, nfCard), -10%)
+            OnSelect: |-
+              =UpdateContext({locPad: "P3"})
+            PressedFill: =ColorFade(If(locPad = "P3", nfAccento, nfCard), -20%)
+            RadiusBottomLeft: =8
+            RadiusBottomRight: =8
+            RadiusTopLeft: =8
+            RadiusTopRight: =8
+            Size: =12
+            Text: =LookUp(Padiglioni, Codice = "P3").Nome
+            Width: =200
+            X: =672
+            Y: =96
+      - st_recLegLib:
+          Control: Rectangle@2.3.0
+          Properties:
+            AccessibleLabel: ="Elemento grafico"
+            Fill: =nfVerde
+            Height: =12
+            Width: =12
+            X: =900
+            Y: =110
+      - st_lblLegLib:
+          Control: Label@2.5.1
+          Properties:
+            Color: =nfTesto
+            FocusedBorderThickness: =2
+            Font: =nfFont
+            Height: =32
+            Size: =11
+            Text: ="Liberi " & (CountRows(Sort(Filter(colStand, CodPad = locPad && AnnoAtt <= Value(gblAnno)), 'Codice stand')) - CountRows(Filter(colContratti, AnnoEd = gblAnno && Left(CodStand, 2) = locPad && StatoTxt <> "annullato")))
+            Width: =110
+            X: =918
+            Y: =100
+      - st_recLegVen:
+          Control: Rectangle@2.3.0
+          Properties:
+            AccessibleLabel: ="Elemento grafico"
+            Fill: =nfRosso
+            Height: =12
+            Width: =12
+            X: =1034
+            Y: =110
+      - st_lblLegVen:
+          Control: Label@2.5.1
+          Properties:
+            Color: =nfTesto
+            FocusedBorderThickness: =2
+            Font: =nfFont
+            Height: =32
+            Size: =11
+            Text: ="Venduti " & CountRows(Filter(colContratti, AnnoEd = gblAnno && Left(CodStand, 2) = locPad && StatoTxt <> "annullato"))
+            Width: =110
+            X: =1052
+            Y: =100
+      - st_lblLegTot:
+          Control: Label@2.5.1
+          Properties:
+            Align: =Align.Right
+            Color: =nfTestoSec
+            FocusedBorderThickness: =2
+            Font: =nfFont
+            Height: =32
+            Size: =11
+            Text: ="Totale " & CountRows(Sort(Filter(colStand, CodPad = locPad && AnnoAtt <= Value(gblAnno)), 'Codice stand'))
+            Width: =160
+            X: =1166
+            Y: =100
+      - st_galStand:
+          Control: Gallery@2.15.0
+          Variant: BrowseLayout_Vertical_TwoTextOneImageVariant_ver5.0
+          Properties:
+            AccessibleLabel: ="Planimetria degli stand"
+            Height: =600
+            Items: =Sort(Filter(colStand, CodPad = locPad && AnnoAtt <= Value(gblAnno)), 'Codice stand')
+            TabIndex: =0
+            TemplateSize: =100
+            Width: =1094
+            WrapCount: =6
+            X: =248
+            Y: =152
+          Children:
+            - st_recCard:
+                Control: Rectangle@2.3.0
+                Properties:
+                  AccessibleLabel: ="Elemento grafico"
+                  BorderColor: =If(IsBlank(LookUp(colContratti, AnnoEd = gblAnno && CodStand = ThisItem.'Codice stand' && StatoTxt <> "annullato")), nfVerde, nfRosso)
+                  BorderThickness: =1
+                  Fill: =If(IsBlank(LookUp(colContratti, AnnoEd = gblAnno && CodStand = ThisItem.'Codice stand' && StatoTxt <> "annullato")), nfVerdeChiaro, nfRossoChiaro)
+                  Height: =Parent.TemplateHeight - 12
+                  Width: =Parent.TemplateWidth - 12
+                  X: =6
+                  Y: =6
+            - st_lblCod:
+                Control: Label@2.5.1
+                Properties:
+                  Color: =nfTesto
+                  FocusedBorderThickness: =2
+                  Font: =nfFont
+                  FontWeight: =FontWeight.Semibold
+                  Height: =24
+                  Text: =ThisItem.'Codice stand'
+                  Width: =Parent.TemplateWidth - 32
+                  X: =16
+                  Y: =12
+            - st_lblMq:
+                Control: Label@2.5.1
+                Properties:
+                  Color: =nfTestoSec
+                  FocusedBorderThickness: =2
+                  Font: =nfFont
+                  Height: =20
+                  Size: =10
+                  Text: =Text(ThisItem.'Metri quadri') & " m² · " & ThisItem.PosTxt
+                  Width: =Parent.TemplateWidth - 32
+                  X: =16
+                  Y: =36
+            - st_lblStato:
+                Control: Label@2.5.1
+                Properties:
+                  Color: =If(IsBlank(LookUp(colContratti, AnnoEd = gblAnno && CodStand = ThisItem.'Codice stand' && StatoTxt <> "annullato")), nfVerde, nfRosso)
+                  FocusedBorderThickness: =2
+                  Font: =nfFont
+                  FontWeight: =FontWeight.Semibold
+                  Height: =22
+                  Size: =10
+                  Text: =If(IsBlank(LookUp(colContratti, AnnoEd = gblAnno && CodStand = ThisItem.'Codice stand' && StatoTxt <> "annullato")), "Libero", LookUp(colContratti, AnnoEd = gblAnno && CodStand = ThisItem.'Codice stand' && StatoTxt <> "annullato").RagSoc)
+                  Width: =Parent.TemplateWidth - 32
+                  X: =16
+                  Y: =62

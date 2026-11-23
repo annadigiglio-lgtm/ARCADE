@@ -1,0 +1,34 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<CanvasApp xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <Name>g5_fusionworkbackofficecommerciale_a52c0</Name>
+  <AppVersion>2026-11-04T16:23:38Z</AppVersion>
+  <Status>Ready</Status>
+  <CreatedByClientVersion>3.26104.17.0</CreatedByClientVersion>
+  <MinClientVersion>3.26104.17.0</MinClientVersion>
+  <Tags>{"primaryDeviceWidth":"1366","primaryDeviceHeight":"768","supportsPortrait":"true","supportsLandscape":"true","primaryFormFactor":"Tablet","showStatusBar":"false","publisherVersion":"3.26104.17","minimumRequiredApiVersion":"2.2.0","hasComponent":"false","hasUnlockedComponent":"false","isUnifiedRootApp":"false","m365CopilotSettingValue":"0"}</Tags>
+  <IsCdsUpgraded>0</IsCdsUpgraded>
+  <GalleryItemId xsi:nil="true"></GalleryItemId>
+  <BackgroundColor>RGBA(0,176,240,1)</BackgroundColor>
+  <DisplayName>FUSIONWORK-BACKOFFICE Commerciale</DisplayName>
+  <Description xsi:nil="true"></Description>
+  <CommitMessage xsi:nil="true"></CommitMessage>
+  <Publisher xsi:nil="true"></Publisher>
+  <AuthorizationReferences>[]</AuthorizationReferences>
+  <ConnectionReferences>{}</ConnectionReferences>
+  <DatabaseReferences>{"default.cds":{"databaseDetails":{"referenceType":"Environmental","environmentName":"default.cds","overrideValues":{"status":"NotSpecified","environmentVariableName":""}},"dataSources":{"Contratti":{"entitySetName":"g5_contratti","logicalName":"g5_contratto"},"Edizioni":{"entitySetName":"g5_edizioni","logicalName":"g5_edizione"},"Espositori":{"entitySetName":"g5_espositori","logicalName":"g5_espositore"},"Padiglioni":{"entitySetName":"g5_padiglioni","logicalName":"g5_padiglione"},"Righe contratto":{"entitySetName":"g5_righe_contratto","logicalName":"g5_riga_contratto"},"Stand":{"entitySetName":"g5_stands","logicalName":"g5_stand"},"Voci listino":{"entitySetName":"g5_voci_listino","logicalName":"g5_voce_listino"}}}}</DatabaseReferences>
+  <AppComponents>[]</AppComponents>
+  <AppComponentDependencies>[]</AppComponentDependencies>
+  <CanConsumeAppPass>1</CanConsumeAppPass>
+  <CanvasAppType>0</CanvasAppType>
+  <BypassConsent>0</BypassConsent>
+  <AdminControlBypassConsent>0</AdminControlBypassConsent>
+  <EmbeddedApp xsi:nil="true"></EmbeddedApp>
+  <IntroducedVersion>1.0</IntroducedVersion>
+  <CdsDependencies>{"cdsdependencies":[{"logicalname":"g5_contratto","componenttype":1},{"logicalname":"g5_edizione","componenttype":1},{"logicalname":"g5_espositore","componenttype":1},{"logicalname":"g5_padiglione","componenttype":1},{"logicalname":"g5_riga_contratto","componenttype":1},{"logicalname":"g5_stand","componenttype":1},{"logicalname":"g5_voce_listino","componenttype":1}]}</CdsDependencies>
+  <IsCustomizable>1</IsCustomizable>
+  <BackgroundImageUri>/CanvasApps/g5_fusionworkbackofficecommerciale_a52c0_BackgroundImageUri</BackgroundImageUri>
+  <DocumentUri>/CanvasApps/g5_fusionworkbackofficecommerciale_a52c0_DocumentUri.msapp</DocumentUri>
+  <AdditionalUris>
+    <AdditionalUri>/CanvasApps/g5_fusionworkbackofficecommerciale_a52c0_AdditionalUris0_identity.json</AdditionalUri>
+  </AdditionalUris>
+</CanvasApp>

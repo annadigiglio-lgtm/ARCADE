@@ -1,0 +1,67 @@
+table Edizione
+
+	measure 'Tasso di rinnovo' = MAX(Edizione[tasso_rinnovo])
+		formatString: 0.0%
+
+	measure 'Espositori rinnovati' = SUM(Edizione[espositori_rinnovati])
+		formatString: #,0
+
+	measure 'Espositori persi' = SUM(Edizione[espositori_persi])
+		formatString: #,0
+
+	measure 'Espositori nuovi' = SUM(Edizione[espositori_nuovi])
+		formatString: #,0
+
+	measure 'Espositori attuali' = SUM(Edizione[espositori_attuali])
+		formatString: #,0
+
+	column edizione
+		dataType: string
+		summarizeBy: none
+		sourceColumn: edizione
+
+	column edizione_precedente
+		dataType: string
+		summarizeBy: none
+		sourceColumn: edizione_precedente
+
+	column espositori_precedenti
+		dataType: int64
+		summarizeBy: none
+		sourceColumn: espositori_precedenti
+
+	column espositori_attuali
+		dataType: int64
+		summarizeBy: none
+		sourceColumn: espositori_attuali
+
+	column espositori_rinnovati
+		dataType: int64
+		summarizeBy: none
+		sourceColumn: espositori_rinnovati
+
+	column espositori_persi
+		dataType: int64
+		summarizeBy: none
+		sourceColumn: espositori_persi
+
+	column espositori_nuovi
+		dataType: int64
+		summarizeBy: none
+		sourceColumn: espositori_nuovi
+
+	column tasso_rinnovo
+		dataType: double
+		summarizeBy: none
+		sourceColumn: tasso_rinnovo
+
+	partition Edizione = m
+		mode: import
+		source =
+			let
+			    Origine = PostgreSQL.Database(Server, Database),
+			    Vista = Origine{[Schema="arcade", Item="v_kpi_rinnovo"]}[Data],
+			    Tipi = Table.TransformColumnTypes(Vista, {{"edizione", type text}, {"edizione_precedente", type text}, {"espositori_precedenti", Int64.Type}, {"espositori_attuali", Int64.Type}, {"espositori_rinnovati", Int64.Type}, {"espositori_persi", Int64.Type}, {"espositori_nuovi", Int64.Type}, {"tasso_rinnovo", type number}}),
+			    Colonne = Table.SelectColumns(Tipi, {"edizione", "edizione_precedente", "espositori_precedenti", "espositori_attuali", "espositori_rinnovati", "espositori_persi", "espositori_nuovi", "tasso_rinnovo"})
+			in
+			    Colonne

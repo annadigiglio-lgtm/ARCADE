@@ -1,0 +1,35 @@
+table 'Costo contatto fiera'
+
+	measure 'Costo per contatto' = MAX('Costo contatto fiera'[costo_per_contatto])
+		formatString: #,0 €
+
+	column edizione
+		dataType: string
+		summarizeBy: none
+		sourceColumn: edizione
+
+	column stand_con_contatti
+		dataType: int64
+		summarizeBy: none
+		sourceColumn: stand_con_contatti
+
+	column contatti
+		dataType: double
+		summarizeBy: none
+		sourceColumn: contatti
+
+	column costo_per_contatto
+		dataType: double
+		summarizeBy: none
+		sourceColumn: costo_per_contatto
+
+	partition 'Costo contatto fiera' = m
+		mode: import
+		source =
+			let
+			    Origine = PostgreSQL.Database(Server, Database),
+			    Vista = Origine{[Schema="arcade", Item="v_kpi_costo_contatto_fiera"]}[Data],
+			    Tipi = Table.TransformColumnTypes(Vista, {{"edizione", type text}, {"stand_con_contatti", Int64.Type}, {"contatti", type number}, {"costo_per_contatto", type number}}),
+			    Colonne = Table.SelectColumns(Tipi, {"edizione", "stand_con_contatti", "contatti", "costo_per_contatto"})
+			in
+			    Colonne

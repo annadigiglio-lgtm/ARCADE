@@ -1,0 +1,3 @@
+expression Server = "aws-1-eu-central-1.pooler.supabase.com:5432" meta [IsParameterQuery=true, Type="Text", IsParameterQueryRequired=true]
+
+expression Database = "postgres" meta [IsParameterQuery=true, Type="Text", IsParameterQueryRequired=true]

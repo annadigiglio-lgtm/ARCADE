@@ -217,6 +217,67 @@ forme entro la pagina, SVG e dati del Gantt validi. Nessun cambio ai database.
 **Prossimi passi:** revisione del contenuto con BAD, conferma dei nomi e delle
 date proposte, apertura e verifica visiva del PowerPoint prima dell'esposizione.
 
+## 2026-11-06 — BAD: documentazione nella wiki e piano dei prossimi prodotti
+
+**Chi:** Alessandro (BAD)
+
+**Fatto:**
+
+- Documenti BAD portati nella wiki comune: [power-platform.md](power-platform.md), [analisi-funzionale.md](analisi-funzionale.md), guide per l'app e per l'ambiente, decisioni 0008–0012
+- Scritte le specifiche dei prossimi prodotti: [flussi Power Automate](../../power-platform/power-automate/README.md), [report Power BI](../../power-platform/powerbi/README.md), [app di scansione allo stand](../../power-platform/app-scansione/README.md)
+- Presentazione di stato al gruppo
+
+**Problemi / dubbi:**
+
+- Aggiunta degli utenti BID all'ambiente Power Platform ferma per l'errore "Graph throttling" del 2026-11-04
+- Il collegamento diretto a Git di Power Platform richiede un ambiente gestito: la soluzione si conserva con export e commit ([decisione 0012](decisioni/0012-soluzione-nel-repository.md))
+
+**Prossimi passi:**
+
+- Primo flusso (FL-02 conferma di firma) creato a mano nella soluzione, poi gli altri a partire dal suo export
+- Con Anna: export CSV dei dati commerciali e caricamento in PostgreSQL per il SAL 2
+
+## 2026-11-04 — BAD: app back-office completa e prove di vendita 2026
+
+**Chi:** Alessandro, Lorenzo (BAD)
+
+**Fatto:**
+
+- App back-office portata a 9 schermate (Scadenze, Rinnovi, Listino, Controlli dati aggiunte); ultima versione aperta in Studio senza errori ([guida](guida-app-backoffice.md))
+- Venduti dall'app tre contratti 2026 di prova: C2026-0199 annullato, C2026-0200 firmato e pagato, C2026-0201 preventivo. Righe e totali coerenti, storico invariato
+- Date delle tre edizioni corrette (erano indietro di un giorno dopo l'import Excel, [decisione 0010](decisioni/0010-niente-import-excel-per-le-date.md))
+- Soluzione esportata (1.0.0.4) e inventario aggiornato ([inventario-dataverse.md](inventario-dataverse.md))
+
+**Problemi / dubbi:**
+
+- Il filtro delle righe per contratto non è delegabile: con più di 500 righe ne nascondeva alcune. Risolto caricando le righe a blocchi
+- Ambiente Developer non gestito: viene sospeso dal 2026-12-15
+
+**Prossimi passi:**
+
+- Analisi funzionale, Gantt e presentazione per il 2026-11-06
+- Condividere ambiente e repository con BID
+
+## 2026-11-03 — BAD: tabelle Dataverse e storico caricato
+
+**Chi:** Alessandro (BAD)
+
+**Fatto:**
+
+- Tabelle ricreate nella soluzione ARCADE BAD con prefisso `g5_`, uguali a `schema.sql` ([decisione 0008](decisioni/0008-tabelle-dataverse-g5.md), [specifica](schema-dataverse.md))
+- Importati e verificati i dati puliti da BID: 3 edizioni, 3 padiglioni, 135 espositori, 130 stand, 20 voci di listino, 198 contratti, 950 righe; totali uguali a Supabase
+- Prima versione dell'app back-office ([decisione 0009](decisioni/0009-app-scritta-da-codice.md))
+- Mappatura Dataverse ↔ PostgreSQL per la sincronizzazione ([mappatura-dataverse.md](mappatura-dataverse.md))
+
+**Problemi / dubbi:**
+
+- Le tabelle `cre10_*` del primo tentativo restano nell'ambiente: eliminarle è da decidere
+- Assunzioni su tipi e conversioni da confermare con Anna ([assunzioni-bad.md](assunzioni-bad.md))
+
+**Prossimi passi:**
+
+- Completare l'app e provare la vendita di un contratto 2026
+
 ## 2026-11-02 — Guida di installazione per Yassin e Daniel
 
 **Fatto:** aggiunta [ambiente-sviluppo.md](ambiente-sviluppo.md) con strumenti,

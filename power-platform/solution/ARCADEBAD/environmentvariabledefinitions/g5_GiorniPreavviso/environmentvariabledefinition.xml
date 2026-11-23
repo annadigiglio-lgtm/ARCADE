@@ -1,0 +1,14 @@
+<environmentvariabledefinition schemaname="g5_GiorniPreavviso">
+  <defaultvalue>7</defaultvalue>
+  <description default="Giorni di preavviso per i promemoria di pagamento (FL-01).">
+    <label description="Giorni di preavviso per i promemoria di pagamento (FL-01)." languagecode="1040" />
+  </description>
+  <displayname default="g5_GiorniPreavviso">
+    <label description="g5_GiorniPreavviso" languagecode="1040" />
+  </displayname>
+  <introducedversion>1.0.0.4</introducedversion>
+  <iscustomizable>1</iscustomizable>
+  <isrequired>0</isrequired>
+  <secretstore>0</secretstore>
+  <type>100000001</type>
+</environmentvariabledefinition>

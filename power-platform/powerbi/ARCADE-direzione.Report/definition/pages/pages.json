@@ -1,0 +1,13 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/pagesMetadata/1.0.0/schema.json",
+  "pageOrder": [
+    "pb01_sintesi",
+    "pb02_padiglioni",
+    "pb03_rinnovi",
+    "pb04_vendite",
+    "pb05_pubblico",
+    "pb06_affluenza",
+    "pb07_stand"
+  ],
+  "activePageName": "pb01_sintesi"
+}

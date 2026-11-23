@@ -1,0 +1,984 @@
+# Generato da power-platform/canvas-src/genera_schermate.py
+Screens:
+  scrListino:
+    Properties:
+      Fill: =nfSfondo
+      OnVisible: |-
+        =ClearCollect(colListino, Filter(AddColumns('Voci listino', AnnoEd, ThisRecord.Edizione.Anno), AnnoEd = gblAnno));
+        If(IsBlank(locCat), UpdateContext({locCat: "Tutte"}));
+        UpdateContext({locConfL: false})
+    Children:
+      - ls_recSidebar:
+          Control: Rectangle
+          Properties:
+            X: =0
+            Y: =0
+            Width: =220
+            Height: =768
+            Fill: =nfBlu
+            AccessibleLabel: |-
+              ="Elemento grafico"
+            TabIndex: =-1
+      - ls_lblLogo:
+          Control: Label
+          Properties:
+            Text: |-
+              ="ARCADE"
+            X: =24
+            Y: =24
+            Width: =172
+            Height: =36
+            Size: =20
+            Color: =Color.White
+            Font: =nfFont
+            FontWeight: =FontWeight.Semibold
+            Align: =Align.Left
+            VerticalAlign: =VerticalAlign.Middle
+            TabIndex: =-1
+            FocusedBorderThickness: =2
+      - ls_lblLogoSub:
+          Control: Label
+          Properties:
+            Text: |-
+              ="Back-office commerciale"
+            X: =24
+            Y: =58
+            Width: =172
+            Height: =20
+            Size: =10
+            Color: |-
+              =ColorValue("#94A3B8")
+            Font: =nfFont
+            FontWeight: =FontWeight.Normal
+            Align: =Align.Left
+            VerticalAlign: =VerticalAlign.Middle
+            TabIndex: =-1
+            FocusedBorderThickness: =2
+      - ls_recSep:
+          Control: Rectangle
+          Properties:
+            X: =24
+            Y: =96
+            Width: =172
+            Height: =1
+            Fill: =nfBlu2
+            AccessibleLabel: |-
+              ="Elemento grafico"
+            TabIndex: =-1
+      - ls_btnNavHome:
+          Control: Classic/Button
+          Properties:
+            Text: |-
+              ="Panoramica"
+            X: =12
+            Y: =116
+            Width: =196
+            Height: =40
+            OnSelect: |-
+              =Navigate(scrHome, ScreenTransition.None)
+            Fill: =nfBlu
+            Color: =Color.White
+            HoverFill: |-
+              =ColorFade(nfBlu, -10%)
+            PressedFill: |-
+              =ColorFade(nfBlu, -20%)
+            HoverColor: =Color.White
+            BorderThickness: =0
+            Font: =nfFont
+            Size: =12
+            FontWeight: =FontWeight.Semibold
+            RadiusTopLeft: =8
+            RadiusTopRight: =8
+            RadiusBottomLeft: =8
+            RadiusBottomRight: =8
+            Align: =Align.Left
+            PaddingLeft: =16
+            DisplayMode: =DisplayMode.Edit
+            DisabledFill: =nfBlu
+            DisabledColor: |-
+              =ColorValue("#64748B")
+      - ls_btnNavStand:
+          Control: Classic/Button
+          Properties:
+            Text: |-
+              ="Planimetria stand"
+            X: =12
+            Y: =164
+            Width: =196
+            Height: =40
+            OnSelect: |-
+              =Navigate(scrStand, ScreenTransition.None)
+            Fill: =nfBlu
+            Color: =Color.White
+            HoverFill: |-
+              =ColorFade(nfBlu, -10%)
+            PressedFill: |-
+              =ColorFade(nfBlu, -20%)
+            HoverColor: =Color.White
+            BorderThickness: =0
+            Font: =nfFont
+            Size: =12
+            FontWeight: =FontWeight.Semibold
+            RadiusTopLeft: =8
+            RadiusTopRight: =8
+            RadiusBottomLeft: =8
+            RadiusBottomRight: =8
+            Align: =Align.Left
+            PaddingLeft: =16
+            DisplayMode: =DisplayMode.Edit
+            DisabledFill: =nfBlu
+            DisabledColor: |-
+              =ColorValue("#64748B")
+      - ls_btnNavEspositori:
+          Control: Classic/Button
+          Properties:
+            Text: |-
+              ="Espositori"
+            X: =12
+            Y: =212
+            Width: =196
+            Height: =40
+            OnSelect: |-
+              =Navigate(scrEspositori, ScreenTransition.None)
+            Fill: =nfBlu
+            Color: =Color.White
+            HoverFill: |-
+              =ColorFade(nfBlu, -10%)
+            PressedFill: |-
+              =ColorFade(nfBlu, -20%)
+            HoverColor: =Color.White
+            BorderThickness: =0
+            Font: =nfFont
+            Size: =12
+            FontWeight: =FontWeight.Semibold
+            RadiusTopLeft: =8
+            RadiusTopRight: =8
+            RadiusBottomLeft: =8
+            RadiusBottomRight: =8
+            Align: =Align.Left
+            PaddingLeft: =16
+            DisplayMode: =DisplayMode.Edit
+            DisabledFill: =nfBlu
+            DisabledColor: |-
+              =ColorValue("#64748B")
+      - ls_btnNavContratti:
+          Control: Classic/Button
+          Properties:
+            Text: |-
+              ="Contratti"
+            X: =12
+            Y: =260
+            Width: =196
+            Height: =40
+            OnSelect: |-
+              =Navigate(scrContratti, ScreenTransition.None)
+            Fill: =nfBlu
+            Color: =Color.White
+            HoverFill: |-
+              =ColorFade(nfBlu, -10%)
+            PressedFill: |-
+              =ColorFade(nfBlu, -20%)
+            HoverColor: =Color.White
+            BorderThickness: =0
+            Font: =nfFont
+            Size: =12
+            FontWeight: =FontWeight.Semibold
+            RadiusTopLeft: =8
+            RadiusTopRight: =8
+            RadiusBottomLeft: =8
+            RadiusBottomRight: =8
+            Align: =Align.Left
+            PaddingLeft: =16
+            DisplayMode: =DisplayMode.Edit
+            DisabledFill: =nfBlu
+            DisabledColor: |-
+              =ColorValue("#64748B")
+      - ls_btnNavNuovo:
+          Control: Classic/Button
+          Properties:
+            Text: |-
+              ="Nuovo contratto"
+            X: =12
+            Y: =308
+            Width: =196
+            Height: =40
+            OnSelect: |-
+              =Navigate(scrNuovo, ScreenTransition.None)
+            Fill: =nfBlu
+            Color: =Color.White
+            HoverFill: |-
+              =ColorFade(nfBlu, -10%)
+            PressedFill: |-
+              =ColorFade(nfBlu, -20%)
+            HoverColor: =Color.White
+            BorderThickness: =0
+            Font: =nfFont
+            Size: =12
+            FontWeight: =FontWeight.Semibold
+            RadiusTopLeft: =8
+            RadiusTopRight: =8
+            RadiusBottomLeft: =8
+            RadiusBottomRight: =8
+            Align: =Align.Left
+            PaddingLeft: =16
+            DisplayMode: =DisplayMode.Edit
+            DisabledFill: =nfBlu
+            DisabledColor: |-
+              =ColorValue("#64748B")
+      - ls_btnNavScadenze:
+          Control: Classic/Button
+          Properties:
+            Text: |-
+              ="Scadenze e incassi"
+            X: =12
+            Y: =356
+            Width: =196
+            Height: =40
+            OnSelect: |-
+              =Navigate(scrScadenze, ScreenTransition.None)
+            Fill: =nfBlu
+            Color: =Color.White
+            HoverFill: |-
+              =ColorFade(nfBlu, -10%)
+            PressedFill: |-
+              =ColorFade(nfBlu, -20%)
+            HoverColor: =Color.White
+            BorderThickness: =0
+            Font: =nfFont
+            Size: =12
+            FontWeight: =FontWeight.Semibold
+            RadiusTopLeft: =8
+            RadiusTopRight: =8
+            RadiusBottomLeft: =8
+            RadiusBottomRight: =8
+            Align: =Align.Left
+            PaddingLeft: =16
+            DisplayMode: =DisplayMode.Edit
+            DisabledFill: =nfBlu
+            DisabledColor: |-
+              =ColorValue("#64748B")
+      - ls_btnNavRinnovi:
+          Control: Classic/Button
+          Properties:
+            Text: |-
+              ="Rinnovi e prelazione"
+            X: =12
+            Y: =404
+            Width: =196
+            Height: =40
+            OnSelect: |-
+              =Navigate(scrRinnovi, ScreenTransition.None)
+            Fill: =nfBlu
+            Color: =Color.White
+            HoverFill: |-
+              =ColorFade(nfBlu, -10%)
+            PressedFill: |-
+              =ColorFade(nfBlu, -20%)
+            HoverColor: =Color.White
+            BorderThickness: =0
+            Font: =nfFont
+            Size: =12
+            FontWeight: =FontWeight.Semibold
+            RadiusTopLeft: =8
+            RadiusTopRight: =8
+            RadiusBottomLeft: =8
+            RadiusBottomRight: =8
+            Align: =Align.Left
+            PaddingLeft: =16
+            DisplayMode: =DisplayMode.Edit
+            DisabledFill: =nfBlu
+            DisabledColor: |-
+              =ColorValue("#64748B")
+      - ls_btnNavListino:
+          Control: Classic/Button
+          Properties:
+            Text: |-
+              ="Listino 2026"
+            X: =12
+            Y: =452
+            Width: =196
+            Height: =40
+            OnSelect: |-
+              =Navigate(scrListino, ScreenTransition.None)
+            Fill: =nfAccento
+            Color: =Color.White
+            HoverFill: |-
+              =ColorFade(nfAccento, -10%)
+            PressedFill: |-
+              =ColorFade(nfAccento, -20%)
+            HoverColor: =Color.White
+            BorderThickness: =0
+            Font: =nfFont
+            Size: =12
+            FontWeight: =FontWeight.Semibold
+            RadiusTopLeft: =8
+            RadiusTopRight: =8
+            RadiusBottomLeft: =8
+            RadiusBottomRight: =8
+            Align: =Align.Left
+            PaddingLeft: =16
+            DisplayMode: =DisplayMode.Edit
+            DisabledFill: =nfBlu
+            DisabledColor: |-
+              =ColorValue("#64748B")
+      - ls_btnNavControlli:
+          Control: Classic/Button
+          Properties:
+            Text: |-
+              ="Controlli dati"
+            X: =12
+            Y: =500
+            Width: =196
+            Height: =40
+            OnSelect: |-
+              =Navigate(scrControlli, ScreenTransition.None)
+            Fill: =nfBlu
+            Color: =Color.White
+            HoverFill: |-
+              =ColorFade(nfBlu, -10%)
+            PressedFill: |-
+              =ColorFade(nfBlu, -20%)
+            HoverColor: =Color.White
+            BorderThickness: =0
+            Font: =nfFont
+            Size: =12
+            FontWeight: =FontWeight.Semibold
+            RadiusTopLeft: =8
+            RadiusTopRight: =8
+            RadiusBottomLeft: =8
+            RadiusBottomRight: =8
+            Align: =Align.Left
+            PaddingLeft: =16
+            DisplayMode: =DisplayMode.Edit
+            DisabledFill: =nfBlu
+            DisabledColor: |-
+              =ColorValue("#64748B")
+      - ls_lblUtente:
+          Control: Label
+          Properties:
+            Text: =User().FullName
+            X: =24
+            Y: =712
+            Width: =172
+            Height: =20
+            Size: =10
+            Color: =Color.White
+            Font: =nfFont
+            FontWeight: =FontWeight.Normal
+            Align: =Align.Left
+            VerticalAlign: =VerticalAlign.Middle
+            TabIndex: =-1
+            FocusedBorderThickness: =2
+      - ls_lblEdizioneSide:
+          Control: Label
+          Properties:
+            Text: |-
+              ="Edizione " & gblAnno
+            X: =24
+            Y: =734
+            Width: =172
+            Height: =18
+            Size: =9
+            Color: |-
+              =ColorValue("#94A3B8")
+            Font: =nfFont
+            FontWeight: =FontWeight.Normal
+            Align: =Align.Left
+            VerticalAlign: =VerticalAlign.Middle
+            TabIndex: =-1
+            FocusedBorderThickness: =2
+      - ls_lblTitolo:
+          Control: Label
+          Properties:
+            Text: |-
+              ="Listino " & gblAnno
+            X: =248
+            Y: =18
+            Width: =700
+            Height: =40
+            Size: =22
+            Color: =nfTesto
+            Font: =nfFont
+            FontWeight: =FontWeight.Semibold
+            Align: =Align.Left
+            VerticalAlign: =VerticalAlign.Middle
+            TabIndex: =-1
+            FocusedBorderThickness: =2
+      - ls_lblSottotitolo:
+          Control: Label
+          Properties:
+            Text: |-
+              =CountRows(colListino) & " voci · prezzi e disponibilità usati dai nuovi preventivi · i contratti già creati non cambiano"
+            X: =248
+            Y: =56
+            Width: =800
+            Height: =22
+            Size: =11
+            Color: =nfTestoSec
+            Font: =nfFont
+            FontWeight: =FontWeight.Normal
+            Align: =Align.Left
+            VerticalAlign: =VerticalAlign.Middle
+            TabIndex: =-1
+            FocusedBorderThickness: =2
+      - ls_btnCat0:
+          Control: Classic/Button
+          Properties:
+            Text: |-
+              ="Tutte"
+            X: =248
+            Y: =96
+            Width: =100
+            Height: =40
+            OnSelect: |-
+              =UpdateContext({locCat: "Tutte"})
+            Fill: |-
+              =If(locCat = "Tutte", nfAccento, nfCard)
+            Color: |-
+              =If(locCat = "Tutte", Color.White, nfTesto)
+            HoverFill: |-
+              =ColorFade(If(locCat = "Tutte", nfAccento, nfCard), -10%)
+            PressedFill: |-
+              =ColorFade(If(locCat = "Tutte", nfAccento, nfCard), -20%)
+            HoverColor: |-
+              =If(locCat = "Tutte", Color.White, nfTesto)
+            BorderThickness: =1
+            Font: =nfFont
+            Size: =11
+            FontWeight: =FontWeight.Semibold
+            RadiusTopLeft: =8
+            RadiusTopRight: =8
+            RadiusBottomLeft: =8
+            RadiusBottomRight: =8
+            BorderColor: =nfBordo
+      - ls_btnCat1:
+          Control: Classic/Button
+          Properties:
+            Text: |-
+              ="Spazio"
+            X: =354
+            Y: =96
+            Width: =100
+            Height: =40
+            OnSelect: |-
+              =UpdateContext({locCat: "Spazio"})
+            Fill: |-
+              =If(locCat = "Spazio", nfAccento, nfCard)
+            Color: |-
+              =If(locCat = "Spazio", Color.White, nfTesto)
+            HoverFill: |-
+              =ColorFade(If(locCat = "Spazio", nfAccento, nfCard), -10%)
+            PressedFill: |-
+              =ColorFade(If(locCat = "Spazio", nfAccento, nfCard), -20%)
+            HoverColor: |-
+              =If(locCat = "Spazio", Color.White, nfTesto)
+            BorderThickness: =1
+            Font: =nfFont
+            Size: =11
+            FontWeight: =FontWeight.Semibold
+            RadiusTopLeft: =8
+            RadiusTopRight: =8
+            RadiusBottomLeft: =8
+            RadiusBottomRight: =8
+            BorderColor: =nfBordo
+      - ls_btnCat2:
+          Control: Classic/Button
+          Properties:
+            Text: |-
+              ="Maggiorazioni"
+            X: =460
+            Y: =96
+            Width: =100
+            Height: =40
+            OnSelect: |-
+              =UpdateContext({locCat: "Maggiorazioni"})
+            Fill: |-
+              =If(locCat = "Maggiorazioni", nfAccento, nfCard)
+            Color: |-
+              =If(locCat = "Maggiorazioni", Color.White, nfTesto)
+            HoverFill: |-
+              =ColorFade(If(locCat = "Maggiorazioni", nfAccento, nfCard), -10%)
+            PressedFill: |-
+              =ColorFade(If(locCat = "Maggiorazioni", nfAccento, nfCard), -20%)
+            HoverColor: |-
+              =If(locCat = "Maggiorazioni", Color.White, nfTesto)
+            BorderThickness: =1
+            Font: =nfFont
+            Size: =11
+            FontWeight: =FontWeight.Semibold
+            RadiusTopLeft: =8
+            RadiusTopRight: =8
+            RadiusBottomLeft: =8
+            RadiusBottomRight: =8
+            BorderColor: =nfBordo
+      - ls_btnCat3:
+          Control: Classic/Button
+          Properties:
+            Text: |-
+              ="Servizi"
+            X: =566
+            Y: =96
+            Width: =100
+            Height: =40
+            OnSelect: |-
+              =UpdateContext({locCat: "Servizi"})
+            Fill: |-
+              =If(locCat = "Servizi", nfAccento, nfCard)
+            Color: |-
+              =If(locCat = "Servizi", Color.White, nfTesto)
+            HoverFill: |-
+              =ColorFade(If(locCat = "Servizi", nfAccento, nfCard), -10%)
+            PressedFill: |-
+              =ColorFade(If(locCat = "Servizi", nfAccento, nfCard), -20%)
+            HoverColor: |-
+              =If(locCat = "Servizi", Color.White, nfTesto)
+            BorderThickness: =1
+            Font: =nfFont
+            Size: =11
+            FontWeight: =FontWeight.Semibold
+            RadiusTopLeft: =8
+            RadiusTopRight: =8
+            RadiusBottomLeft: =8
+            RadiusBottomRight: =8
+            BorderColor: =nfBordo
+      - ls_btnCat4:
+          Control: Classic/Button
+          Properties:
+            Text: |-
+              ="Sponsor"
+            X: =672
+            Y: =96
+            Width: =100
+            Height: =40
+            OnSelect: |-
+              =UpdateContext({locCat: "Sponsor"})
+            Fill: |-
+              =If(locCat = "Sponsor", nfAccento, nfCard)
+            Color: |-
+              =If(locCat = "Sponsor", Color.White, nfTesto)
+            HoverFill: |-
+              =ColorFade(If(locCat = "Sponsor", nfAccento, nfCard), -10%)
+            PressedFill: |-
+              =ColorFade(If(locCat = "Sponsor", nfAccento, nfCard), -20%)
+            HoverColor: |-
+              =If(locCat = "Sponsor", Color.White, nfTesto)
+            BorderThickness: =1
+            Font: =nfFont
+            Size: =11
+            FontWeight: =FontWeight.Semibold
+            RadiusTopLeft: =8
+            RadiusTopRight: =8
+            RadiusBottomLeft: =8
+            RadiusBottomRight: =8
+            BorderColor: =nfBordo
+      - ls_btnCat5:
+          Control: Classic/Button
+          Properties:
+            Text: |-
+              ="Condizioni"
+            X: =778
+            Y: =96
+            Width: =100
+            Height: =40
+            OnSelect: |-
+              =UpdateContext({locCat: "Condizioni"})
+            Fill: |-
+              =If(locCat = "Condizioni", nfAccento, nfCard)
+            Color: |-
+              =If(locCat = "Condizioni", Color.White, nfTesto)
+            HoverFill: |-
+              =ColorFade(If(locCat = "Condizioni", nfAccento, nfCard), -10%)
+            PressedFill: |-
+              =ColorFade(If(locCat = "Condizioni", nfAccento, nfCard), -20%)
+            HoverColor: |-
+              =If(locCat = "Condizioni", Color.White, nfTesto)
+            BorderThickness: =1
+            Font: =nfFont
+            Size: =11
+            FontWeight: =FontWeight.Semibold
+            RadiusTopLeft: =8
+            RadiusTopRight: =8
+            RadiusBottomLeft: =8
+            RadiusBottomRight: =8
+            BorderColor: =nfBordo
+      - ls_recLista:
+          Control: Rectangle
+          Properties:
+            X: =248
+            Y: =152
+            Width: =640
+            Height: =600
+            Fill: =nfCard
+            BorderColor: =nfBordo
+            BorderThickness: =1
+            AccessibleLabel: |-
+              ="Elemento grafico"
+            TabIndex: =-1
+      - ls_galListino:
+          Control: Gallery
+          Variant: BrowseLayout_Flexible_SocialFeed_ver5.0
+          Properties:
+            Items: |-
+              =Sort(Filter(colListino, locCat = "Tutte" || (locCat = "Spazio" && StartsWith(Codice, "SPAZIO")) || (locCat = "Maggiorazioni" && StartsWith(Codice, "MAGG")) || (locCat = "Servizi" && StartsWith(Codice, "EX-")) || (locCat = "Sponsor" && StartsWith(Codice, "SP-")) || (locCat = "Condizioni" && StartsWith(Codice, "COND"))), Codice)
+            X: =249
+            Y: =153
+            Width: =638
+            Height: =598
+            TemplateSize: =58
+            TemplatePadding: =0
+            ShowScrollbar: =true
+            OnSelect: |-
+              =UpdateContext({locConfL: false})
+            TabIndex: =0
+            AccessibleLabel: |-
+              ="Voci di listino"
+          Children:
+            - ls_recRiga:
+                Control: Rectangle
+                Properties:
+                  X: =0
+                  Y: =0
+                  Width: =Parent.TemplateWidth
+                  Height: =Parent.TemplateHeight
+                  Fill: |-
+                    =If(ThisItem.IsSelected, nfAccentoChiaro, nfCard)
+                  AccessibleLabel: |-
+                    ="Elemento grafico"
+                  TabIndex: =-1
+            - ls_lblCod:
+                Control: Label
+                Properties:
+                  Text: =ThisItem.Codice
+                  X: =16
+                  Y: =6
+                  Width: =260
+                  Height: =22
+                  Size: =12
+                  Color: =nfTesto
+                  Font: =nfFont
+                  FontWeight: =FontWeight.Semibold
+                  Align: =Align.Left
+                  VerticalAlign: =VerticalAlign.Middle
+                  TabIndex: =-1
+                  FocusedBorderThickness: =2
+            - ls_lblDesc:
+                Control: Label
+                Properties:
+                  Text: =ThisItem.Descrizione
+                  X: =16
+                  Y: =30
+                  Width: =380
+                  Height: =20
+                  Size: =10
+                  Color: =nfTestoSec
+                  Font: =nfFont
+                  FontWeight: =FontWeight.Normal
+                  Align: =Align.Left
+                  VerticalAlign: =VerticalAlign.Middle
+                  TabIndex: =-1
+                  FocusedBorderThickness: =2
+            - ls_lblPrezzo:
+                Control: Label
+                Properties:
+                  Text: |-
+                    =If(IsBlank(ThisItem.'Prezzo unitario'), "-", Text(ThisItem.'Prezzo unitario', "#,##0.00") & " " & Coalesce(ThisItem.Unità, ""))
+                  X: =400
+                  Y: =6
+                  Width: =210
+                  Height: =22
+                  Size: =12
+                  Color: =nfTesto
+                  Font: =nfFont
+                  FontWeight: =FontWeight.Semibold
+                  Align: =Align.Right
+                  VerticalAlign: =VerticalAlign.Middle
+                  TabIndex: =-1
+                  FocusedBorderThickness: =2
+            - ls_lblDisp:
+                Control: Label
+                Properties:
+                  Text: |-
+                    =If(IsBlank(ThisItem.Disponibilità), "disponibilità illimitata", "disponibili: " & ThisItem.Disponibilità)
+                  X: =400
+                  Y: =30
+                  Width: =210
+                  Height: =20
+                  Size: =10
+                  Color: =nfTestoSec
+                  Font: =nfFont
+                  FontWeight: =FontWeight.Normal
+                  Align: =Align.Right
+                  VerticalAlign: =VerticalAlign.Middle
+                  TabIndex: =-1
+                  FocusedBorderThickness: =2
+            - ls_recRigaSep:
+                Control: Rectangle
+                Properties:
+                  X: =0
+                  Y: =Parent.TemplateHeight - 1
+                  Width: =Parent.TemplateWidth
+                  Height: =1
+                  Fill: =nfBordo
+                  AccessibleLabel: |-
+                    ="Elemento grafico"
+                  TabIndex: =-1
+      - ls_recScheda:
+          Control: Rectangle
+          Properties:
+            X: =904
+            Y: =152
+            Width: =438
+            Height: =600
+            Fill: =nfCard
+            BorderColor: =nfBordo
+            BorderThickness: =1
+            AccessibleLabel: |-
+              ="Elemento grafico"
+            TabIndex: =-1
+      - ls_lblSchTit:
+          Control: Label
+          Properties:
+            Text: =ls_galListino.Selected.Codice
+            X: =928
+            Y: =166
+            Width: =390
+            Height: =30
+            Size: =16
+            Color: =nfTesto
+            Font: =nfFont
+            FontWeight: =FontWeight.Semibold
+            Align: =Align.Left
+            VerticalAlign: =VerticalAlign.Middle
+            TabIndex: =-1
+            FocusedBorderThickness: =2
+      - ls_lblSchDesc:
+          Control: Label
+          Properties:
+            Text: =ls_galListino.Selected.Descrizione
+            X: =928
+            Y: =198
+            Width: =390
+            Height: =40
+            Size: =11
+            Color: =nfTestoSec
+            Font: =nfFont
+            FontWeight: =FontWeight.Normal
+            Align: =Align.Left
+            VerticalAlign: =VerticalAlign.Middle
+            TabIndex: =-1
+            FocusedBorderThickness: =2
+      - ls_lblCapP:
+          Control: Label
+          Properties:
+            Text: |-
+              ="Prezzo unitario (" & Coalesce(ls_galListino.Selected.Unità, "-") & ")"
+            X: =928
+            Y: =250
+            Width: =390
+            Height: =20
+            Size: =10
+            Color: =nfTestoSec
+            Font: =nfFont
+            FontWeight: =FontWeight.Normal
+            Align: =Align.Left
+            VerticalAlign: =VerticalAlign.Middle
+            TabIndex: =-1
+            FocusedBorderThickness: =2
+      - ls_txtPrezzo:
+          Control: Classic/TextInput
+          Properties:
+            Default: |-
+              =If(IsBlank(ls_galListino.Selected.'Prezzo unitario'), "", Text(ls_galListino.Selected.'Prezzo unitario', "0.00"))
+            X: =928
+            Y: =272
+            Width: =390
+            Height: =40
+            Font: =nfFont
+            Size: =12
+            BorderColor: =nfBordo
+            Fill: =nfCard
+            RadiusTopLeft: =6
+            RadiusTopRight: =6
+            RadiusBottomLeft: =6
+            RadiusBottomRight: =6
+            AccessibleLabel: |-
+              ="Prezzo unitario"
+      - ls_lblCapD:
+          Control: Label
+          Properties:
+            Text: |-
+              ="Disponibilità (vuoto = illimitata)"
+            X: =928
+            Y: =326
+            Width: =390
+            Height: =20
+            Size: =10
+            Color: =nfTestoSec
+            Font: =nfFont
+            FontWeight: =FontWeight.Normal
+            Align: =Align.Left
+            VerticalAlign: =VerticalAlign.Middle
+            TabIndex: =-1
+            FocusedBorderThickness: =2
+      - ls_txtDisp:
+          Control: Classic/TextInput
+          Properties:
+            Default: |-
+              =If(IsBlank(ls_galListino.Selected.Disponibilità), "", Text(ls_galListino.Selected.Disponibilità))
+            X: =928
+            Y: =348
+            Width: =390
+            Height: =40
+            Font: =nfFont
+            Size: =12
+            BorderColor: =nfBordo
+            Fill: =nfCard
+            RadiusTopLeft: =6
+            RadiusTopRight: =6
+            RadiusBottomLeft: =6
+            RadiusBottomRight: =6
+            AccessibleLabel: |-
+              ="Disponibilità"
+      - ls_lblCapN:
+          Control: Label
+          Properties:
+            Text: |-
+              ="Note"
+            X: =928
+            Y: =402
+            Width: =390
+            Height: =20
+            Size: =10
+            Color: =nfTestoSec
+            Font: =nfFont
+            FontWeight: =FontWeight.Normal
+            Align: =Align.Left
+            VerticalAlign: =VerticalAlign.Middle
+            TabIndex: =-1
+            FocusedBorderThickness: =2
+      - ls_txtNote:
+          Control: Classic/TextInput
+          Properties:
+            Default: |-
+              =Coalesce(ls_galListino.Selected.Note, "")
+            X: =928
+            Y: =424
+            Width: =390
+            Height: =40
+            Font: =nfFont
+            Size: =12
+            BorderColor: =nfBordo
+            Fill: =nfCard
+            RadiusTopLeft: =6
+            RadiusTopRight: =6
+            RadiusBottomLeft: =6
+            RadiusBottomRight: =6
+            AccessibleLabel: |-
+              ="Note"
+      - ls_lblErr:
+          Control: Label
+          Properties:
+            Text: |-
+              ="Prezzo e disponibilità devono essere numeri positivi (decimali con la virgola)"
+            X: =928
+            Y: =472
+            Width: =390
+            Height: =36
+            Size: =10
+            Color: =nfRosso
+            Font: =nfFont
+            FontWeight: =FontWeight.Normal
+            Align: =Align.Left
+            VerticalAlign: =VerticalAlign.Middle
+            Visible: |-
+              =!((IsBlank(ls_txtPrezzo.Text) || (IsNumeric(ls_txtPrezzo.Text) && Value(ls_txtPrezzo.Text) >= 0)) && (IsBlank(ls_txtDisp.Text) || (IsNumeric(ls_txtDisp.Text) && Value(ls_txtDisp.Text) >= 0)))
+            TabIndex: =-1
+            FocusedBorderThickness: =2
+      - ls_lblInfo:
+          Control: Label
+          Properties:
+            Text: |-
+              ="Il nuovo prezzo vale per i prossimi preventivi. I contratti già creati restano invariati: ogni riga conserva il prezzo con cui è stata venduta."
+            X: =928
+            Y: =520
+            Width: =390
+            Height: =60
+            Size: =10
+            Color: =nfTestoSec
+            Font: =nfFont
+            FontWeight: =FontWeight.Normal
+            Align: =Align.Left
+            VerticalAlign: =VerticalAlign.Middle
+            TabIndex: =-1
+            FocusedBorderThickness: =2
+      - ls_btnSalva:
+          Control: Classic/Button
+          Properties:
+            Text: |-
+              =If(locConfL, "Conferma modifica", "Salva modifica")
+            X: =928
+            Y: =704
+            Width: =200
+            Height: =40
+            OnSelect: |-
+              =If(locConfL,
+                  IfError(
+                      Patch('Voci listino', LookUp('Voci listino', Codice = ls_galListino.Selected.Codice && Edizione.Anno = ls_galListino.Selected.AnnoEd),
+                          {'Prezzo unitario': If(IsBlank(ls_txtPrezzo.Text), Blank(), Value(ls_txtPrezzo.Text)),
+                            Disponibilità: If(IsBlank(ls_txtDisp.Text), Blank(), Value(ls_txtDisp.Text)),
+                            Note: ls_txtNote.Text});
+                      UpdateContext({locConfL: false});
+                      Notify("Voce di listino " & ls_galListino.Selected.AnnoEd & " aggiornata", NotificationType.Success);
+                      ClearCollect(colListino, Filter(AddColumns('Voci listino', AnnoEd, ThisRecord.Edizione.Anno), AnnoEd = gblAnno));
+                      true,
+                      Notify("Aggiornamento non riuscito: " & FirstError.Message, NotificationType.Error)
+                  ),
+                  UpdateContext({locConfL: true})
+              )
+            Fill: |-
+              =If(locConfL, nfRosso, nfAccento)
+            Color: =Color.White
+            HoverFill: |-
+              =ColorFade(If(locConfL, nfRosso, nfAccento), -10%)
+            PressedFill: |-
+              =ColorFade(If(locConfL, nfRosso, nfAccento), -20%)
+            HoverColor: =Color.White
+            BorderThickness: =0
+            Font: =nfFont
+            Size: =12
+            FontWeight: =FontWeight.Semibold
+            RadiusTopLeft: =8
+            RadiusTopRight: =8
+            RadiusBottomLeft: =8
+            RadiusBottomRight: =8
+            DisabledFill: =nfBordo
+            DisabledColor: =nfTestoSec
+            DisplayMode: |-
+              =If((IsBlank(ls_txtPrezzo.Text) || (IsNumeric(ls_txtPrezzo.Text) && Value(ls_txtPrezzo.Text) >= 0)) && (IsBlank(ls_txtDisp.Text) || (IsNumeric(ls_txtDisp.Text) && Value(ls_txtDisp.Text) >= 0)), DisplayMode.Edit, DisplayMode.Disabled)
+      - ls_btnRipristina:
+          Control: Classic/Button
+          Properties:
+            Text: |-
+              ="Ripristina"
+            X: =1142
+            Y: =704
+            Width: =140
+            Height: =40
+            OnSelect: |-
+              =UpdateContext({locConfL: false}); Reset(ls_txtPrezzo); Reset(ls_txtDisp); Reset(ls_txtNote)
+            Fill: =nfCard
+            Color: =nfTesto
+            HoverFill: |-
+              =ColorFade(nfCard, -10%)
+            PressedFill: |-
+              =ColorFade(nfCard, -20%)
+            HoverColor: =nfTesto
+            BorderThickness: =1
+            Font: =nfFont
+            Size: =12
+            FontWeight: =FontWeight.Semibold
+            RadiusTopLeft: =8
+            RadiusTopRight: =8
+            RadiusBottomLeft: =8
+            RadiusBottomRight: =8
+            BorderColor: =nfBordo

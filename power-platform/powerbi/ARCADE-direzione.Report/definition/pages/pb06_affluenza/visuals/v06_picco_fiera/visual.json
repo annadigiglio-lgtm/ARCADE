@@ -1,0 +1,88 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.0.0/schema.json",
+  "name": "v06_picco_fiera",
+  "position": {
+    "x": 860,
+    "y": 460,
+    "z": 0,
+    "width": 400,
+    "height": 240,
+    "tabOrder": 0
+  },
+  "visual": {
+    "visualType": "tableEx",
+    "query": {
+      "queryState": {
+        "Values": {
+          "projections": [
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Picco fiera"
+                    }
+                  },
+                  "Property": "edizione"
+                }
+              },
+              "queryRef": "Picco fiera.edizione",
+              "nativeQueryRef": "edizione"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Picco fiera"
+                    }
+                  },
+                  "Property": "istante"
+                }
+              },
+              "queryRef": "Picco fiera.istante",
+              "nativeQueryRef": "istante"
+            },
+            {
+              "field": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Picco fiera"
+                    }
+                  },
+                  "Property": "Picco della fiera"
+                }
+              },
+              "queryRef": "Picco fiera.Picco della fiera",
+              "nativeQueryRef": "Picco della fiera"
+            }
+          ]
+        }
+      }
+    },
+    "drillFilterOtherVisuals": true,
+    "visualContainerObjects": {
+      "title": [
+        {
+          "properties": {
+            "show": {
+              "expr": {
+                "Literal": {
+                  "Value": "true"
+                }
+              }
+            },
+            "text": {
+              "expr": {
+                "Literal": {
+                  "Value": "'Picco della fiera'"
+                }
+              }
+            }
+          }
+        }
+      ]
+    }
+  }
+}

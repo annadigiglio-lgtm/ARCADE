@@ -1,0 +1,11 @@
+<environmentvariabledefinition schemaname="g5_g5_EmailProva">
+  <defaultvalue>indirizzo-del-team@example.com</defaultvalue>
+  <displayname default="g5_EmailProva">
+    <label description="g5_EmailProva" languagecode="1040" />
+  </displayname>
+  <introducedversion>1.0.0.4</introducedversion>
+  <iscustomizable>1</iscustomizable>
+  <isrequired>0</isrequired>
+  <secretstore>0</secretstore>
+  <type>100000000</type>
+</environmentvariabledefinition>

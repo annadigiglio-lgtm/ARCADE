@@ -27,6 +27,19 @@ Wiki interna del progetto. Qui teniamo tutto quello che serve per lavorare: cosa
 - [Guida caricamento](guida-caricamento.md): caricare i dati storici del cliente nel database
 - [KPI](kpi.md): definizioni operative degli indicatori
 
+### Power Platform (BAD)
+- [Power Platform](power-platform.md): stato di ambiente, soluzione, dati, app, flussi e report
+- [Analisi funzionale](analisi-funzionale.md): requisiti, ruoli, processi, integrazione con BID, piano
+- [Schema Dataverse](schema-dataverse.md): specifica delle tabelle `g5_` ricavata da `schema.sql`
+- [Inventario Dataverse](inventario-dataverse.md): tabelle, colonne, chiavi e relazioni della soluzione esportata
+- [Mappatura Dataverse ↔ PostgreSQL](mappatura-dataverse.md): colonne e conversioni per la sincronizzazione
+- [Guida app back-office](guida-app-backoffice.md): generare, aprire e correggere l'app
+- [Guida ambiente Power Platform](guida-ambiente-power-platform.md): utenti, ruoli, export della soluzione
+- [Assunzioni BAD](assunzioni-bad.md): informazioni mancanti da confermare
+- [Idee di miglioramento](idee-miglioramento.md): cosa aggiungere se avanza tempo
+- [Piano BAD fino al 4/12](piano-bad.md): attività giorno per giorno e correzioni chieste da BID
+- [Gantt del progetto](../piano/gantt-arcade.html): fasi e attività dal 16/10 al 4/12
+
 ### Gestione del lavoro
 - [Verifica consegna BAD — 9 novembre](verifica-bad-2026-11-09.md): allineamento, problemi nei sorgenti e condizioni per il SAL del 4 dicembre
 - Materiali della presentazione del 6 novembre: cartella locale assente, da ripristinare (attività in [todo.md](todo.md)).

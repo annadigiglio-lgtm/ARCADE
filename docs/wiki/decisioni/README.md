@@ -29,3 +29,8 @@ Stati: `proposta` · `accettata` · `rifiutata` · `sostituita da NNNN`
 | [0005](0005-dataverse-sincronizzato-con-postgresql.md) | Dati commerciali su Dataverse, sincronizzati verso PostgreSQL | accettata | 2026-10-23 |
 | [0006](0006-supabase.md) | Database condiviso su Supabase | accettata | 2026-10-23 |
 | [0007](0007-convenzioni-api.md) | Convenzioni tra DB, API e web | accettata | 2026-10-23 |
+| [0008](0008-tabelle-dataverse-g5.md) | Tabelle Dataverse con prefisso g5_, uguali allo schema SQL | accettata | 2026-11-03 |
+| [0009](0009-app-scritta-da-codice.md) | App back-office scritta da codice | accettata | 2026-11-03 |
+| [0010](0010-niente-import-excel-per-le-date.md) | Le colonne data non si caricano con l'import Excel del portale | accettata | 2026-11-04 |
+| [0011](0011-flussi-nella-soluzione.md) | Flussi Power Automate dentro la soluzione, solo connettori standard | proposta | 2026-11-06 |
+| [0012](0012-soluzione-nel-repository.md) | Soluzione Power Platform conservata nel repository con pac | proposta | 2026-11-06 |

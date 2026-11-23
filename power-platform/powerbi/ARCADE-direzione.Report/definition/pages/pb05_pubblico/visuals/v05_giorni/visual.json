@@ -1,0 +1,96 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.0.0/schema.json",
+  "name": "v05_giorni",
+  "position": {
+    "x": 340,
+    "y": 20,
+    "z": 0,
+    "width": 920,
+    "height": 330,
+    "tabOrder": 0
+  },
+  "visual": {
+    "visualType": "lineChart",
+    "query": {
+      "queryState": {
+        "Category": {
+          "projections": [
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Vendite biglietti"
+                    }
+                  },
+                  "Property": "giorno"
+                }
+              },
+              "queryRef": "Vendite biglietti.giorno",
+              "nativeQueryRef": "giorno"
+            }
+          ]
+        },
+        "Y": {
+          "projections": [
+            {
+              "field": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Vendite biglietti"
+                    }
+                  },
+                  "Property": "Biglietti venduti"
+                }
+              },
+              "queryRef": "Vendite biglietti.Biglietti venduti",
+              "nativeQueryRef": "Biglietti venduti"
+            }
+          ]
+        },
+        "Series": {
+          "projections": [
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Vendite biglietti"
+                    }
+                  },
+                  "Property": "canale"
+                }
+              },
+              "queryRef": "Vendite biglietti.canale",
+              "nativeQueryRef": "canale"
+            }
+          ]
+        }
+      }
+    },
+    "drillFilterOtherVisuals": true,
+    "visualContainerObjects": {
+      "title": [
+        {
+          "properties": {
+            "show": {
+              "expr": {
+                "Literal": {
+                  "Value": "true"
+                }
+              }
+            },
+            "text": {
+              "expr": {
+                "Literal": {
+                  "Value": "'Biglietti venduti per giorno di acquisto'"
+                }
+              }
+            }
+          }
+        }
+      ]
+    }
+  }
+}

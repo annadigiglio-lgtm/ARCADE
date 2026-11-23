@@ -1,0 +1,144 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.0.0/schema.json",
+  "name": "v02_tabella",
+  "position": {
+    "x": 650,
+    "y": 370,
+    "z": 0,
+    "width": 610,
+    "height": 330,
+    "tabOrder": 0
+  },
+  "visual": {
+    "visualType": "tableEx",
+    "query": {
+      "queryState": {
+        "Values": {
+          "projections": [
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Saturazione padiglione"
+                    }
+                  },
+                  "Property": "edizione"
+                }
+              },
+              "queryRef": "Saturazione padiglione.edizione",
+              "nativeQueryRef": "edizione"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Saturazione padiglione"
+                    }
+                  },
+                  "Property": "padiglione"
+                }
+              },
+              "queryRef": "Saturazione padiglione.padiglione",
+              "nativeQueryRef": "padiglione"
+            },
+            {
+              "field": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Saturazione padiglione"
+                    }
+                  },
+                  "Property": "Stand venduti"
+                }
+              },
+              "queryRef": "Saturazione padiglione.Stand venduti",
+              "nativeQueryRef": "Stand venduti"
+            },
+            {
+              "field": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Saturazione padiglione"
+                    }
+                  },
+                  "Property": "Stand disponibili"
+                }
+              },
+              "queryRef": "Saturazione padiglione.Stand disponibili",
+              "nativeQueryRef": "Stand disponibili"
+            },
+            {
+              "field": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Saturazione padiglione"
+                    }
+                  },
+                  "Property": "Mq venduti"
+                }
+              },
+              "queryRef": "Saturazione padiglione.Mq venduti",
+              "nativeQueryRef": "Mq venduti"
+            },
+            {
+              "field": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Saturazione padiglione"
+                    }
+                  },
+                  "Property": "Mq disponibili"
+                }
+              },
+              "queryRef": "Saturazione padiglione.Mq disponibili",
+              "nativeQueryRef": "Mq disponibili"
+            },
+            {
+              "field": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Saturazione padiglione"
+                    }
+                  },
+                  "Property": "Saturazione"
+                }
+              },
+              "queryRef": "Saturazione padiglione.Saturazione",
+              "nativeQueryRef": "Saturazione"
+            }
+          ]
+        }
+      }
+    },
+    "drillFilterOtherVisuals": true,
+    "visualContainerObjects": {
+      "title": [
+        {
+          "properties": {
+            "show": {
+              "expr": {
+                "Literal": {
+                  "Value": "true"
+                }
+              }
+            },
+            "text": {
+              "expr": {
+                "Literal": {
+                  "Value": "'Stand e metri quadri venduti'"
+                }
+              }
+            }
+          }
+        }
+      ]
+    }
+  }
+}
