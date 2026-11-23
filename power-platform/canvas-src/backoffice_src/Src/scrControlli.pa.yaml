@@ -6,8 +6,9 @@ Screens:
       OnVisible: |-
         =If(IsBlank(locChk), UpdateContext({locChk: "1"}));
         If(IsEmpty(colRighe),
-            ForAll(Sequence(16) As n,
-                Collect(colRighe, AddColumns(Filter('Righe contratto', Riga = n.Value), IdC, ThisRecord.Contratto.'ID contratto'))));
+            With({maxRiga: First(Sort('Righe contratto', Riga, SortOrder.Descending)).Riga},
+                ForAll(Sequence(Max(1, maxRiga)) As n,
+                    Collect(colRighe, AddColumns(Filter('Righe contratto', Riga = n.Value), IdC, ThisRecord.Contratto.'ID contratto')))));
         Clear(colAnom);
         Collect(colAnom, ForAll(Filter(colContratti As a, a.StatoTxt <> "annullato" && CountRows(Filter(colContratti, AnnoEd = a.AnnoEd && CodStand = a.CodStand && StatoTxt <> "annullato")) > 1) As x,
             {Chk: "1", Rif: x.'ID contratto', Dett: "Stand " & x.CodStand & " venduto più volte nell'edizione " & x.AnnoEd}));
@@ -685,8 +686,9 @@ Screens:
                   PosTxt, Text(ThisRecord.Posizione)));
               Clear(colRighe);
               If(IsEmpty(colRighe),
-                  ForAll(Sequence(16) As n,
-                      Collect(colRighe, AddColumns(Filter('Righe contratto', Riga = n.Value), IdC, ThisRecord.Contratto.'ID contratto'))));
+                  With({maxRiga: First(Sort('Righe contratto', Riga, SortOrder.Descending)).Riga},
+                      ForAll(Sequence(Max(1, maxRiga)) As n,
+                          Collect(colRighe, AddColumns(Filter('Righe contratto', Riga = n.Value), IdC, ThisRecord.Contratto.'ID contratto')))));
               Clear(colAnom);
               Collect(colAnom, ForAll(Filter(colContratti As a, a.StatoTxt <> "annullato" && CountRows(Filter(colContratti, AnnoEd = a.AnnoEd && CodStand = a.CodStand && StatoTxt <> "annullato")) > 1) As x,
                   {Chk: "1", Rif: x.'ID contratto', Dett: "Stand " & x.CodStand & " venduto più volte nell'edizione " & x.AnnoEd}));

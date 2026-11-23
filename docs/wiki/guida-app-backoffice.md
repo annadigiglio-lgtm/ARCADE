@@ -40,6 +40,15 @@ Dal 2026-11-23 li assegna Dataverse, non l'app: le colonne `g5_id_contratto` e `
 - **Quando si apriranno le vendite 2027** il formato del contratto va cambiato in `C2027-{SEQNUM:4}` e il valore di partenza riportato a 1 (Web API: modifica della colonna e azione `SetAutoNumberSeed`). Finché il formato dice 2026, l'app non deve creare contratti di un'altra edizione: l'importatore di BID controlla che l'anno del codice sia quello dell'edizione.
 - Se il salvataggio delle righe fallisce dopo la creazione del contratto, l'app annulla il contratto appena creato e chiede di riprovare.
 
+## Flussi chiamati dall'app
+
+| Schermata | Pulsante | Flusso | Cosa passa | Cosa riceve |
+|---|---|---|---|---|
+| Contratti | *Preventivo PDF* | [FL-03](../../power-platform/power-automate/FL-03.md) | GUID del contratto selezionato | `esito` |
+| Rinnovi | *Invia inviti (N)*, con conferma | [FL-06](../../power-platform/power-automate/FL-06.md) | GUID degli espositori "da contattare" visibili con i filtri, separati da virgola; anno dell'edizione | `inviati` |
+
+Al primo caricamento di una versione con questi pulsanti, in Studio: pannello **Power Automate** → **Aggiungi flusso** → FL-03 e FL-06. Studio dà al flusso il nome visualizzato senza spazi; se è diverso da quello nelle costanti `FLUSSO_PDF` e `FLUSSO_INVITI` di `genera_schermate.py`, le formule dei pulsanti risultano in errore: si corregge la costante e si rigenera.
+
 ## Errori già incontrati e come si risolvono
 
 | Errore | Soluzione |

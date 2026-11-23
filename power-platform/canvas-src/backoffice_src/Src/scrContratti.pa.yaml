@@ -7,8 +7,9 @@ Screens:
         =If(IsBlank(locStato), UpdateContext({locStato: "Tutti"}));
         UpdateContext({locConf: false});
         If(IsEmpty(colRighe),
-            ForAll(Sequence(16) As n,
-                Collect(colRighe, AddColumns(Filter('Righe contratto', Riga = n.Value), IdC, ThisRecord.Contratto.'ID contratto'))))
+            With({maxRiga: First(Sort('Righe contratto', Riga, SortOrder.Descending)).Riga},
+                ForAll(Sequence(Max(1, maxRiga)) As n,
+                    Collect(colRighe, AddColumns(Filter('Righe contratto', Riga = n.Value), IdC, ThisRecord.Contratto.'ID contratto')))))
     Children:
       - ct_recSidebar:
           Control: Rectangle
@@ -1468,10 +1469,10 @@ Screens:
           Control: Classic/Button
           Properties:
             Text: |-
-              ="Firma contratto"
+              ="Firma"
             X: =808
             Y: =704
-            Width: =160
+            Width: =121
             Height: =40
             OnSelect: |-
               =IfError(
@@ -1502,7 +1503,7 @@ Screens:
             HoverColor: =Color.White
             BorderThickness: =0
             Font: =nfFont
-            Size: =12
+            Size: =11
             FontWeight: =FontWeight.Semibold
             RadiusTopLeft: =8
             RadiusTopRight: =8
@@ -1516,10 +1517,10 @@ Screens:
           Control: Classic/Button
           Properties:
             Text: |-
-              =If(locConf, "Conferma annullamento", "Annulla contratto")
-            X: =978
+              =If(locConf, "Conferma", "Annulla")
+            X: =937
             Y: =704
-            Width: =170
+            Width: =121
             Height: =40
             OnSelect: |-
               =If(locConf,
@@ -1555,7 +1556,7 @@ Screens:
               =If(locConf, Color.White, nfRosso)
             BorderThickness: =1
             Font: =nfFont
-            Size: =12
+            Size: =11
             FontWeight: =FontWeight.Semibold
             RadiusTopLeft: =8
             RadiusTopRight: =8
@@ -1570,10 +1571,10 @@ Screens:
           Control: Classic/Button
           Properties:
             Text: |-
-              ="Invia sollecito"
-            X: =1158
+              ="Sollecito"
+            X: =1066
             Y: =704
-            Width: =160
+            Width: =121
             Height: =40
             OnSelect: |-
               =With({em: LookUp(Espositori, 'ID espositore' = ct_galContratti.Selected.IdEsp),
@@ -1594,7 +1595,7 @@ Screens:
             HoverColor: =nfAccento
             BorderThickness: =0
             Font: =nfFont
-            Size: =12
+            Size: =11
             FontWeight: =FontWeight.Semibold
             RadiusTopLeft: =8
             RadiusTopRight: =8
@@ -1604,3 +1605,38 @@ Screens:
             DisabledColor: =nfTestoSec
             DisplayMode: |-
               =If(ct_galContratti.Selected.StatoTxt = "firmato" && ((IsBlank(ct_galContratti.Selected.'Acconto pagato il') && ct_galContratti.Selected.'Scadenza acconto' < Today()) || (IsBlank(ct_galContratti.Selected.'Saldo pagato il') && ct_galContratti.Selected.'Scadenza saldo' < Today())), DisplayMode.Edit, DisplayMode.Disabled)
+      - ct_btnPdf:
+          Control: Classic/Button
+          Properties:
+            Text: |-
+              ="Preventivo PDF"
+            X: =1195
+            Y: =704
+            Width: =121
+            Height: =40
+            OnSelect: |-
+              =IfError(
+                  Notify("Invio del preventivo in corso...", NotificationType.Information);
+                  Set(gblEsitoPdf, 'ARCADE–FL-03–InviopreventivoPDF'.Run(Text(ct_galContratti.Selected.Contratto)));
+                  Notify("Preventivo " & ct_galContratti.Selected.'ID contratto' & ": " & gblEsitoPdf.esito, NotificationType.Success),
+                  Notify("Invio del preventivo non riuscito: " & FirstError.Message, NotificationType.Error)
+              )
+            Fill: =nfAccentoChiaro
+            Color: =nfAccento
+            HoverFill: |-
+              =ColorFade(nfAccentoChiaro, -10%)
+            PressedFill: |-
+              =ColorFade(nfAccentoChiaro, -20%)
+            HoverColor: =nfAccento
+            BorderThickness: =0
+            Font: =nfFont
+            Size: =11
+            FontWeight: =FontWeight.Semibold
+            RadiusTopLeft: =8
+            RadiusTopRight: =8
+            RadiusBottomLeft: =8
+            RadiusBottomRight: =8
+            DisabledFill: =nfBordo
+            DisabledColor: =nfTestoSec
+            DisplayMode: |-
+              =If(ct_galContratti.Selected.StatoTxt <> "annullato" && !IsBlank(ct_galContratti.Selected.'ID contratto'), DisplayMode.Edit, DisplayMode.Disabled)

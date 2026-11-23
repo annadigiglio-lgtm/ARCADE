@@ -494,7 +494,7 @@ Screens:
           Control: Label
           Properties:
             Text: |-
-              ="Stand venduti"
+              ="Stand venduti (firmati)"
             X: =268
             Y: =120
             Width: =219
@@ -511,7 +511,7 @@ Screens:
           Control: Label
           Properties:
             Text: |-
-              =CountRows(Filter(colContratti, AnnoEd = gblAnno && StatoTxt <> "annullato")) & " / " & CountRows(Filter(colStand, AnnoAtt <= Value(gblAnno)))
+              =CountRows(Filter(colContratti, AnnoEd = gblAnno && StatoTxt = "firmato")) & " / " & CountRows(Filter(colStand, AnnoAtt <= Value(gblAnno)))
             X: =268
             Y: =144
             Width: =219
@@ -528,7 +528,7 @@ Screens:
           Control: Label
           Properties:
             Text: |-
-              ="Occupazione " & Text(CountRows(Filter(colContratti, AnnoEd = gblAnno && StatoTxt <> "annullato")) / Max(1, CountRows(Filter(colStand, AnnoAtt <= Value(gblAnno)))), "0%")
+              ="Prenotati " & CountRows(Filter(colContratti, AnnoEd = gblAnno && StatoTxt <> "annullato")) & " · liberi " & (CountRows(Filter(colStand, AnnoAtt <= Value(gblAnno))) - CountRows(Filter(colContratti, AnnoEd = gblAnno && StatoTxt <> "annullato")))
             X: =268
             Y: =186
             Width: =219
@@ -644,7 +644,7 @@ Screens:
           Control: Label
           Properties:
             Text: |-
-              ="Imponibile venduto"
+              ="Imponibile firmato"
             X: =818
             Y: =120
             Width: =219
@@ -661,7 +661,7 @@ Screens:
           Control: Label
           Properties:
             Text: |-
-              =Text(Sum(Filter(colContratti, AnnoEd = gblAnno && StatoTxt <> "annullato"), Imponibile), "[$-it-IT]€ #,##0")
+              =Text(Sum(Filter(colContratti, AnnoEd = gblAnno && StatoTxt = "firmato"), Imponibile), "[$-it-IT]€ #,##0")
             X: =818
             Y: =144
             Width: =219
@@ -678,7 +678,7 @@ Screens:
           Control: Label
           Properties:
             Text: |-
-              =If(CountRows(Filter(colContratti, AnnoEd = gblAnno && StatoTxt <> "annullato")) = 0, "Nessun contratto ancora", "Sconto medio " & Text(Average(Filter(colContratti, AnnoEd = gblAnno && StatoTxt <> "annullato"), Sconto), "0.0%"))
+              =If(CountRows(Filter(colContratti, AnnoEd = gblAnno && StatoTxt = "firmato")) = 0, "Nessun contratto firmato", "Sconto medio " & Text(Average(Filter(colContratti, AnnoEd = gblAnno && StatoTxt = "firmato"), Sconto), "0.0%"))
             X: =818
             Y: =186
             Width: =219
@@ -736,7 +736,7 @@ Screens:
           Control: Label
           Properties:
             Text: |-
-              =CountRows(Filter(Filter(colContratti, AnnoEd = gblAnno && StatoTxt <> "annullato"), IsBlank('Acconto pagato il')))
+              =CountRows(Filter(Filter(colContratti, AnnoEd = gblAnno && StatoTxt = "firmato"), IsBlank('Acconto pagato il')))
             X: =1093
             Y: =144
             Width: =219
@@ -753,7 +753,7 @@ Screens:
           Control: Label
           Properties:
             Text: |-
-              =CountRows(Filter(Filter(colContratti, AnnoEd = gblAnno && StatoTxt <> "annullato"), IsBlank('Saldo pagato il'))) & " saldi da incassare"
+              =CountRows(Filter(Filter(colContratti, AnnoEd = gblAnno && StatoTxt = "firmato"), IsBlank('Saldo pagato il'))) & " saldi da incassare"
             X: =1093
             Y: =186
             Width: =219
@@ -801,7 +801,7 @@ Screens:
           Variant: BrowseLayout_Flexible_SocialFeed_ver5.0
           Properties:
             Items: |-
-              =FirstN(Sort(Filter(colContratti, AnnoEd = gblAnno), 'Data firma', SortOrder.Descending), 7)
+              =FirstN(Sort(Filter(colContratti, AnnoEd = gblAnno && StatoTxt = "firmato"), 'Data firma', SortOrder.Descending), 7)
             X: =268
             Y: =292
             Width: =620
@@ -931,7 +931,7 @@ Screens:
           Control: Label
           Properties:
             Text: |-
-              ="Nessun contratto per l'edizione " & gblAnno & ". Le vendite partiranno dal back-office."
+              ="Nessun contratto firmato per l'edizione " & gblAnno & "."
             X: =268
             Y: =300
             Width: =620
@@ -943,7 +943,7 @@ Screens:
             Align: =Align.Left
             VerticalAlign: =VerticalAlign.Middle
             Visible: |-
-              =IsEmpty(Filter(colContratti, AnnoEd = gblAnno))
+              =IsEmpty(Filter(colContratti, AnnoEd = gblAnno && StatoTxt = "firmato"))
             TabIndex: =-1
             FocusedBorderThickness: =2
       - hm_recPanPad:
@@ -1014,7 +1014,7 @@ Screens:
                 Control: Label
                 Properties:
                   Text: |-
-                    =CountRows(Filter(colContratti, AnnoEd = gblAnno && Left(CodStand, 2) = ThisItem.Codice && StatoTxt <> "annullato")) & " venduti su " & CountRows(Filter(colStand, CodPad = ThisItem.Codice && AnnoAtt <= Value(gblAnno)))
+                    =CountRows(Filter(colContratti, AnnoEd = gblAnno && Left(CodStand, 2) = ThisItem.Codice && StatoTxt = "firmato")) & " venduti, " & CountRows(Filter(colContratti, AnnoEd = gblAnno && Left(CodStand, 2) = ThisItem.Codice && StatoTxt <> "annullato")) & " prenotati su " & CountRows(Filter(colStand, CodPad = ThisItem.Codice && AnnoAtt <= Value(gblAnno)))
                   X: =0
                   Y: =30
                   Width: =370
@@ -1038,13 +1038,25 @@ Screens:
                   AccessibleLabel: |-
                     ="Elemento grafico"
                   TabIndex: =-1
-            - hm_recPFg:
+            - hm_recPPre:
                 Control: Rectangle
                 Properties:
                   X: =0
                   Y: =58
                   Width: |-
                     =(Parent.TemplateWidth) * CountRows(Filter(colContratti, AnnoEd = gblAnno && Left(CodStand, 2) = ThisItem.Codice && StatoTxt <> "annullato")) / Max(1, CountRows(Filter(colStand, CodPad = ThisItem.Codice && AnnoAtt <= Value(gblAnno))))
+                  Height: =10
+                  Fill: =nfAccentoChiaro
+                  AccessibleLabel: |-
+                    ="Elemento grafico"
+                  TabIndex: =-1
+            - hm_recPFg:
+                Control: Rectangle
+                Properties:
+                  X: =0
+                  Y: =58
+                  Width: |-
+                    =(Parent.TemplateWidth) * CountRows(Filter(colContratti, AnnoEd = gblAnno && Left(CodStand, 2) = ThisItem.Codice && StatoTxt = "firmato")) / Max(1, CountRows(Filter(colStand, CodPad = ThisItem.Codice && AnnoAtt <= Value(gblAnno))))
                   Height: =10
                   Fill: =nfAccento
                   AccessibleLabel: |-

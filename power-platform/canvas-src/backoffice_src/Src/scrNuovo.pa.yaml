@@ -12,7 +12,7 @@ Screens:
             locSconto: 0, locPad: If(IsBlank(gblStandIniz), "P1", gblStandIniz.CodPad), locSalva: false, locPrezzoMq: 0, locPct: 0});
         Set(gblEspIniz, Blank());
         Set(gblStandIniz, Blank());
-        ClearCollect(colListino, 'Voci listino');
+        ClearCollect(colListino, Filter(AddColumns('Voci listino', AnnoEd, ThisRecord.Edizione.Anno), AnnoEd = gblAnno));
         ClearCollect(colExtra, AddColumns(Filter(colListino, StartsWith(Codice, "EX-") || StartsWith(Codice, "SP-")),
             Qta, 0, Ord, Switch(Codice, "EX-ARR", 1, "EX-EL3", 2, "EX-EL6", 3, "EX-FIBRA", 4, "EX-PARK", 5, "EX-PASS", 6, "SP-BADGE", 7, "SP-COSPLAY", 8, "SP-INDIE", 9, "SP-SOCIAL", 10, "SP-STAGE", 11, "SP-TORNEO", 12, 99)))
     Children:

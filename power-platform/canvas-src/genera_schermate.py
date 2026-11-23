@@ -196,23 +196,27 @@ APP = HEADER + """App:
 # ---------------------------------------------------------------------------
 def home():
     p = "hm"
-    ed = 'Filter(colContratti, AnnoEd = gblAnno && StatoTxt <> "annullato")'
-    kpi = [("Stand venduti",
-            f'CountRows({ed}) & " / " & CountRows(Filter(colStand, AnnoAtt <= Value(gblAnno)))',
-            f'"Occupazione " & Text(CountRows({ed}) / Max(1, CountRows(Filter(colStand, AnnoAtt <= Value(gblAnno)))), "0%")',
+    # Come nelle viste SQL di BID (v_kpi_saturazione, v_kpi_ricavo_mq): "venduto" = contratto firmato.
+    # "Prenotato" = contratto non annullato (firmato o preventivo): lo stand non si può più vendere ad altri.
+    ven_ed = 'Filter(colContratti, AnnoEd = gblAnno && StatoTxt = "firmato")'
+    pre_ed = 'Filter(colContratti, AnnoEd = gblAnno && StatoTxt <> "annullato")'
+    tot_ed = "CountRows(Filter(colStand, AnnoAtt <= Value(gblAnno)))"
+    kpi = [("Stand venduti (firmati)",
+            f'CountRows({ven_ed}) & " / " & {tot_ed}',
+            f'"Prenotati " & CountRows({pre_ed}) & " · liberi " & ({tot_ed} - CountRows({pre_ed}))',
             "nfAccento"),
            ("Contratti firmati",
-            'CountRows(Filter(colContratti, AnnoEd = gblAnno && StatoTxt = "firmato"))',
+            f'CountRows({ven_ed})',
             'CountRows(Filter(colContratti, AnnoEd = gblAnno && StatoTxt = "preventivo")) & " preventivi aperti"',
             "nfVerde"),
-           ("Imponibile venduto",
-            f'Text(Sum({ed}, Imponibile), "[$-it-IT]€ #,##0")',
-            # Average su una tabella vuota è un errore (nel 2026 non c'è ancora nessun contratto)
-            f'If(CountRows({ed}) = 0, "Nessun contratto ancora", "Sconto medio " & Text(Average({ed}, Sconto), "0.0%"))',
+           ("Imponibile firmato",
+            f'Text(Sum({ven_ed}, Imponibile), "[$-it-IT]€ #,##0")',
+            # Average su una tabella vuota è un errore (all'inizio delle vendite non c'è nessun contratto firmato)
+            f'If(CountRows({ven_ed}) = 0, "Nessun contratto firmato", "Sconto medio " & Text(Average({ven_ed}, Sconto), "0.0%"))',
             "nfBlu"),
            ("Acconti da incassare",
-            f"CountRows(Filter({ed}, IsBlank('Acconto pagato il')))",
-            f"CountRows(Filter({ed}, IsBlank('Saldo pagato il'))) & \" saldi da incassare\"",
+            f"CountRows(Filter({ven_ed}, IsBlank('Acconto pagato il')))",
+            f"CountRows(Filter({ven_ed}, IsBlank('Saldo pagato il'))) & \" saldi da incassare\"",
             "nfAmbra")]
     ch = sidebar(p, "Home") + header(p, '"Panoramica"', '"ARCADE Milano · edizione " & gblAnno & " · dati Dataverse"')
     ch.append(label(f"{p}_lblEd", '"Edizione"', 1060, 26, 90, 40, size=11, color="nfTestoSec", align="Align.Right"))
@@ -249,23 +253,27 @@ def home():
     ch += [rect(f"{p}_recPanUltimi", px, py, pw, ph, "nfCard", "nfBordo"),
            label(f"{p}_lblPanUltimi", '"Ultimi contratti firmati"', px + 20, py + 14, 400, 28, size=14, bold=True),
            control(f"{p}_galUltimi", "Gallery", {
-               "Items": "FirstN(Sort(Filter(colContratti, AnnoEd = gblAnno), 'Data firma', SortOrder.Descending), 7)",
+               "Items": f"FirstN(Sort({ven_ed}, 'Data firma', SortOrder.Descending), 7)",
                "X": px + 20, "Y": py + 52, "Width": pw - 40, "Height": ph - 64, "TemplateSize": 60,
                "TemplatePadding": 0, "ShowScrollbar": "false"},
                children=righe, variant="BrowseLayout_Flexible_SocialFeed_ver5.0"),
-           label(f"{p}_lblUltimiVuoto", '"Nessun contratto per l\'edizione " & gblAnno & ". Le vendite partiranno dal back-office."',
+           label(f"{p}_lblUltimiVuoto", '"Nessun contratto firmato per l\'edizione " & gblAnno & "."',
                  px + 20, py + 60, pw - 40, 40, size=11, color="nfTestoSec",
-                 extra={"Visible": "IsEmpty(Filter(colContratti, AnnoEd = gblAnno))"})]
+                 extra={"Visible": f"IsEmpty({ven_ed})"})]
 
-    # Occupazione per padiglione
+    # Occupazione per padiglione: barra scura = venduti (firmati), barra chiara = prenotati (anche preventivi)
     qx, qw = px + pw + 16, W - (px + pw + 16) - 32
     tot = "CountRows(Filter(colStand, CodPad = ThisItem.Codice && AnnoAtt <= Value(gblAnno)))"
     ven = ('CountRows(Filter(colContratti, AnnoEd = gblAnno && Left(CodStand, 2) = ThisItem.Codice'
+           ' && StatoTxt = "firmato"))')
+    pre = ('CountRows(Filter(colContratti, AnnoEd = gblAnno && Left(CodStand, 2) = ThisItem.Codice'
            ' && StatoTxt <> "annullato"))')
     pad = [
         label(f"{p}_lblPCod", 'ThisItem.Codice & " · " & ThisItem.Nome', 0, 6, qw - 40, 24, size=12, bold=True, indent=t),
-        label(f"{p}_lblPNum", f'{ven} & " venduti su " & {tot}', 0, 30, qw - 40, 20, size=10, color="nfTestoSec", indent=t),
+        label(f"{p}_lblPNum", f'{ven} & " venduti, " & {pre} & " prenotati su " & {tot}', 0, 30, qw - 40, 20,
+              size=10, color="nfTestoSec", indent=t),
         rect(f"{p}_recPBg", 0, 58, qw - 40, 10, "nfSfondo", indent=t),
+        rect(f"{p}_recPPre", 0, 58, f"(Parent.TemplateWidth) * {pre} / Max(1, {tot})", 10, "nfAccentoChiaro", indent=t),
         rect(f"{p}_recPFg", 0, 58, f"(Parent.TemplateWidth) * {ven} / Max(1, {tot})", 10, "nfAccento", indent=t),
     ]
     ch += [rect(f"{p}_recPanPad", qx, py, qw, ph, "nfCard", "nfBordo"),
@@ -421,16 +429,26 @@ def espositori():
 # ---------------------------------------------------------------------------
 # Dopo ogni scrittura le due collezioni si ricaricano: Dataverse resta la fonte, la collezione è solo una copia.
 RICARICA = "Refresh(Contratti);\n" + CARICA
+# Flussi chiamati dall'app (Power Apps V2). Il nome è quello che Studio assegna quando il flusso si aggiunge
+# all'app (pannello Power Automate → Aggiungi flusso): il nome visualizzato senza spazi. Se Studio ne mostra
+# uno diverso, si corregge solo qui.
+FLUSSO_PDF = "'ARCADE–FL-03–InviopreventivoPDF'"
+FLUSSO_INVITI = "'ARCADE–FL-06–Invitoalrinnovoeprelazione'"
 EURO = '"[$-it-IT]€ #,##0"'
 EURO2 = '"[$-it-IT]€ #,##0.00"'
 # Le righe contratto sono 950, oltre il limite di 500 righe delle query che Power Apps non delega a Dataverse.
 # Filtrare per contratto (lookup) non è delegabile, quindi si caricano per numero di riga: ogni query
 # (Riga = 1, Riga = 2, ...) è un'uguaglianza su un numero, che Dataverse esegue lui e restituisce meno di 500 righe.
-# Una riga ha al massimo 14 numeri (spazio, maggiorazione e 12 servizi): 16 passaggi bastano.
+# Quanti passaggi: il numero di riga più alto presente in Dataverse (Sort + First sono delegabili),
+# non un numero fisso. Prima era Sequence(16): un contratto con più di 16 righe sarebbe stato tagliato.
 CARICA_RIGHE = """If(IsEmpty(colRighe),
-    ForAll(Sequence(16) As n,
-        Collect(colRighe, AddColumns(Filter('Righe contratto', Riga = n.Value), IdC, ThisRecord.Contratto.'ID contratto'))))"""
+    With({maxRiga: First(Sort('Righe contratto', Riga, SortOrder.Descending)).Riga},
+        ForAll(Sequence(Max(1, maxRiga)) As n,
+            Collect(colRighe, AddColumns(Filter('Righe contratto', Riga = n.Value), IdC, ThisRecord.Contratto.'ID contratto')))))"""
 # Ordine fisso dei servizi del listino: serve un numero perché i testi non si confrontano con <= (ErrBadType)
+# Voci di listino della sola edizione scelta (gblAnno): lo stesso codice esiste in ogni edizione,
+# con prezzi diversi. Sono poche decine di righe: si leggono tutte e si filtrano nella collezione.
+CARICA_LISTINO = "ClearCollect(colListino, Filter(AddColumns('Voci listino', AnnoEd, ThisRecord.Edizione.Anno), AnnoEd = gblAnno))"
 ORD_SERVIZI = ('Switch(Codice, "EX-ARR", 1, "EX-EL3", 2, "EX-EL6", 3, "EX-FIBRA", 4, "EX-PARK", 5, "EX-PASS", 6,'
                ' "SP-BADGE", 7, "SP-COSPLAY", 8, "SP-INDIE", 9, "SP-SOCIAL", 10, "SP-STAGE", 11, "SP-TORNEO", 12, 99)')
 
@@ -612,16 +630,28 @@ def contratti():
         & Text(If(acc, Round(§.Imponibile * 0.3, 2), §.Imponibile - Round(§.Imponibile * 0.3, 2)), "#,##0.00")
         & ", con scadenza " & Text(If(acc, §.'Scadenza acconto', §.'Scadenza saldo'), "dd/mm/yyyy") & "."
         & Char(10) & Char(10) & "Cordiali saluti," & Char(10) & "Ufficio commerciale ARCADE Milano")))""")
-    disab = {"DisabledFill": "nfBordo", "DisabledColor": "nfTestoSec"}
-    ch += [button(f"{p}_btnFirma", '"Firma contratto"', dx + 24, H - 64, 160, 40, firma,
+    # FL-03: il flusso compone il preventivo, lo converte in PDF su OneDrive e lo manda al referente
+    # (in modalità prova all'indirizzo del team). Riceve il GUID del contratto e risponde con "esito".
+    pdf = S(f"""IfError(
+    Notify("Invio del preventivo in corso...", NotificationType.Information);
+    Set(gblEsitoPdf, {FLUSSO_PDF}.Run(Text(§.Contratto)));
+    Notify("Preventivo " & §.'ID contratto' & ": " & gblEsitoPdf.esito, NotificationType.Success),
+    Notify("Invio del preventivo non riuscito: " & FirstError.Message, NotificationType.Error)
+)""")
+    disab = {"DisabledFill": "nfBordo", "DisabledColor": "nfTestoSec", "Size": 11}
+    bw = (dw - 48 - 3 * 8) // 4                   # quattro pulsanti nella riga in basso
+    ch += [button(f"{p}_btnFirma", '"Firma"', dx + 24, H - 64, bw, 40, firma,
                   extra={**disab, "DisplayMode": S('If(§.StatoTxt = "preventivo", DisplayMode.Edit, DisplayMode.Disabled)')}),
-           button(f"{p}_btnAnnulla", 'If(locConf, "Conferma annullamento", "Annulla contratto")', dx + 194, H - 64, 170, 40,
+           button(f"{p}_btnAnnulla", 'If(locConf, "Conferma", "Annulla")', dx + 24 + (bw + 8), H - 64, bw, 40,
                   annulla, fill="If(locConf, nfRosso, nfCard)", color="If(locConf, Color.White, nfRosso)",
                   extra={**disab, "BorderColor": "nfRosso", "BorderThickness": 1,
                          "DisplayMode": S('If(§.StatoTxt <> "annullato" && !IsBlank(§.\'ID contratto\'), DisplayMode.Edit, DisplayMode.Disabled)')}),
-           button(f"{p}_btnSollecito", '"Invia sollecito"', dx + 374, H - 64, 160, 40, sollecito,
+           button(f"{p}_btnSollecito", '"Sollecito"', dx + 24 + 2 * (bw + 8), H - 64, bw, 40, sollecito,
                   fill="nfAccentoChiaro", color="nfAccento",
-                  extra={**disab, "DisplayMode": f"If({scaduto}, DisplayMode.Edit, DisplayMode.Disabled)"})]
+                  extra={**disab, "DisplayMode": f"If({scaduto}, DisplayMode.Edit, DisplayMode.Disabled)"}),
+           button(f"{p}_btnPdf", '"Preventivo PDF"', dx + 24 + 3 * (bw + 8), H - 64, bw, 40, pdf,
+                  fill="nfAccentoChiaro", color="nfAccento",
+                  extra={**disab, "DisplayMode": S('If(§.StatoTxt <> "annullato" && !IsBlank(§.\'ID contratto\'), DisplayMode.Edit, DisplayMode.Disabled)')})]
     onvisible = ('If(IsBlank(locStato), UpdateContext({locStato: "Tutti"}));\nUpdateContext({locConf: false});\n'
                  + CARICA_RIGHE)
     return screen("scrContratti", {"Fill": "nfSfondo", "OnVisible": onvisible}, ch)
@@ -631,7 +661,7 @@ def contratti():
 # Nuovo contratto: procedura guidata in 4 passi -> preventivo dell'edizione 2026
 # Regole prese dai 198 contratti storici (verificate): prezzo area = mq x prezzo del padiglione,
 # maggiorazione sull'area per posizione, imponibile = listino x (1 - sconto), acconto 30% e saldo 70%,
-# numero contratto progressivo su tutte le edizioni, rinnovo = espositore presente nell'edizione precedente.
+# numero contratto assegnato da Dataverse (numerazione automatica), rinnovo = espositore presente nell'edizione precedente.
 # ---------------------------------------------------------------------------
 def nuovo():
     p = "nv"
@@ -932,7 +962,7 @@ UpdateContext({{locPasso: If(IsBlank(gblEspIniz), 1, 2),
     locSconto: 0, locPad: If(IsBlank(gblStandIniz), "P1", gblStandIniz.CodPad), locSalva: false, locPrezzoMq: 0, locPct: 0}});
 Set(gblEspIniz, Blank());
 Set(gblStandIniz, Blank());
-ClearCollect(colListino, 'Voci listino');
+{CARICA_LISTINO};
 ClearCollect(colExtra, AddColumns(Filter(colListino, StartsWith(Codice, "EX-") || StartsWith(Codice, "SP-")),
     Qta, 0, Ord, {ORD_SERVIZI}))"""
     return screen("scrNuovo", {"Fill": "nfSfondo", "OnVisible": onvisible}, ch)
@@ -1101,6 +1131,29 @@ def rinnovi():
         p, '"Rinnovi e prelazione"',
         f'"Espositori " & {prec_anno} & " da riconfermare per il " & gblAnno'
         ' & " · prelazione " & Coalesce(LookUp(colListino, Codice = "COND-PRELAZ").Note, "")')
+    # FL-06: inviti al rinnovo agli espositori "da contattare" visibili con i filtri correnti.
+    # Due clic (come l'annullo di un contratto) perché il flusso manda un'email per espositore.
+    da_invitare = f"Filter({p}_galRinn.AllItems As r, IsBlank({ha_contratto}))"
+    invita = f"""If(locConfInv,
+    IfError(
+        Notify("Invio degli inviti in corso...", NotificationType.Information);
+        Set(gblEsitoInv, {FLUSSO_INVITI}.Run(
+            Concat({da_invitare}, Text(LookUp(Espositori, 'ID espositore' = IdEsp).Espositore), ","),
+            gblAnno));
+        UpdateContext({{locConfInv: false}});
+        Notify("Inviti mandati: " & gblEsitoInv.inviati, NotificationType.Success),
+        UpdateContext({{locConfInv: false}});
+        Notify("Invio degli inviti non riuscito: " & FirstError.Message, NotificationType.Error)
+    ),
+    UpdateContext({{locConfInv: true}})
+)"""
+    ch.append(button(f"{p}_btnInvita",
+                     f'If(locConfInv, "Conferma: invia " & CountRows({da_invitare}) & " inviti", '
+                     f'"Invia inviti (" & CountRows({da_invitare}) & ")")',
+                     X0 + 400, 20, 300, 36, invita,
+                     fill="If(locConfInv, nfRosso, nfAccento)",
+                     extra={"Size": 11, "DisabledFill": "nfBordo", "DisabledColor": "nfTestoSec",
+                            "DisplayMode": f"If(CountRows({da_invitare}) = 0, DisplayMode.Disabled, DisplayMode.Edit)"}))
     ch.append(label(f"{p}_lblEd", '"Edizione"', 1060, 26, 90, 40, size=11, color="nfTestoSec", align="Align.Right"))
     ch.append(control(f"{p}_ddEdizione", "Classic/DropDown", {
         "Items": '["2026", "2025"]', "Default": "gblAnno", "X": 1160, "Y": 26, "Width": 170, "Height": 40,
@@ -1182,7 +1235,8 @@ def rinnovi():
            label(f"{p}_lblVuoto", '"Nessun espositore con questi filtri"', X0 + 24, py + 70, PW_SC - 48, 40, size=12,
                  color="nfTestoSec", align="Align.Center", extra={"Visible": f"IsEmpty({filtro})"})]
     onvisible = ('If(IsBlank(locRin), UpdateContext({locRin: "Da contattare", locIdx: "Tutti"}));\n'
-                 "If(IsEmpty(colListino), ClearCollect(colListino, 'Voci listino'));\n" + CARICA_RINN)
+                 'UpdateContext({locConfInv: false});\n'
+                 + CARICA_LISTINO + ";\n" + CARICA_RINN)
     return screen("scrRinnovi", {"Fill": "nfSfondo", "OnVisible": onvisible}, ch)
 
 
@@ -1198,7 +1252,7 @@ def listino():
     conds = " || ".join(f'(locCat = "{n}" && StartsWith(Codice, "{pre}"))' for n, pre in categorie)
     filtro = f'Filter(colListino, locCat = "Tutte" || {conds})'
     ch = sidebar(p, "Listino") + header(
-        p, '"Listino 2026"',
+        p, '"Listino " & gblAnno',
         'CountRows(colListino) & " voci · prezzi e disponibilità usati dai nuovi preventivi · i contratti già creati non cambiano"')
     for i, nome in enumerate(["Tutte"] + [n for n, _ in categorie]):
         ch.append(button(f"{p}_btnCat{i}", f'"{nome}"', X0 + i * 106, 96, 100, 40, f'UpdateContext({{locCat: "{nome}"}})',
@@ -1248,13 +1302,13 @@ def listino():
                  rx + 24, 520, rw - 48, 60, size=10, color="nfTestoSec")]
     salva = S_(sel, f"""If(locConfL,
     IfError(
-        Patch('Voci listino', LookUp('Voci listino', Codice = §.Codice),
+        Patch('Voci listino', LookUp('Voci listino', Codice = §.Codice && Edizione.Anno = §.AnnoEd),
             {{'Prezzo unitario': If(IsBlank({tp}), Blank(), Value({tp})),
               Disponibilità: If(IsBlank({td}), Blank(), Value({td})),
               Note: {tn}}});
         UpdateContext({{locConfL: false}});
-        Notify("Voce di listino aggiornata", NotificationType.Success);
-        ClearCollect(colListino, 'Voci listino');
+        Notify("Voce di listino " & §.AnnoEd & " aggiornata", NotificationType.Success);
+        {CARICA_LISTINO};
         true,
         Notify("Aggiornamento non riuscito: " & FirstError.Message, NotificationType.Error)
     ),
@@ -1267,7 +1321,7 @@ def listino():
            button(f"{p}_btnRipristina", '"Ripristina"', rx + 238, H - 64, 140, 40,
                   f"UpdateContext({{locConfL: false}}); Reset({p}_txtPrezzo); Reset({p}_txtDisp); Reset({p}_txtNote)",
                   fill="nfCard", color="nfTesto", extra={"BorderColor": "nfBordo", "BorderThickness": 1})]
-    onvisible = ("If(IsEmpty(colListino), ClearCollect(colListino, 'Voci listino'));\n"
+    onvisible = (CARICA_LISTINO + ";\n"
                  'If(IsBlank(locCat), UpdateContext({locCat: "Tutte"}));\nUpdateContext({locConfL: false})')
     return screen("scrListino", {"Fill": "nfSfondo", "OnVisible": onvisible}, ch)
 

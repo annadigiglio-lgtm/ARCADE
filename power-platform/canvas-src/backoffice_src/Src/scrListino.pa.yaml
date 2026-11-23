@@ -4,7 +4,7 @@ Screens:
     Properties:
       Fill: =nfSfondo
       OnVisible: |-
-        =If(IsEmpty(colListino), ClearCollect(colListino, 'Voci listino'));
+        =ClearCollect(colListino, Filter(AddColumns('Voci listino', AnnoEd, ThisRecord.Edizione.Anno), AnnoEd = gblAnno));
         If(IsBlank(locCat), UpdateContext({locCat: "Tutte"}));
         UpdateContext({locConfL: false})
     Children:
@@ -391,7 +391,7 @@ Screens:
           Control: Label
           Properties:
             Text: |-
-              ="Listino 2026"
+              ="Listino " & gblAnno
             X: =248
             Y: =18
             Width: =700
@@ -923,13 +923,13 @@ Screens:
             OnSelect: |-
               =If(locConfL,
                   IfError(
-                      Patch('Voci listino', LookUp('Voci listino', Codice = ls_galListino.Selected.Codice),
+                      Patch('Voci listino', LookUp('Voci listino', Codice = ls_galListino.Selected.Codice && Edizione.Anno = ls_galListino.Selected.AnnoEd),
                           {'Prezzo unitario': If(IsBlank(ls_txtPrezzo.Text), Blank(), Value(ls_txtPrezzo.Text)),
                             Disponibilità: If(IsBlank(ls_txtDisp.Text), Blank(), Value(ls_txtDisp.Text)),
                             Note: ls_txtNote.Text});
                       UpdateContext({locConfL: false});
-                      Notify("Voce di listino aggiornata", NotificationType.Success);
-                      ClearCollect(colListino, 'Voci listino');
+                      Notify("Voce di listino " & ls_galListino.Selected.AnnoEd & " aggiornata", NotificationType.Success);
+                      ClearCollect(colListino, Filter(AddColumns('Voci listino', AnnoEd, ThisRecord.Edizione.Anno), AnnoEd = gblAnno));
                       true,
                       Notify("Aggiornamento non riuscito: " & FirstError.Message, NotificationType.Error)
                   ),
