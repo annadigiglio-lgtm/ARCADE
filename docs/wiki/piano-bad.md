@@ -32,7 +32,7 @@ Ogni voce si chiude con una verifica scritta qui (data ed esito).
 
 ### 1. Dati commerciali in PostgreSQL
 
-- [ ] Chiarire i 206 contratti in Dataverse (attesi 201: 198 storici + C2026-0199, 0200, 0201)
+- [x] Chiarire i 206 contratti in Dataverse (attesi 201: 198 storici + C2026-0199, 0200, 0201). 2026-11-23: i 5 in più erano prove (C2026-9996…9999 dei flussi, C2026-10000 creato dall'app con la numerazione "massimo + 1"); annullati. Nessuno stand con due contratti non annullati nella stessa edizione.
 - [ ] FL-05: esportare solo i contratti e le righe dal 2026 (l'importatore di BID rifiuta lo storico) ([FL-05](../../power-platform/power-automate/FL-05.md))
 - [ ] CSV di C2026-0200 e delle sue righe nel [formato di scambio](../../power-platform/README.md#formato-proposto); validazione con `importa_commerciale.py`
 - [ ] Import in PostgreSQL con Anna; secondo import senza duplicati
