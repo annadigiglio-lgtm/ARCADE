@@ -64,21 +64,31 @@ Corrisponde a `scansione_stand` di [`schema.sql`](../../db/schema.sql). Va aggiu
 
 | Colonna Dataverse | Tipo | Obbligatoria | PostgreSQL | Note |
 |---|---|---|---|---|
-| `g5_id_scansione` (primaria) | testo, max 36 | sì | **da concordare** | generata dall'app con `GUID()`; serve per non duplicare le righe quando si sincronizza |
+| `g5_id_scansione` (primaria) | testo, max 36 | sì | `g5_id_scansione uuid` | generata dall'app con `GUID()` al momento del tocco e mai più cambiata; serve per non duplicare le righe quando si sincronizza |
 | `g5_edizione` | lookup → `g5_edizione` | sì | `edizione` | anno |
 | `g5_stand` | lookup → `g5_stand` | sì | `codice_stand` | codice dello stand |
-| `g5_rilevato_il` | data e ora | sì | `rilevato_il timestamptz` | salvata in UTC; nell'export in formato ISO 8601 con `Z` |
-| `g5_quantita` | numero intero, minimo 0 | sì | `quantita` | sempre 1 dall'app |
+| `g5_rilevato_il` | data e ora (comportamento *Ora locale utente*, salvata in UTC) | sì | `rilevato_il timestamptz` | nell'export in formato ISO 8601 con `Z` |
+| `g5_quantita` | numero intero, min 0, max 1000 | sì | `quantita` | sempre 1 dall'app |
 | `g5_origine` | testo, max 20 | sì | `origine` | sempre `app` |
 
-Chiave alternativa: `g5_id_scansione`. Relazioni N:1 verso edizione e stand con eliminazione *Restrict*, come le altre tabelle. Change tracking attivo.
+Chiave alternativa: `g5_key_scansione_stand` = (`g5_id_scansione`). Relazioni N:1 verso edizione e stand con eliminazione *Restrict*, come le altre tabelle. Change tracking attivo. Tabella **di proprietà dell'utente** (le altre sono dell'organizzazione): serve perché il ruolo ARCADE Scansione possa eliminare solo le righe create da chi scansiona (§5.3). La proprietà non si cambia dopo la creazione.
 
-**Punto da decidere con Anna (S-07).** In PostgreSQL `scansione_stand.id` è un `bigserial`: un numero generato dal database. Se a ogni export carichiamo di nuovo tutte le scansioni, senza un codice stabile le righe si duplicano. Le due soluzioni:
+**Chiave con BID (S-07): decisa.** Anna ha aggiunto a `scansione_stand` la colonna `g5_id_scansione uuid` univoca (soluzione 1) e l'importatore `importa_scansioni.py` ([import-scansioni.md](../../docs/wiki/import-scansioni.md)). Il CSV ha le colonne `g5_id_scansione,edizione,codice_stand,rilevato_il`.
 
-1. aggiungere a `scansione_stand` una colonna `id_origine` unica, dove va `g5_id_scansione` (modifica allo schema di BID);
-2. caricare solo le scansioni nuove, con `rilevato_il` successivo all'ultimo caricamento (nessuna modifica allo schema, ma un caricamento perso non si recupera).
+### 5.1.1 Correzione della tabella dell'export 1.0.0.5
 
-Proposta BAD: la soluzione 1.
+Nell'export 1.0.0.5 la tabella `g5_scansione_stand` esiste ma è incompleta: ha solo la colonna primaria, che si chiama `g5_g5_id_scansione` (il prefisso `g5_` è stato scritto a mano e Dataverse l'ha aggiunto una seconda volta), e nessuna chiave. Il nome logico di una colonna non si può cambiare e la colonna primaria non si può eliminare, quindi la tabella **si elimina e si ricrea**. È vuota e nessun flusso o app la usa: l'eliminazione non ha effetti su altro.
+
+Si ricrea con un **file di soluzione generato**, come le prime sette tabelle: la definizione sta nel codice ([`genera_scansione.py`](../solution-src/genera_scansione.py)) e si può rileggere e rigenerare. Il file è una **soluzione separata**, `ARCADEBADScansione`, che contiene solo questa tabella: reimportare ARCADE BAD intera sovrascriverebbe app e flussi con la versione dello zip, e si perderebbero le modifiche salvate nell'ambiente dopo l'export.
+
+1. Generare il file: dalla cartella `power-platform/solution-src`, `python -I genera_scansione.py` → `solution-build/ARCADEBADScansione_1_0_0_0.zip`.
+2. make.powerapps.com → ambiente ARCADE-Milano-BAD-G5 → Tabelle → *Scansione stand* → Elimina tabella. Attendere la fine dell'eliminazione: finché la tabella vecchia esiste, l'import non può creare quella nuova con lo stesso nome.
+3. Soluzioni → Importa soluzione → `ARCADEBADScansione_1_0_0_0.zip`. Al termine, in Tabelle compare *Scansione stand* con le sei colonne e, in Chiavi, *g5_key_scansione_stand* (attendere lo stato *Attivo*).
+4. Soluzioni → ARCADE BAD → Aggiungi esistente → Tabella → *Scansione stand* (con tutti i componenti). Da qui la tabella si esporta con ARCADE BAD.
+5. Soluzioni → `ARCADE BAD scansioni` → Elimina: si elimina solo il contenitore della soluzione, la tabella resta perché non è gestita.
+6. Esportare ARCADE BAD (1.0.0.6), scompattarla, rimettere i segnaposto alle variabili con email e rigenerare l'inventario: in [inventario-dataverse.md](../../docs/wiki/inventario-dataverse.md) devono comparire `g5_id_scansione` (primaria, max 36), `g5_edizione`, `g5_stand`, `g5_rilevato_il`, `g5_quantita`, `g5_origine`, la chiave e le due relazioni *Restrict*.
+
+Se l'import al punto 3 fallisce, il messaggio di errore si salva (Scarica file di log) e la tabella si crea a mano con gli stessi nomi, scrivendoli **senza** `g5_` perché il prefisso lo aggiunge Dataverse.
 
 ### 5.2 Nuova tabella `g5_contatto_stand` (solo con il modo C)
 

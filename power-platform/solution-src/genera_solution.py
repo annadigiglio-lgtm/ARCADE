@@ -36,6 +36,9 @@ def whole(name, disp, mn, mx, req=False):
 def date(name, disp, req=False):
     return dict(kind="date", name=name, disp=disp, req=req)
 
+def datetime_(name, disp, req=False):
+    return dict(kind="datetime", name=name, disp=disp, req=req)
+
 def yesno(name, disp, req=False):
     return dict(kind="bool", name=name, disp=disp, req=req)
 
@@ -166,6 +169,10 @@ def attribute_xml(table, c):
         # Behavior 2 = "Solo data" (DateOnly): niente fuso orario
         body = (f"<Type>datetime</Type>{common_attr(c)}<Format>date</Format>"
                 "<CanChangeDateTimeBehavior>0</CanChangeDateTimeBehavior><Behavior>2</Behavior>")
+    elif k == "datetime":
+        # Behavior 1 = "Ora locale utente": salvata in UTC, mostrata nel fuso di chi legge
+        body = (f"<Type>datetime</Type>{common_attr(c)}<Format>datetime</Format>"
+                "<CanChangeDateTimeBehavior>1</CanChangeDateTimeBehavior><Behavior>1</Behavior>")
     elif k == "bool":
         opts = option_xml(1, "Sì") + option_xml(0, "No")
         body = (f"<Type>bit</Type>{common_attr(c)}<AppDefaultValue>0</AppDefaultValue>"
