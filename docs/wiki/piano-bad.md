@@ -24,7 +24,7 @@ Il lavoro rimasto è assegnato ad Alessandro; a fine settimana si spiega al rest
 | Back-office | app nella soluzione (versione del 2026-11-04) | correzioni di BID, pulsanti per FL-03 e FL-06, schermata Report |
 | App di scansione | analisi e bozza grafica | tutta l'app |
 | Integrazione con BID | importatori di BID pronti (`importa_commerciale.py`, `importa_scansioni.py`) | C2026-0200 e scansioni in PostgreSQL |
-| Git | 4 commit sul branch `bad/aggiornato-16-novembre` | push e pull request verso `main` |
+| Git | branch `bad/aggiornato-16-novembre` pubblicato, [pull request n. 1](https://github.com/annadigiglio-lgtm/ARCADE/pull/1) aperta | revisione e merge di BID |
 
 ## Elenco del lavoro, in ordine
 
@@ -71,7 +71,7 @@ Ogni voce si chiude con una verifica scritta qui (data ed esito).
 ### 6. Chiusura
 
 - [ ] Numeri uguali in app, PostgreSQL, web e Power BI (tabella di confronto in [avanzamento.md](avanzamento.md))
-- [ ] Push del branch e pull request verso `main`
+- [x] Push del branch e pull request verso `main`. 2026-11-23: branch `bad/aggiornato-16-novembre` pubblicato, [pull request n. 1](https://github.com/annadigiglio-lgtm/ARCADE/pull/1) aperta (da aggiornare con i commit dei giorni successivi)
 - [ ] Assunzioni con ID univoci e separati dai codici delle anomalie di BID ([assunzioni-bad.md](assunzioni-bad.md))
 - [ ] Prova generale con BID il 2026-12-01; correzioni il 2026-12-02; export finale di soluzione e report il 2026-12-03
 
