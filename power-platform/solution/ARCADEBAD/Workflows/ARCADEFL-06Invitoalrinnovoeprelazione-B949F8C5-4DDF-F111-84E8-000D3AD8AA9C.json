@@ -414,7 +414,6 @@
             "Avviso_errore": [
               "Succeeded",
               "Failed",
-              "Skipped",
               "TimedOut"
             ]
           }

@@ -58,7 +58,7 @@ Ogni voce si chiude con una verifica scritta qui (data ed esito).
 
 ### 4. Flussi
 
-- [ ] Prove di FL-01…FL-08 registrate nelle schede
+- [ ] Prove di FL-01…FL-08 registrate nelle schede. 2026-11-23: FL-00, 01, 02, 03, 04, 06, 08 provati e riusciti (in FL-03 e FL-06 corretto l'ordine di *Rispondi errore*); mancano FL-07 (serve una riga SP-/EX- su un contratto di prova) e la prima esecuzione di FL-05 con i filtri
 - [x] FL-03 e FL-06: risposta all'app anche in caso di errore. 2026-11-23: azione *Rispondi errore* dopo l'avviso di errore
 - [x] FL-02: partire anche quando un contratto viene creato già firmato. 2026-11-23: trigger *creata o modificata*
 - [x] FL-01: riepilogo al commerciale solo se ci sono rate da segnalare (2026-11-23)
