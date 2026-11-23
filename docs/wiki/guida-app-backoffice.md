@@ -26,6 +26,20 @@ pac canvas pack --sources backoffice_src --msapp FUSIONWORK-BACKOFFICE_vN.msapp 
 5. Salvare: File → Salva con nome → Questo computer. Gli errori trovati da Studio sono nel file `AppCheckerResult.sarif` dentro il `.msapp` (è uno zip); si leggono `runs[].results[]` e si ignorano le note `acc-*` (accessibilità).
 6. Quando la versione è buona: Salva e Pubblica, poi esportare la soluzione ([guida ambiente](guida-ambiente-power-platform.md#esportare-la-soluzione)).
 
+## Numero del contratto e ID espositore
+
+Dal 2026-11-23 li assegna Dataverse, non l'app: le colonne `g5_id_contratto` e `g5_id_espositore` hanno la numerazione automatica (richiesta della [verifica di BID](verifica-bad-2026-11-09.md)). Prima il telefono calcolava "massimo + 1" sulla copia locale dei contratti: due salvataggi insieme potevano avere lo stesso numero, e un contratto di prova `C2026-9999` ha prodotto `C2026-10000`.
+
+| Colonna | Formato | Primo numero |
+|---|---|---|
+| `g5_id_contratto` | `C2026-{SEQNUM:4}` | C2026-0202 |
+| `g5_id_espositore` | `ESP{SEQNUM:3}` | ESP136 |
+
+- Nell'app i nuovi record si salvano **senza** questi campi; il numero si legge dal record restituito da `Patch` (`gblNuovo.'ID contratto'`).
+- Le due colonne non sono più obbligatorie lato app (il valore c'è sempre, lo mette il server): se fossero obbligatorie, l'app rifiuterebbe il salvataggio prima di inviarlo.
+- **Quando si apriranno le vendite 2027** il formato del contratto va cambiato in `C2027-{SEQNUM:4}` e il valore di partenza riportato a 1 (Web API: modifica della colonna e azione `SetAutoNumberSeed`). Finché il formato dice 2026, l'app non deve creare contratti di un'altra edizione: l'importatore di BID controlla che l'anno del codice sia quello dell'edizione.
+- Se il salvataggio delle righe fallisce dopo la creazione del contratto, l'app annulla il contratto appena creato e chiede di riprovare.
+
 ## Errori già incontrati e come si risolvono
 
 | Errore | Soluzione |

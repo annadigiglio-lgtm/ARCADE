@@ -871,10 +871,11 @@ Screens:
                   !IsMatch(es_txtPiva.Text, "\d{11}"), Notify("La partita IVA deve avere esattamente 11 cifre", NotificationType.Error),
                   IfError(
                       If(locNuovo,
-                          Patch(Espositori, Defaults(Espositori), {'ID espositore': "ESP" & Text(Value(Right(First(Sort(Espositori, 'ID espositore', SortOrder.Descending)).'ID espositore', 3)) + 1, "000"), 'Ragione sociale': es_txtRag.Text, 'Partita IVA': es_txtPiva.Text, Settore: es_txtSett.Text, Città: es_txtCitta.Text, Referente: es_txtRef.Text, 'Email referente': es_txtMail.Text}),
-                          Patch(Espositori, es_galEsp.Selected, {'Ragione sociale': es_txtRag.Text, 'Partita IVA': es_txtPiva.Text, Settore: es_txtSett.Text, Città: es_txtCitta.Text, Referente: es_txtRef.Text, 'Email referente': es_txtMail.Text})
+                          With({nuovo: Patch(Espositori, Defaults(Espositori), {'Ragione sociale': es_txtRag.Text, 'Partita IVA': es_txtPiva.Text, Settore: es_txtSett.Text, Città: es_txtCitta.Text, Referente: es_txtRef.Text, 'Email referente': es_txtMail.Text})},
+                              Notify("Espositore " & nuovo.'ID espositore' & " salvato", NotificationType.Success)),
+                          Patch(Espositori, es_galEsp.Selected, {'Ragione sociale': es_txtRag.Text, 'Partita IVA': es_txtPiva.Text, Settore: es_txtSett.Text, Città: es_txtCitta.Text, Referente: es_txtRef.Text, 'Email referente': es_txtMail.Text});
+                          Notify("Espositore salvato", NotificationType.Success)
                       );
-                      Notify("Espositore salvato", NotificationType.Success);
                       UpdateContext({locNuovo: false}),
                       Notify("Salvataggio non riuscito: " & FirstError.Message, NotificationType.Error)
                   )

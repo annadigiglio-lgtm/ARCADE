@@ -2221,7 +2221,8 @@ Screens:
             Width: =200
             Height: =40
             OnSelect: |-
-              =IfError(
+              =Set(gblNuovo, Blank());
+              IfError(
                   UpdateContext({locSalva: true});
                   Refresh(Contratti);
                   ClearCollect(colContratti, AddColumns(Contratti,
@@ -2237,16 +2238,15 @@ Screens:
                   If(!IsBlank(LookUp(colContratti, AnnoEd = gblAnno && CodStand = locStand.'Codice stand' && StatoTxt <> "annullato")),
                       Notify("Lo stand " & locStand.'Codice stand' & " risulta già venduto: sceglierne un altro", NotificationType.Error);
                       UpdateContext({locSalva: false, locPasso: 2}),
-                      With({idNuovo: "C" & gblAnno & "-" & Text(Max(colContratti, Value(Right('ID contratto', 4))) + 1, "0000")},
-                          Set(gblNuovo, Patch(Contratti, Defaults(Contratti),
-                              {'ID contratto': idNuovo, Edizione: LookUp(Edizioni, Anno = gblAnno), Espositore: locEsp,
-                                Stand: LookUp(Stand, 'Codice stand' = locStand.'Codice stand'),
-                                'Stato (g5_stato)': 'Stato (Contratti)'.preventivo,
-                                'Imponibile a listino': ((locStand.'Metri quadri' * locPrezzoMq) + Round((locStand.'Metri quadri' * locPrezzoMq) * locPct, 2) + Sum(colExtra, Qta * 'Prezzo unitario')), Sconto: locSconto, Imponibile: Round(((locStand.'Metri quadri' * locPrezzoMq) + Round((locStand.'Metri quadri' * locPrezzoMq) * locPct, 2) + Sum(colExtra, Qta * 'Prezzo unitario')) * (1 - locSconto), 2), Rinnovo: !IsBlank(LookUp(colContratti, IdEsp = locEsp.'ID espositore' && AnnoEd = Text(Value(gblAnno) - 1, "0") && StatoTxt <> "annullato"))}));
-                          Patch('Righe contratto', Defaults('Righe contratto'), {Contratto: gblNuovo, Riga: 1, 'Codice voce': "SPAZIO", Descrizione: "Area espositiva " & locStand.'Codice stand', Quantità: locStand.'Metri quadri', 'Prezzo unitario': locPrezzoMq, Importo: Round((locStand.'Metri quadri' * locPrezzoMq), 2)});
-                          If(locPct > 0, Patch('Righe contratto', Defaults('Righe contratto'), {Contratto: gblNuovo, Riga: 2, 'Codice voce': "MAGG", Descrizione: "Maggiorazione " & locStand.PosTxt, Quantità: 1, 'Prezzo unitario': Round((locStand.'Metri quadri' * locPrezzoMq) * locPct, 2), Importo: Round((locStand.'Metri quadri' * locPrezzoMq) * locPct, 2)}));
-                          ForAll(Filter(colExtra, Qta > 0) As ex, Patch('Righe contratto', Defaults('Righe contratto'), {Contratto: gblNuovo, Riga: If(locPct > 0, 2, 1) + CountRows(Filter(colExtra, Qta > 0 && Ord <= ex.Ord)), 'Codice voce': ex.Codice, Descrizione: ex.Descrizione, Quantità: ex.Qta, 'Prezzo unitario': ex.'Prezzo unitario', Importo: Round(ex.Qta * ex.'Prezzo unitario', 2)}));
-                          ClearCollect(colContratti, AddColumns(Contratti,
+                      Set(gblNuovo, Patch(Contratti, Defaults(Contratti),
+                          {Edizione: LookUp(Edizioni, Anno = gblAnno), Espositore: locEsp,
+                            Stand: LookUp(Stand, 'Codice stand' = locStand.'Codice stand'),
+                            'Stato (g5_stato)': 'Stato (Contratti)'.preventivo,
+                            'Imponibile a listino': ((locStand.'Metri quadri' * locPrezzoMq) + Round((locStand.'Metri quadri' * locPrezzoMq) * locPct, 2) + Sum(colExtra, Qta * 'Prezzo unitario')), Sconto: locSconto, Imponibile: Round(((locStand.'Metri quadri' * locPrezzoMq) + Round((locStand.'Metri quadri' * locPrezzoMq) * locPct, 2) + Sum(colExtra, Qta * 'Prezzo unitario')) * (1 - locSconto), 2), Rinnovo: !IsBlank(LookUp(colContratti, IdEsp = locEsp.'ID espositore' && AnnoEd = Text(Value(gblAnno) - 1, "0") && StatoTxt <> "annullato"))}));
+                      Patch('Righe contratto', Defaults('Righe contratto'), {Contratto: gblNuovo, Riga: 1, 'Codice voce': "SPAZIO", Descrizione: "Area espositiva " & locStand.'Codice stand', Quantità: locStand.'Metri quadri', 'Prezzo unitario': locPrezzoMq, Importo: Round((locStand.'Metri quadri' * locPrezzoMq), 2)});
+                      If(locPct > 0, Patch('Righe contratto', Defaults('Righe contratto'), {Contratto: gblNuovo, Riga: 2, 'Codice voce': "MAGG", Descrizione: "Maggiorazione " & locStand.PosTxt, Quantità: 1, 'Prezzo unitario': Round((locStand.'Metri quadri' * locPrezzoMq) * locPct, 2), Importo: Round((locStand.'Metri quadri' * locPrezzoMq) * locPct, 2)}));
+                      ForAll(Filter(colExtra, Qta > 0) As ex, Patch('Righe contratto', Defaults('Righe contratto'), {Contratto: gblNuovo, Riga: If(locPct > 0, 2, 1) + CountRows(Filter(colExtra, Qta > 0 && Ord <= ex.Ord)), 'Codice voce': ex.Codice, Descrizione: ex.Descrizione, Quantità: ex.Qta, 'Prezzo unitario': ex.'Prezzo unitario', Importo: Round(ex.Qta * ex.'Prezzo unitario', 2)}));
+                      ClearCollect(colContratti, AddColumns(Contratti,
                   AnnoEd, ThisRecord.Edizione.Anno,
                   CodStand, ThisRecord.Stand.'Codice stand',
                   IdEsp, ThisRecord.Espositore.'ID espositore',
@@ -2256,14 +2256,16 @@ Screens:
                   CodPad, ThisRecord.Padiglione.Codice,
                   AnnoAtt, Value(ThisRecord.'Attivo dal'.Anno),
                   PosTxt, Text(ThisRecord.Posizione)));
-                          Notify("Preventivo " & idNuovo & " creato", NotificationType.Success);
-                          UpdateContext({locSalva: false});
-                          Clear(colRighe);
-                          Navigate(scrContratti, ScreenTransition.None, {locStato: "Tutti", locConf: false})
-                      )
+                      Notify("Preventivo " & gblNuovo.'ID contratto' & " creato", NotificationType.Success);
+                      UpdateContext({locSalva: false});
+                      Clear(colRighe);
+                      Navigate(scrContratti, ScreenTransition.None, {locStato: "Tutti", locConf: false})
                   ),
                   UpdateContext({locSalva: false});
-                  Notify("Salvataggio non riuscito: " & FirstError.Message, NotificationType.Error)
+                  If(!IsBlank(gblNuovo),
+                      IfError(Patch(Contratti, gblNuovo, {'Stato (g5_stato)': 'Stato (Contratti)'.annullato}); true, false);
+                      Notify("Righe non salvate: il contratto " & gblNuovo.'ID contratto' & " è stato annullato. Riprovare.", NotificationType.Error),
+                      Notify("Salvataggio non riuscito: " & FirstError.Message, NotificationType.Error))
               )
             Fill: =nfVerde
             Color: =Color.White

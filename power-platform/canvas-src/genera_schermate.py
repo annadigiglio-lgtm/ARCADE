@@ -394,15 +394,17 @@ def espositori():
                     extra={"Visible": f'!IsBlank({p}_txtPiva.Text) && !IsMatch({p}_txtPiva.Text, "\\d{{11}}")'}))
     valori = (f"'Ragione sociale': {p}_txtRag.Text, 'Partita IVA': {p}_txtPiva.Text, Settore: {p}_txtSett.Text,"
               f" Città: {p}_txtCitta.Text, Referente: {p}_txtRef.Text, 'Email referente': {p}_txtMail.Text")
+    # L'ID espositore (ESP<nnn>) lo assegna Dataverse con la numerazione automatica di g5_id_espositore
     salva = f"""If(
     IsBlank({p}_txtRag.Text), Notify("La ragione sociale è obbligatoria", NotificationType.Error),
     !IsMatch({p}_txtPiva.Text, "\\d{{11}}"), Notify("La partita IVA deve avere esattamente 11 cifre", NotificationType.Error),
     IfError(
         If(locNuovo,
-            Patch(Espositori, Defaults(Espositori), {{'ID espositore': "ESP" & Text(Value(Right(First(Sort(Espositori, 'ID espositore', SortOrder.Descending)).'ID espositore', 3)) + 1, "000"), {valori}}}),
-            Patch(Espositori, {sel}, {{{valori}}})
+            With({{nuovo: Patch(Espositori, Defaults(Espositori), {{{valori}}})}},
+                Notify("Espositore " & nuovo.'ID espositore' & " salvato", NotificationType.Success)),
+            Patch(Espositori, {sel}, {{{valori}}});
+            Notify("Espositore salvato", NotificationType.Success)
         );
-        Notify("Espositore salvato", NotificationType.Success);
         UpdateContext({{locNuovo: false}}),
         Notify("Salvataggio non riuscito: " & FirstError.Message, NotificationType.Error)
     )
@@ -869,31 +871,36 @@ ClearCollect(colExtra, AddColumns(Filter(colListino, StartsWith(Codice, "EX-") |
     riga_ex = ("{Contratto: gblNuovo, Riga: If(locPct > 0, 2, 1) + CountRows(Filter(colExtra, Qta > 0 && Ord <= ex.Ord)), "
                "'Codice voce': ex.Codice, Descrizione: ex.Descrizione, Quantità: ex.Qta, "
                "'Prezzo unitario': ex.'Prezzo unitario', Importo: Round(ex.Qta * ex.'Prezzo unitario', 2)}")
-    salva = f"""IfError(
+    # Il numero del contratto lo assegna Dataverse (numerazione automatica di g5_id_contratto, formato
+    # C<anno>-<nnnn>): l'app non lo calcola, così due salvataggi insieme non possono avere lo stesso numero.
+    # Se il contratto è stato creato ma una riga non si salva, il contratto si annulla (non resta senza righe).
+    salva = f"""Set(gblNuovo, Blank());
+IfError(
     UpdateContext({{locSalva: true}});
     Refresh(Contratti);
     {CARICA};
     If(!IsBlank(LookUp(colContratti, AnnoEd = gblAnno && CodStand = locStand.'Codice stand' && StatoTxt <> "annullato")),
         Notify("Lo stand " & locStand.'Codice stand' & " risulta già venduto: sceglierne un altro", NotificationType.Error);
         UpdateContext({{locSalva: false, locPasso: 2}}),
-        With({{idNuovo: "C" & gblAnno & "-" & Text(Max(colContratti, Value(Right('ID contratto', 4))) + 1, "0000")}},
-            Set(gblNuovo, Patch(Contratti, Defaults(Contratti),
-                {{'ID contratto': idNuovo, Edizione: LookUp(Edizioni, Anno = gblAnno), Espositore: locEsp,
-                  Stand: LookUp(Stand, 'Codice stand' = locStand.'Codice stand'),
-                  'Stato (g5_stato)': 'Stato (Contratti)'.preventivo,
-                  'Imponibile a listino': {totale}, Sconto: locSconto, Imponibile: {imponib}, Rinnovo: {rinn}}}));
-            Patch('Righe contratto', Defaults('Righe contratto'), {riga_sp});
-            If(locPct > 0, Patch('Righe contratto', Defaults('Righe contratto'), {riga_mg}));
-            ForAll(Filter(colExtra, Qta > 0) As ex, Patch('Righe contratto', Defaults('Righe contratto'), {riga_ex}));
-            {CARICA};
-            Notify("Preventivo " & idNuovo & " creato", NotificationType.Success);
-            UpdateContext({{locSalva: false}});
-            Clear(colRighe);
-            Navigate(scrContratti, ScreenTransition.None, {{locStato: "Tutti", locConf: false}})
-        )
+        Set(gblNuovo, Patch(Contratti, Defaults(Contratti),
+            {{Edizione: LookUp(Edizioni, Anno = gblAnno), Espositore: locEsp,
+              Stand: LookUp(Stand, 'Codice stand' = locStand.'Codice stand'),
+              'Stato (g5_stato)': 'Stato (Contratti)'.preventivo,
+              'Imponibile a listino': {totale}, Sconto: locSconto, Imponibile: {imponib}, Rinnovo: {rinn}}}));
+        Patch('Righe contratto', Defaults('Righe contratto'), {riga_sp});
+        If(locPct > 0, Patch('Righe contratto', Defaults('Righe contratto'), {riga_mg}));
+        ForAll(Filter(colExtra, Qta > 0) As ex, Patch('Righe contratto', Defaults('Righe contratto'), {riga_ex}));
+        {CARICA};
+        Notify("Preventivo " & gblNuovo.'ID contratto' & " creato", NotificationType.Success);
+        UpdateContext({{locSalva: false}});
+        Clear(colRighe);
+        Navigate(scrContratti, ScreenTransition.None, {{locStato: "Tutti", locConf: false}})
     ),
     UpdateContext({{locSalva: false}});
-    Notify("Salvataggio non riuscito: " & FirstError.Message, NotificationType.Error)
+    If(!IsBlank(gblNuovo),
+        IfError(Patch(Contratti, gblNuovo, {{'Stato (g5_stato)': 'Stato (Contratti)'.annullato}}); true, false);
+        Notify("Righe non salvate: il contratto " & gblNuovo.'ID contratto' & " è stato annullato. Riprovare.", NotificationType.Error),
+        Notify("Salvataggio non riuscito: " & FirstError.Message, NotificationType.Error))
 )"""
     ch += [label(f"{p}_lblHint",
                  ('If(locPasso = 1, If(IsBlank(locEsp), "Seleziona un espositore per continuare", '

@@ -41,7 +41,7 @@ Ogni voce si chiude con una verifica scritta qui (data ed esito).
 ### 2. Back-office
 
 - [ ] Panoramica: distinguere **prenotati** (contratti non annullati) e **venduti** (firmati), come nelle viste SQL
-- [ ] Nuovo contratto: numero ed ID espositore non calcolati dal telefono; ricontrollo dello stand subito prima della scrittura; recupero se le righe non si salvano
+- [ ] Nuovo contratto: numero ed ID espositore non calcolati dal telefono; ricontrollo dello stand subito prima della scrittura; recupero se le righe non si salvano. 2026-11-23: numerazione automatica attiva in Dataverse (C2026-0202, ESP136), app v14 generata senza calcolo dei numeri e con annullamento se le righe falliscono ([guida](guida-app-backoffice.md#numero-del-contratto-e-id-espositore)); **da caricare in Studio e provare**
 - [ ] Contratti e Controlli: togliere il limite di 16 righe (`Sequence(16)`)
 - [ ] Listino: modificare la voce cercando edizione **e** codice
 - [ ] Pulsante "Invia preventivo" (FL-03) in Contratti e "Invia inviti" (FL-06) in Rinnovi
