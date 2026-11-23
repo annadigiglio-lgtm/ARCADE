@@ -1,0 +1,49 @@
+table 'Vendite biglietti'
+
+	measure 'Biglietti venduti' = SUM('Vendite biglietti'[biglietti])
+		formatString: #,0
+
+	measure 'Ricavo biglietti' = SUM('Vendite biglietti'[ricavo_biglietti])
+		formatString: #,0 €
+
+	column edizione
+		dataType: string
+		summarizeBy: none
+		sourceColumn: edizione
+
+	column giorno
+		dataType: dateTime
+		formatString: dd/mm/yyyy
+		summarizeBy: none
+		sourceColumn: giorno
+
+	column canale
+		dataType: string
+		summarizeBy: none
+		sourceColumn: canale
+
+	column biglietti
+		dataType: int64
+		summarizeBy: none
+		sourceColumn: biglietti
+
+	column persone
+		dataType: int64
+		summarizeBy: none
+		sourceColumn: persone
+
+	column ricavo_biglietti
+		dataType: double
+		summarizeBy: none
+		sourceColumn: ricavo_biglietti
+
+	partition 'Vendite biglietti' = m
+		mode: import
+		source =
+			let
+			    Origine = PostgreSQL.Database(Server, Database),
+			    Vista = Origine{[Schema="arcade", Item="v_vendite_biglietti_giorno"]}[Data],
+			    Tipi = Table.TransformColumnTypes(Vista, {{"edizione", type text}, {"giorno", type date}, {"canale", type text}, {"biglietti", Int64.Type}, {"persone", Int64.Type}, {"ricavo_biglietti", type number}}),
+			    Colonne = Table.SelectColumns(Tipi, {"edizione", "giorno", "canale", "biglietti", "persone", "ricavo_biglietti"})
+			in
+			    Colonne

@@ -1,0 +1,106 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.0.0/schema.json",
+  "name": "v03_movimenti",
+  "position": {
+    "x": 20,
+    "y": 20,
+    "z": 0,
+    "width": 820,
+    "height": 400,
+    "tabOrder": 0
+  },
+  "visual": {
+    "visualType": "clusteredColumnChart",
+    "query": {
+      "queryState": {
+        "Category": {
+          "projections": [
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Edizione"
+                    }
+                  },
+                  "Property": "edizione"
+                }
+              },
+              "queryRef": "Edizione.edizione",
+              "nativeQueryRef": "edizione"
+            }
+          ]
+        },
+        "Y": {
+          "projections": [
+            {
+              "field": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Edizione"
+                    }
+                  },
+                  "Property": "Espositori rinnovati"
+                }
+              },
+              "queryRef": "Edizione.Espositori rinnovati",
+              "nativeQueryRef": "Espositori rinnovati"
+            },
+            {
+              "field": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Edizione"
+                    }
+                  },
+                  "Property": "Espositori persi"
+                }
+              },
+              "queryRef": "Edizione.Espositori persi",
+              "nativeQueryRef": "Espositori persi"
+            },
+            {
+              "field": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Edizione"
+                    }
+                  },
+                  "Property": "Espositori nuovi"
+                }
+              },
+              "queryRef": "Edizione.Espositori nuovi",
+              "nativeQueryRef": "Espositori nuovi"
+            }
+          ]
+        }
+      }
+    },
+    "drillFilterOtherVisuals": true,
+    "visualContainerObjects": {
+      "title": [
+        {
+          "properties": {
+            "show": {
+              "expr": {
+                "Literal": {
+                  "Value": "true"
+                }
+              }
+            },
+            "text": {
+              "expr": {
+                "Literal": {
+                  "Value": "'Espositori tornati, persi e nuovi'"
+                }
+              }
+            }
+          }
+        }
+      ]
+    }
+  }
+}

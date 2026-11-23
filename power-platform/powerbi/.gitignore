@@ -1,0 +1,4 @@
+# File locali che Power BI Desktop crea al salvataggio: non fanno parte del progetto
+**/.pbi/localSettings.json
+**/.pbi/cache.abf
+__pycache__/

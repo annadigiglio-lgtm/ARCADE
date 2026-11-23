@@ -1,0 +1,172 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.0.0/schema.json",
+  "name": "v04_tabella",
+  "position": {
+    "x": 20,
+    "y": 340,
+    "z": 0,
+    "width": 1240,
+    "height": 360,
+    "tabOrder": 0
+  },
+  "visual": {
+    "visualType": "tableEx",
+    "query": {
+      "queryState": {
+        "Values": {
+          "projections": [
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Contratti"
+                    }
+                  },
+                  "Property": "id_contratto"
+                }
+              },
+              "queryRef": "Contratti.id_contratto",
+              "nativeQueryRef": "id_contratto"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Contratti"
+                    }
+                  },
+                  "Property": "codice_stand"
+                }
+              },
+              "queryRef": "Contratti.codice_stand",
+              "nativeQueryRef": "codice_stand"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Contratti"
+                    }
+                  },
+                  "Property": "stato"
+                }
+              },
+              "queryRef": "Contratti.stato",
+              "nativeQueryRef": "stato"
+            },
+            {
+              "field": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Contratti"
+                    }
+                  },
+                  "Property": "Imponibile contratti"
+                }
+              },
+              "queryRef": "Contratti.Imponibile contratti",
+              "nativeQueryRef": "Imponibile contratti"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Contratti"
+                    }
+                  },
+                  "Property": "acconto_scadenza"
+                }
+              },
+              "queryRef": "Contratti.acconto_scadenza",
+              "nativeQueryRef": "acconto_scadenza"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Contratti"
+                    }
+                  },
+                  "Property": "acconto_pagato_il"
+                }
+              },
+              "queryRef": "Contratti.acconto_pagato_il",
+              "nativeQueryRef": "acconto_pagato_il"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Contratti"
+                    }
+                  },
+                  "Property": "saldo_scadenza"
+                }
+              },
+              "queryRef": "Contratti.saldo_scadenza",
+              "nativeQueryRef": "saldo_scadenza"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Contratti"
+                    }
+                  },
+                  "Property": "saldo_pagato_il"
+                }
+              },
+              "queryRef": "Contratti.saldo_pagato_il",
+              "nativeQueryRef": "saldo_pagato_il"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Contratti"
+                    }
+                  },
+                  "Property": "stato_pagamenti"
+                }
+              },
+              "queryRef": "Contratti.stato_pagamenti",
+              "nativeQueryRef": "stato_pagamenti"
+            }
+          ]
+        }
+      }
+    },
+    "drillFilterOtherVisuals": true,
+    "visualContainerObjects": {
+      "title": [
+        {
+          "properties": {
+            "show": {
+              "expr": {
+                "Literal": {
+                  "Value": "true"
+                }
+              }
+            },
+            "text": {
+              "expr": {
+                "Literal": {
+                  "Value": "'Contratti dell''edizione'"
+                }
+              }
+            }
+          }
+        }
+      ]
+    }
+  }
+}

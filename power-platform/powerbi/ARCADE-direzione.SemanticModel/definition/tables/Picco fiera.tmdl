@@ -1,0 +1,32 @@
+table 'Picco fiera'
+
+	measure 'Picco della fiera' = MAX('Picco fiera'[presenti])
+		formatString: #,0
+
+	column edizione
+		dataType: string
+		summarizeBy: none
+		sourceColumn: edizione
+
+	column istante
+		dataType: dateTime
+		formatString: dd/mm/yyyy hh:nn
+		summarizeBy: none
+		sourceColumn: istante
+
+	column presenti
+		dataType: double
+		summarizeBy: none
+		sourceColumn: presenti
+
+	partition 'Picco fiera' = m
+		mode: import
+		source =
+			let
+			    Origine = PostgreSQL.Database(Server, Database),
+			    Vista = Origine{[Schema="arcade", Item="v_kpi_picco_fiera"]}[Data],
+			    Righe = Table.TransformColumns(Vista, {{"istante", each DateTimeZone.RemoveZone(DateTimeZone.SwitchZone(_, 1)), type datetime}}),
+			    Tipi = Table.TransformColumnTypes(Righe, {{"edizione", type text}, {"istante", type datetime}, {"presenti", type number}}),
+			    Colonne = Table.SelectColumns(Tipi, {"edizione", "istante", "presenti"})
+			in
+			    Colonne

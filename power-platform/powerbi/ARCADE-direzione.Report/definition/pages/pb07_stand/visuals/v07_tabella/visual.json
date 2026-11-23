@@ -1,0 +1,116 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.0.0/schema.json",
+  "name": "v07_tabella",
+  "position": {
+    "x": 20,
+    "y": 370,
+    "z": 0,
+    "width": 1240,
+    "height": 330,
+    "tabOrder": 0
+  },
+  "visual": {
+    "visualType": "tableEx",
+    "query": {
+      "queryState": {
+        "Values": {
+          "projections": [
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Costo contatto"
+                    }
+                  },
+                  "Property": "codice_stand"
+                }
+              },
+              "queryRef": "Costo contatto.codice_stand",
+              "nativeQueryRef": "codice_stand"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Costo contatto"
+                    }
+                  },
+                  "Property": "padiglione"
+                }
+              },
+              "queryRef": "Costo contatto.padiglione",
+              "nativeQueryRef": "padiglione"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Costo contatto"
+                    }
+                  },
+                  "Property": "id_espositore"
+                }
+              },
+              "queryRef": "Costo contatto.id_espositore",
+              "nativeQueryRef": "id_espositore"
+            },
+            {
+              "field": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Costo contatto"
+                    }
+                  },
+                  "Property": "Contatti raccolti"
+                }
+              },
+              "queryRef": "Costo contatto.Contatti raccolti",
+              "nativeQueryRef": "Contatti raccolti"
+            },
+            {
+              "field": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Costo contatto"
+                    }
+                  },
+                  "Property": "Costo per contatto dello stand"
+                }
+              },
+              "queryRef": "Costo contatto.Costo per contatto dello stand",
+              "nativeQueryRef": "Costo per contatto dello stand"
+            }
+          ]
+        }
+      }
+    },
+    "drillFilterOtherVisuals": true,
+    "visualContainerObjects": {
+      "title": [
+        {
+          "properties": {
+            "show": {
+              "expr": {
+                "Literal": {
+                  "Value": "true"
+                }
+              }
+            },
+            "text": {
+              "expr": {
+                "Literal": {
+                  "Value": "'Costo per contatto per stand (stand senza contatti: costo vuoto)'"
+                }
+              }
+            }
+          }
+        }
+      ]
+    }
+  }
+}

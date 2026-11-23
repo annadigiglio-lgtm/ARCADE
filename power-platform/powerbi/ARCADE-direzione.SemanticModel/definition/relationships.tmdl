@@ -1,0 +1,59 @@
+relationship rel_visitatori
+	fromColumn: Visitatori.edizione
+	toColumn: Edizione.edizione
+
+relationship rel_visitatori_giorno
+	fromColumn: 'Visitatori giorno'.edizione
+	toColumn: Edizione.edizione
+
+relationship rel_presenze
+	fromColumn: Presenze.edizione
+	toColumn: Edizione.edizione
+
+relationship rel_picco_padiglione
+	fromColumn: 'Picco padiglione'.edizione
+	toColumn: Edizione.edizione
+
+relationship rel_picco_fiera
+	fromColumn: 'Picco fiera'.edizione
+	toColumn: Edizione.edizione
+
+relationship rel_saturazione_fiera
+	fromColumn: 'Saturazione fiera'.edizione
+	toColumn: Edizione.edizione
+
+relationship rel_saturazione_padiglione
+	fromColumn: 'Saturazione padiglione'.edizione
+	toColumn: Edizione.edizione
+
+relationship rel_ricavo_fiera
+	fromColumn: 'Ricavo fiera'.edizione
+	toColumn: Edizione.edizione
+
+relationship rel_ricavo_padiglione
+	fromColumn: 'Ricavo padiglione'.edizione
+	toColumn: Edizione.edizione
+
+relationship rel_costo_contatto
+	fromColumn: 'Costo contatto'.edizione
+	toColumn: Edizione.edizione
+
+relationship rel_costo_contatto_fiera
+	fromColumn: 'Costo contatto fiera'.edizione
+	toColumn: Edizione.edizione
+
+relationship rel_visite_stand
+	fromColumn: 'Visite stand'.edizione
+	toColumn: Edizione.edizione
+
+relationship rel_contratti
+	fromColumn: Contratti.edizione
+	toColumn: Edizione.edizione
+
+relationship rel_vendite_biglietti
+	fromColumn: 'Vendite biglietti'.edizione
+	toColumn: Edizione.edizione
+
+relationship rel_conversione
+	fromColumn: Conversione.edizione
+	toColumn: Edizione.edizione

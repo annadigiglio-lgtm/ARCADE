@@ -1,0 +1,77 @@
+table Contratti
+
+	measure 'Numero contratti' = COUNTROWS(Contratti)
+		formatString: #,0
+
+	measure 'Imponibile contratti' = SUM(Contratti[imponibile])
+		formatString: #,0 €
+
+	column id_contratto
+		dataType: string
+		summarizeBy: none
+		sourceColumn: id_contratto
+
+	column edizione
+		dataType: string
+		summarizeBy: none
+		sourceColumn: edizione
+
+	column id_espositore
+		dataType: string
+		summarizeBy: none
+		sourceColumn: id_espositore
+
+	column codice_stand
+		dataType: string
+		summarizeBy: none
+		sourceColumn: codice_stand
+
+	column stato
+		dataType: string
+		summarizeBy: none
+		sourceColumn: stato
+
+	column imponibile
+		dataType: double
+		summarizeBy: none
+		sourceColumn: imponibile
+
+	column acconto_scadenza
+		dataType: dateTime
+		formatString: dd/mm/yyyy
+		summarizeBy: none
+		sourceColumn: acconto_scadenza
+
+	column acconto_pagato_il
+		dataType: dateTime
+		formatString: dd/mm/yyyy
+		summarizeBy: none
+		sourceColumn: acconto_pagato_il
+
+	column saldo_scadenza
+		dataType: dateTime
+		formatString: dd/mm/yyyy
+		summarizeBy: none
+		sourceColumn: saldo_scadenza
+
+	column saldo_pagato_il
+		dataType: dateTime
+		formatString: dd/mm/yyyy
+		summarizeBy: none
+		sourceColumn: saldo_pagato_il
+
+	column stato_pagamenti
+		dataType: string
+		summarizeBy: none
+		sourceColumn: stato_pagamenti
+
+	partition Contratti = m
+		mode: import
+		source =
+			let
+			    Origine = PostgreSQL.Database(Server, Database),
+			    Vista = Origine{[Schema="arcade", Item="v_incassi_contratto"]}[Data],
+			    Tipi = Table.TransformColumnTypes(Vista, {{"id_contratto", type text}, {"edizione", type text}, {"id_espositore", type text}, {"codice_stand", type text}, {"stato", type text}, {"imponibile", type number}, {"acconto_scadenza", type date}, {"acconto_pagato_il", type date}, {"saldo_scadenza", type date}, {"saldo_pagato_il", type date}, {"stato_pagamenti", type text}}),
+			    Colonne = Table.SelectColumns(Tipi, {"id_contratto", "edizione", "id_espositore", "codice_stand", "stato", "imponibile", "acconto_scadenza", "acconto_pagato_il", "saldo_scadenza", "saldo_pagato_il", "stato_pagamenti"})
+			in
+			    Colonne

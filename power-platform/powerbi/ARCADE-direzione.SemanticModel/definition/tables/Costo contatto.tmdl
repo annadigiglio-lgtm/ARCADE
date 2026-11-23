@@ -1,0 +1,54 @@
+table 'Costo contatto'
+
+	measure 'Contatti raccolti' = SUM('Costo contatto'[contatti])
+		formatString: #,0
+
+	measure 'Costo per contatto dello stand' = MAX('Costo contatto'[costo_per_contatto])
+		formatString: #,0 €
+
+	column edizione
+		dataType: string
+		summarizeBy: none
+		sourceColumn: edizione
+
+	column id_espositore
+		dataType: string
+		summarizeBy: none
+		sourceColumn: id_espositore
+
+	column codice_stand
+		dataType: string
+		summarizeBy: none
+		sourceColumn: codice_stand
+
+	column imponibile
+		dataType: double
+		summarizeBy: none
+		sourceColumn: imponibile
+
+	column contatti
+		dataType: int64
+		summarizeBy: none
+		sourceColumn: contatti
+
+	column costo_per_contatto
+		dataType: double
+		summarizeBy: none
+		sourceColumn: costo_per_contatto
+
+	column padiglione
+		dataType: string
+		summarizeBy: none
+		sourceColumn: padiglione
+
+	partition 'Costo contatto' = m
+		mode: import
+		source =
+			let
+			    Origine = PostgreSQL.Database(Server, Database),
+			    Vista = Origine{[Schema="arcade", Item="v_kpi_costo_contatto"]}[Data],
+			    Righe = Table.AddColumn(Vista, "padiglione", each Text.Start([codice_stand], 2), type text),
+			    Tipi = Table.TransformColumnTypes(Righe, {{"edizione", type text}, {"id_espositore", type text}, {"codice_stand", type text}, {"imponibile", type number}, {"contatti", Int64.Type}, {"costo_per_contatto", type number}}),
+			    Colonne = Table.SelectColumns(Tipi, {"edizione", "id_espositore", "codice_stand", "imponibile", "contatti", "costo_per_contatto", "padiglione"})
+			in
+			    Colonne
