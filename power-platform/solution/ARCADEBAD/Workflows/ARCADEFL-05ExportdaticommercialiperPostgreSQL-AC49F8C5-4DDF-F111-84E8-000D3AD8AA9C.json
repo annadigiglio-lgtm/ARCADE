@@ -359,7 +359,8 @@
                 },
                 "parameters": {
                   "entityName": "g5_contratti",
-                  "$orderby": "g5_id_contratto asc"
+                  "$orderby": "g5_id_contratto asc",
+                  "$filter": "g5_edizione/g5_anno ge '2026'"
                 },
                 "authentication": "@parameters('$authentication')"
               },
@@ -422,7 +423,8 @@
                   "apiId": "/providers/Microsoft.PowerApps/apis/shared_commondataserviceforapps"
                 },
                 "parameters": {
-                  "entityName": "g5_righe_contratto"
+                  "entityName": "g5_righe_contratto",
+                  "$filter": "g5_contratto/g5_edizione/g5_anno ge '2026'"
                 },
                 "authentication": "@parameters('$authentication')"
               },

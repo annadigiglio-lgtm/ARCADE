@@ -1,6 +1,6 @@
 # Stato Dataverse – Solution ARCADE BAD
 
-Generato da `power-platform/solution-src/inventario.py` su `ARCADEBAD_1_0_0_6.zip` (versione 1.0.0.6, editore Gruppo5BAD, prefisso `g5`). Sola lettura.
+Generato da `power-platform/solution-src/inventario.py` su `ARCADEBAD_1_0_0_7.zip` (versione 1.0.0.7, editore Gruppo5BAD, prefisso `g5`). Sola lettura.
 
 Colonne di sistema (`createdon`, `ownerid`, `statecode`, GUID `g5_<tabella>id`…) escluse: non fanno parte di `schema.sql`.
 
