@@ -1,6 +1,6 @@
 # Stato Dataverse – Solution ARCADE BAD
 
-Generato da `power-platform/solution-src/inventario.py` su `ARCADEBAD_1_0_0_8.zip` (versione 1.0.0.8, editore Gruppo5BAD, prefisso `g5`). Sola lettura.
+Generato da `power-platform/solution-src/inventario.py` su `ARCADEBAD_1_0_0_9.zip` (versione 1.0.0.9, editore Gruppo5BAD, prefisso `g5`). Sola lettura.
 
 Colonne di sistema (`createdon`, `ownerid`, `statecode`, GUID `g5_<tabella>id`…) escluse: non fanno parte di `schema.sql`.
 
@@ -166,10 +166,6 @@ Relazioni N:1: `g5_edizione` → `g5_edizione` (eliminazione: Restrict)
 | `g5_dataverse_flussi` | Dataverse | FL-00, FL-01, FL-02, FL-03, FL-04, FL-05, FL-06, FL-07, FL-08 |
 | `g5_office365_arcade` | Office 365 Outlook | FL-00, FL-01, FL-02, FL-03, FL-04, FL-05, FL-06, FL-07, FL-08 |
 | `g5_onedriveforbusiness_arcade` | OneDrive for Business | FL-03, FL-05 |
-| `g5_sharedcommondataserviceforapps_5809c` | Dataverse | nessun flusso |
-| `g5_sharedcommondataserviceforapps_cfa98` | Dataverse | nessun flusso |
-| `g5_sharedoffice365_40869` | Office 365 Outlook | nessun flusso |
-| `g5_sharedoffice365_eef66` | Office 365 Outlook | nessun flusso |
 
 ## Variabili d'ambiente
 

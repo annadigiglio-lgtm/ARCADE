@@ -62,7 +62,7 @@ Ogni voce si chiude con una verifica scritta qui (data ed esito).
 - [x] FL-03 e FL-06: risposta all'app anche in caso di errore. 2026-11-23: azione *Rispondi errore* dopo l'avviso di errore
 - [x] FL-02: partire anche quando un contratto viene creato già firmato. 2026-11-23: trigger *creata o modificata*
 - [x] FL-01: riepilogo al commerciale solo se ci sono rate da segnalare (2026-11-23)
-- [ ] Togliere dalla soluzione i 4 riferimenti di connessione creati in automatico e non usati da nessun flusso ([inventario](inventario-dataverse.md#riferimenti-di-connessione))
+- [x] Togliere dalla soluzione i 4 riferimenti di connessione creati in automatico e non usati da nessun flusso ([inventario](inventario-dataverse.md#riferimenti-di-connessione)). 2026-11-23: tolti dalla soluzione (restano nell'ambiente, senza dipendenze); soluzione 1.0.0.9
 
 ### 5. Power BI
 
