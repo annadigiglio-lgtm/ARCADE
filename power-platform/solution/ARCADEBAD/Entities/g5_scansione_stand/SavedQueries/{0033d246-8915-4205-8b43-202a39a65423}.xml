@@ -1,0 +1,34 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<savedqueries xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <savedquery>
+    <IsCustomizable>1</IsCustomizable>
+    <CanBeDeleted>0</CanBeDeleted>
+    <isquickfindquery>0</isquickfindquery>
+    <isprivate>0</isprivate>
+    <isdefault>1</isdefault>
+    <savedqueryid>{0033d246-8915-4205-8b43-202a39a65423}</savedqueryid>
+    <layoutxml>
+      <grid name="resultset" jump="g5_g5_id_scansione" select="1" icon="1" preview="1">
+        <row name="result" id="g5_scansione_standid">
+          <cell name="g5_g5_id_scansione" width="300" />
+          <cell name="createdon" width="125" />
+        </row>
+      </grid>
+    </layoutxml>
+    <querytype>1</querytype>
+    <fetchxml>
+      <fetch version="1.0" mapping="logical">
+        <entity name="g5_scansione_stand">
+          <attribute name="g5_scansione_standid" />
+          <attribute name="g5_g5_id_scansione" />
+          <attribute name="createdon" />
+          <order attribute="g5_g5_id_scansione" descending="false" />
+        </entity>
+      </fetch>
+    </fetchxml>
+    <IntroducedVersion>1.0</IntroducedVersion>
+    <LocalizedNames>
+      <LocalizedName description="Visualizzazione ricerca avanzata Scansione stand" languagecode="1040" />
+    </LocalizedNames>
+  </savedquery>
+</savedqueries>

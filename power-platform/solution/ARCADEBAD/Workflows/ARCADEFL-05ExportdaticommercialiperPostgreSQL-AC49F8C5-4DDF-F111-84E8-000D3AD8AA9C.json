@@ -1,0 +1,658 @@
+{
+  "properties": {
+    "connectionReferences": {
+      "shared_commondataserviceforapps": {
+        "runtimeSource": "embedded",
+        "connection": {
+          "connectionReferenceLogicalName": "g5_dataverse_flussi"
+        },
+        "api": {
+          "name": "shared_commondataserviceforapps"
+        }
+      },
+      "shared_onedriveforbusiness": {
+        "runtimeSource": "embedded",
+        "connection": {
+          "connectionReferenceLogicalName": "g5_onedriveforbusiness_arcade"
+        },
+        "api": {
+          "name": "shared_onedriveforbusiness"
+        }
+      },
+      "shared_office365": {
+        "runtimeSource": "embedded",
+        "connection": {
+          "connectionReferenceLogicalName": "g5_office365_arcade"
+        },
+        "api": {
+          "name": "shared_office365"
+        }
+      }
+    },
+    "definition": {
+      "$schema": "https://schema.management.azure.com/providers/Microsoft.Logic/schemas/2016-06-01/workflowdefinition.json#",
+      "contentVersion": "1.0.0.0",
+      "parameters": {
+        "$connections": {
+          "defaultValue": {},
+          "type": "Object"
+        },
+        "$authentication": {
+          "defaultValue": {},
+          "type": "SecureObject"
+        },
+        "g5_EmailProva (g5_g5_EmailProva)": {
+          "defaultValue": "",
+          "type": "String",
+          "metadata": {
+            "schemaName": "g5_g5_EmailProva"
+          }
+        },
+        "g5_ModalitaProva (g5_ModalitaProva)": {
+          "defaultValue": true,
+          "type": "Bool",
+          "metadata": {
+            "schemaName": "g5_ModalitaProva"
+          }
+        },
+        "g5_CartellaExport (g5_CartellaExport)": {
+          "defaultValue": "/ARCADE/Export",
+          "type": "String",
+          "metadata": {
+            "schemaName": "g5_CartellaExport"
+          }
+        }
+      },
+      "triggers": {
+        "Ricorrenza": {
+          "type": "Recurrence",
+          "recurrence": {
+            "frequency": "Hour",
+            "interval": 6,
+            "timeZone": "W. Europe Standard Time"
+          }
+        }
+      },
+      "actions": {
+        "Principale": {
+          "type": "Scope",
+          "actions": {
+            "Elenca_edizione": {
+              "type": "OpenApiConnection",
+              "inputs": {
+                "host": {
+                  "connectionName": "shared_commondataserviceforapps",
+                  "operationId": "ListRecords",
+                  "apiId": "/providers/Microsoft.PowerApps/apis/shared_commondataserviceforapps"
+                },
+                "parameters": {
+                  "entityName": "g5_edizioni",
+                  "$orderby": "g5_anno asc"
+                },
+                "authentication": "@parameters('$authentication')"
+              },
+              "runAfter": {},
+              "runtimeConfiguration": {
+                "paginationPolicy": {
+                  "minimumItemCount": 5000
+                }
+              }
+            },
+            "Seleziona_edizione": {
+              "type": "Select",
+              "inputs": {
+                "from": "@outputs('Elenca_edizione')?['body/value']",
+                "select": {
+                  "anno": "@item()?['g5_anno']",
+                  "data_inizio": "@{if(empty(item()?['g5_data_inizio']),'',formatDateTime(item()?['g5_data_inizio'],'yyyy-MM-dd'))}",
+                  "data_fine": "@{if(empty(item()?['g5_data_fine']),'',formatDateTime(item()?['g5_data_fine'],'yyyy-MM-dd'))}",
+                  "ora_apertura": "@item()?['g5_ora_apertura']",
+                  "ora_chiusura": "@item()?['g5_ora_chiusura']"
+                }
+              },
+              "runAfter": {
+                "Elenca_edizione": [
+                  "Succeeded"
+                ]
+              }
+            },
+            "CSV_edizione": {
+              "type": "Table",
+              "inputs": {
+                "from": "@body('Seleziona_edizione')",
+                "format": "CSV"
+              },
+              "runAfter": {
+                "Seleziona_edizione": [
+                  "Succeeded"
+                ]
+              }
+            },
+            "Elenca_padiglione": {
+              "type": "OpenApiConnection",
+              "inputs": {
+                "host": {
+                  "connectionName": "shared_commondataserviceforapps",
+                  "operationId": "ListRecords",
+                  "apiId": "/providers/Microsoft.PowerApps/apis/shared_commondataserviceforapps"
+                },
+                "parameters": {
+                  "entityName": "g5_padiglioni",
+                  "$orderby": "g5_codice asc"
+                },
+                "authentication": "@parameters('$authentication')"
+              },
+              "runAfter": {
+                "CSV_edizione": [
+                  "Succeeded"
+                ]
+              },
+              "runtimeConfiguration": {
+                "paginationPolicy": {
+                  "minimumItemCount": 5000
+                }
+              }
+            },
+            "Seleziona_padiglione": {
+              "type": "Select",
+              "inputs": {
+                "from": "@outputs('Elenca_padiglione')?['body/value']",
+                "select": {
+                  "codice": "@item()?['g5_codice']",
+                  "nome": "@item()?['g5_nome']"
+                }
+              },
+              "runAfter": {
+                "Elenca_padiglione": [
+                  "Succeeded"
+                ]
+              }
+            },
+            "CSV_padiglione": {
+              "type": "Table",
+              "inputs": {
+                "from": "@body('Seleziona_padiglione')",
+                "format": "CSV"
+              },
+              "runAfter": {
+                "Seleziona_padiglione": [
+                  "Succeeded"
+                ]
+              }
+            },
+            "Elenca_espositore": {
+              "type": "OpenApiConnection",
+              "inputs": {
+                "host": {
+                  "connectionName": "shared_commondataserviceforapps",
+                  "operationId": "ListRecords",
+                  "apiId": "/providers/Microsoft.PowerApps/apis/shared_commondataserviceforapps"
+                },
+                "parameters": {
+                  "entityName": "g5_espositori",
+                  "$orderby": "g5_id_espositore asc"
+                },
+                "authentication": "@parameters('$authentication')"
+              },
+              "runAfter": {
+                "CSV_padiglione": [
+                  "Succeeded"
+                ]
+              },
+              "runtimeConfiguration": {
+                "paginationPolicy": {
+                  "minimumItemCount": 5000
+                }
+              }
+            },
+            "Seleziona_espositore": {
+              "type": "Select",
+              "inputs": {
+                "from": "@outputs('Elenca_espositore')?['body/value']",
+                "select": {
+                  "id_espositore": "@item()?['g5_id_espositore']",
+                  "ragione_sociale": "@item()?['g5_ragione_sociale']",
+                  "partita_iva": "@item()?['g5_partita_iva']",
+                  "settore": "@item()?['g5_settore']",
+                  "citta": "@item()?['g5_citta']",
+                  "referente": "@item()?['g5_referente']",
+                  "email_referente": "@item()?['g5_email_referente']"
+                }
+              },
+              "runAfter": {
+                "Elenca_espositore": [
+                  "Succeeded"
+                ]
+              }
+            },
+            "CSV_espositore": {
+              "type": "Table",
+              "inputs": {
+                "from": "@body('Seleziona_espositore')",
+                "format": "CSV"
+              },
+              "runAfter": {
+                "Seleziona_espositore": [
+                  "Succeeded"
+                ]
+              }
+            },
+            "Elenca_stand": {
+              "type": "OpenApiConnection",
+              "inputs": {
+                "host": {
+                  "connectionName": "shared_commondataserviceforapps",
+                  "operationId": "ListRecords",
+                  "apiId": "/providers/Microsoft.PowerApps/apis/shared_commondataserviceforapps"
+                },
+                "parameters": {
+                  "entityName": "g5_stands",
+                  "$orderby": "g5_codice_stand asc"
+                },
+                "authentication": "@parameters('$authentication')"
+              },
+              "runAfter": {
+                "CSV_espositore": [
+                  "Succeeded"
+                ]
+              },
+              "runtimeConfiguration": {
+                "paginationPolicy": {
+                  "minimumItemCount": 5000
+                }
+              }
+            },
+            "Seleziona_stand": {
+              "type": "Select",
+              "inputs": {
+                "from": "@outputs('Elenca_stand')?['body/value']",
+                "select": {
+                  "codice_stand": "@item()?['g5_codice_stand']",
+                  "padiglione": "@{item()?['_g5_padiglione_value@OData.Community.Display.V1.FormattedValue']}",
+                  "mq": "@item()?['g5_mq']",
+                  "posizione": "@{item()?['g5_posizione@OData.Community.Display.V1.FormattedValue']}",
+                  "attivo_dal": "@{item()?['_g5_attivo_dal_value@OData.Community.Display.V1.FormattedValue']}"
+                }
+              },
+              "runAfter": {
+                "Elenca_stand": [
+                  "Succeeded"
+                ]
+              }
+            },
+            "CSV_stand": {
+              "type": "Table",
+              "inputs": {
+                "from": "@body('Seleziona_stand')",
+                "format": "CSV"
+              },
+              "runAfter": {
+                "Seleziona_stand": [
+                  "Succeeded"
+                ]
+              }
+            },
+            "Elenca_voce_listino": {
+              "type": "OpenApiConnection",
+              "inputs": {
+                "host": {
+                  "connectionName": "shared_commondataserviceforapps",
+                  "operationId": "ListRecords",
+                  "apiId": "/providers/Microsoft.PowerApps/apis/shared_commondataserviceforapps"
+                },
+                "parameters": {
+                  "entityName": "g5_voci_listino",
+                  "$orderby": "g5_codice asc"
+                },
+                "authentication": "@parameters('$authentication')"
+              },
+              "runAfter": {
+                "CSV_stand": [
+                  "Succeeded"
+                ]
+              },
+              "runtimeConfiguration": {
+                "paginationPolicy": {
+                  "minimumItemCount": 5000
+                }
+              }
+            },
+            "Seleziona_voce_listino": {
+              "type": "Select",
+              "inputs": {
+                "from": "@outputs('Elenca_voce_listino')?['body/value']",
+                "select": {
+                  "edizione": "@{item()?['_g5_edizione_value@OData.Community.Display.V1.FormattedValue']}",
+                  "codice": "@item()?['g5_codice']",
+                  "descrizione": "@item()?['g5_descrizione']",
+                  "unita": "@item()?['g5_unita']",
+                  "prezzo_unitario": "@item()?['g5_prezzo_unitario']",
+                  "disponibilita": "@item()?['g5_disponibilita']",
+                  "note": "@item()?['g5_note']"
+                }
+              },
+              "runAfter": {
+                "Elenca_voce_listino": [
+                  "Succeeded"
+                ]
+              }
+            },
+            "CSV_voce_listino": {
+              "type": "Table",
+              "inputs": {
+                "from": "@body('Seleziona_voce_listino')",
+                "format": "CSV"
+              },
+              "runAfter": {
+                "Seleziona_voce_listino": [
+                  "Succeeded"
+                ]
+              }
+            },
+            "Elenca_contratto": {
+              "type": "OpenApiConnection",
+              "inputs": {
+                "host": {
+                  "connectionName": "shared_commondataserviceforapps",
+                  "operationId": "ListRecords",
+                  "apiId": "/providers/Microsoft.PowerApps/apis/shared_commondataserviceforapps"
+                },
+                "parameters": {
+                  "entityName": "g5_contratti",
+                  "$orderby": "g5_id_contratto asc"
+                },
+                "authentication": "@parameters('$authentication')"
+              },
+              "runAfter": {
+                "CSV_voce_listino": [
+                  "Succeeded"
+                ]
+              },
+              "runtimeConfiguration": {
+                "paginationPolicy": {
+                  "minimumItemCount": 5000
+                }
+              }
+            },
+            "Seleziona_contratto": {
+              "type": "Select",
+              "inputs": {
+                "from": "@outputs('Elenca_contratto')?['body/value']",
+                "select": {
+                  "id_contratto": "@item()?['g5_id_contratto']",
+                  "edizione": "@{item()?['_g5_edizione_value@OData.Community.Display.V1.FormattedValue']}",
+                  "id_espositore": "@{item()?['_g5_espositore_value@OData.Community.Display.V1.FormattedValue']}",
+                  "codice_stand": "@{item()?['_g5_stand_value@OData.Community.Display.V1.FormattedValue']}",
+                  "stato": "@{item()?['g5_stato@OData.Community.Display.V1.FormattedValue']}",
+                  "data_firma": "@{if(empty(item()?['g5_data_firma']),'',formatDateTime(item()?['g5_data_firma'],'yyyy-MM-dd'))}",
+                  "imponibile_listino": "@item()?['g5_imponibile_listino']",
+                  "sconto_pct": "@item()?['g5_sconto_pct']",
+                  "imponibile": "@item()?['g5_imponibile']",
+                  "acconto_scadenza": "@{if(empty(item()?['g5_acconto_scadenza']),'',formatDateTime(item()?['g5_acconto_scadenza'],'yyyy-MM-dd'))}",
+                  "acconto_pagato_il": "@{if(empty(item()?['g5_acconto_pagato_il']),'',formatDateTime(item()?['g5_acconto_pagato_il'],'yyyy-MM-dd'))}",
+                  "saldo_scadenza": "@{if(empty(item()?['g5_saldo_scadenza']),'',formatDateTime(item()?['g5_saldo_scadenza'],'yyyy-MM-dd'))}",
+                  "saldo_pagato_il": "@{if(empty(item()?['g5_saldo_pagato_il']),'',formatDateTime(item()?['g5_saldo_pagato_il'],'yyyy-MM-dd'))}",
+                  "rinnovo": "@{if(equals(item()?['g5_rinnovo'],true),'true','false')}"
+                }
+              },
+              "runAfter": {
+                "Elenca_contratto": [
+                  "Succeeded"
+                ]
+              }
+            },
+            "CSV_contratto": {
+              "type": "Table",
+              "inputs": {
+                "from": "@body('Seleziona_contratto')",
+                "format": "CSV"
+              },
+              "runAfter": {
+                "Seleziona_contratto": [
+                  "Succeeded"
+                ]
+              }
+            },
+            "Elenca_riga_contratto": {
+              "type": "OpenApiConnection",
+              "inputs": {
+                "host": {
+                  "connectionName": "shared_commondataserviceforapps",
+                  "operationId": "ListRecords",
+                  "apiId": "/providers/Microsoft.PowerApps/apis/shared_commondataserviceforapps"
+                },
+                "parameters": {
+                  "entityName": "g5_righe_contratto"
+                },
+                "authentication": "@parameters('$authentication')"
+              },
+              "runAfter": {
+                "CSV_contratto": [
+                  "Succeeded"
+                ]
+              },
+              "runtimeConfiguration": {
+                "paginationPolicy": {
+                  "minimumItemCount": 5000
+                }
+              }
+            },
+            "Seleziona_riga_contratto": {
+              "type": "Select",
+              "inputs": {
+                "from": "@outputs('Elenca_riga_contratto')?['body/value']",
+                "select": {
+                  "id_contratto": "@{item()?['_g5_contratto_value@OData.Community.Display.V1.FormattedValue']}",
+                  "riga": "@item()?['g5_riga']",
+                  "codice_voce": "@item()?['g5_codice_voce']",
+                  "descrizione": "@item()?['g5_descrizione']",
+                  "quantita": "@item()?['g5_quantita']",
+                  "prezzo_unitario": "@item()?['g5_prezzo_unitario']",
+                  "importo": "@item()?['g5_importo']"
+                }
+              },
+              "runAfter": {
+                "Elenca_riga_contratto": [
+                  "Succeeded"
+                ]
+              }
+            },
+            "CSV_riga_contratto": {
+              "type": "Table",
+              "inputs": {
+                "from": "@body('Seleziona_riga_contratto')",
+                "format": "CSV"
+              },
+              "runAfter": {
+                "Seleziona_riga_contratto": [
+                  "Succeeded"
+                ]
+              }
+            },
+            "Conteggi": {
+              "type": "Table",
+              "inputs": {
+                "from": [
+                  {
+                    "tabella": "edizione",
+                    "righe": "@length(outputs('Elenca_edizione')?['body/value'])"
+                  },
+                  {
+                    "tabella": "padiglione",
+                    "righe": "@length(outputs('Elenca_padiglione')?['body/value'])"
+                  },
+                  {
+                    "tabella": "espositore",
+                    "righe": "@length(outputs('Elenca_espositore')?['body/value'])"
+                  },
+                  {
+                    "tabella": "stand",
+                    "righe": "@length(outputs('Elenca_stand')?['body/value'])"
+                  },
+                  {
+                    "tabella": "voce_listino",
+                    "righe": "@length(outputs('Elenca_voce_listino')?['body/value'])"
+                  },
+                  {
+                    "tabella": "contratto",
+                    "righe": "@length(outputs('Elenca_contratto')?['body/value'])"
+                  },
+                  {
+                    "tabella": "riga_contratto",
+                    "righe": "@length(outputs('Elenca_riga_contratto')?['body/value'])"
+                  }
+                ],
+                "format": "CSV"
+              },
+              "runAfter": {
+                "CSV_riga_contratto": [
+                  "Succeeded"
+                ]
+              }
+            },
+            "File_da_scrivere": {
+              "type": "Compose",
+              "inputs": [
+                {
+                  "nome": "edizione.csv",
+                  "contenuto": "@body('CSV_edizione')"
+                },
+                {
+                  "nome": "padiglione.csv",
+                  "contenuto": "@body('CSV_padiglione')"
+                },
+                {
+                  "nome": "espositore.csv",
+                  "contenuto": "@body('CSV_espositore')"
+                },
+                {
+                  "nome": "stand.csv",
+                  "contenuto": "@body('CSV_stand')"
+                },
+                {
+                  "nome": "voce_listino.csv",
+                  "contenuto": "@body('CSV_voce_listino')"
+                },
+                {
+                  "nome": "contratto.csv",
+                  "contenuto": "@body('CSV_contratto')"
+                },
+                {
+                  "nome": "riga_contratto.csv",
+                  "contenuto": "@body('CSV_riga_contratto')"
+                },
+                {
+                  "nome": "conteggi.csv",
+                  "contenuto": "@body('Conteggi')"
+                }
+              ],
+              "runAfter": {
+                "Conteggi": [
+                  "Succeeded"
+                ]
+              }
+            },
+            "Scrivi_i_file": {
+              "type": "Foreach",
+              "foreach": "@outputs('File_da_scrivere')",
+              "actions": {
+                "Crea_file": {
+                  "type": "OpenApiConnection",
+                  "inputs": {
+                    "host": {
+                      "connectionName": "shared_onedriveforbusiness",
+                      "operationId": "CreateFile",
+                      "apiId": "/providers/Microsoft.PowerApps/apis/shared_onedriveforbusiness"
+                    },
+                    "parameters": {
+                      "folderPath": "@{parameters('g5_CartellaExport (g5_CartellaExport)')}",
+                      "name": "@item()?['nome']",
+                      "body": "@item()?['contenuto']"
+                    },
+                    "authentication": "@parameters('$authentication')"
+                  },
+                  "runAfter": {}
+                },
+                "Trova_file_esistente": {
+                  "type": "OpenApiConnection",
+                  "inputs": {
+                    "host": {
+                      "connectionName": "shared_onedriveforbusiness",
+                      "operationId": "GetFileMetadataByPath",
+                      "apiId": "/providers/Microsoft.PowerApps/apis/shared_onedriveforbusiness"
+                    },
+                    "parameters": {
+                      "path": "@{concat(parameters('g5_CartellaExport (g5_CartellaExport)'),'/',item()?['nome'])}"
+                    },
+                    "authentication": "@parameters('$authentication')"
+                  },
+                  "runAfter": {
+                    "Crea_file": [
+                      "Failed"
+                    ]
+                  }
+                },
+                "Sovrascrivi_file": {
+                  "type": "OpenApiConnection",
+                  "inputs": {
+                    "host": {
+                      "connectionName": "shared_onedriveforbusiness",
+                      "operationId": "UpdateFile",
+                      "apiId": "/providers/Microsoft.PowerApps/apis/shared_onedriveforbusiness"
+                    },
+                    "parameters": {
+                      "id": "@outputs('Trova_file_esistente')?['body/Id']",
+                      "body": "@item()?['contenuto']"
+                    },
+                    "authentication": "@parameters('$authentication')"
+                  },
+                  "runAfter": {
+                    "Trova_file_esistente": [
+                      "Succeeded"
+                    ]
+                  }
+                }
+              },
+              "runAfter": {
+                "File_da_scrivere": [
+                  "Succeeded"
+                ]
+              },
+              "runtimeConfiguration": {
+                "concurrency": {
+                  "repetitions": 1
+                }
+              }
+            }
+          },
+          "runAfter": {}
+        },
+        "Avviso_errore": {
+          "type": "OpenApiConnection",
+          "inputs": {
+            "host": {
+              "connectionName": "shared_office365",
+              "operationId": "SendEmailV2",
+              "apiId": "/providers/Microsoft.PowerApps/apis/shared_office365"
+            },
+            "parameters": {
+              "emailMessage/To": "@{parameters('g5_EmailProva (g5_g5_EmailProva)')}",
+              "emailMessage/Subject": "ERRORE FL-05",
+              "emailMessage/Body": "<p>Il flusso <b>@{workflow()?['tags']?['flowDisplayName']}</b> è andato in errore.</p><p>Esecuzione: @{workflow()?['run']?['name']}</p><pre>@{string(result('Principale'))}</pre>",
+              "emailMessage/Importance": "Normal"
+            },
+            "authentication": "@parameters('$authentication')"
+          },
+          "runAfter": {
+            "Principale": [
+              "Failed",
+              "TimedOut"
+            ]
+          }
+        }
+      }
+    },
+    "templateName": null
+  },
+  "schemaVersion": "1.0.0.0"
+}

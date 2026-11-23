@@ -1,0 +1,14 @@
+<environmentvariabledefinition schemaname="g5_EmailCommerciale">
+  <defaultvalue>indirizzo-del-team@example.com</defaultvalue>
+  <description default="Indirizzo dell'ufficio commerciale (per la demo: indirizzo del team). Usata da FL-01, 02, 04, 06, 07, 08.">
+    <label description="Indirizzo dell'ufficio commerciale (per la demo: indirizzo del team). Usata da FL-01, 02, 04, 06, 07, 08." languagecode="1040" />
+  </description>
+  <displayname default="g5_EmailCommerciale">
+    <label description="g5_EmailCommerciale" languagecode="1040" />
+  </displayname>
+  <introducedversion>1.0.0.4</introducedversion>
+  <iscustomizable>1</iscustomizable>
+  <isrequired>0</isrequired>
+  <secretstore>0</secretstore>
+  <type>100000000</type>
+</environmentvariabledefinition>

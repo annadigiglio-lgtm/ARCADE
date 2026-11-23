@@ -26,6 +26,8 @@ Riassunto della [decisione 0011](../../docs/wiki/decisioni/0011-flussi-nella-sol
 | `g5_GiorniPreavviso` | numero | 7 | FL-01 |
 | `g5_CartellaExport` | testo | percorso OneDrive condiviso con Anna | FL-05 |
 
+Nel repository le variabili con un indirizzo email hanno il segnaposto `indirizzo-del-team@example.com` e nessun valore corrente: gli indirizzi veri si impostano solo nell'ambiente (Soluzioni → ARCADE BAD → Variabili d'ambiente → Valore corrente). Per lo stesso motivo lo zip dell'export 1.0.0.5 non va in Git.
+
 ### Budget delle esecuzioni (limite 750 al mese)
 
 | Flusso | Frequenza | Esecuzioni al mese |
@@ -38,6 +40,8 @@ Riassunto della [decisione 0011](../../docs/wiki/decisioni/0011-flussi-nella-sol
 | **Totale** | | **meno di 500** |
 
 ## Elenco
+
+Stato al 2026-11-23 (export 1.0.0.5): tutti i flussi sotto, più **FL-00** (demo, conferma istantanea da pulsante), sono nella soluzione e attivi. Ogni flusso ha la sua scheda: [FL-00](FL-00.md) · [FL-01](FL-01.md) · [FL-02](FL-02.md) · [FL-03](FL-03.md) · [FL-04](FL-04.md) · [FL-05](FL-05.md) · [FL-06](FL-06.md) · [FL-07](FL-07.md) · [FL-08](FL-08.md). L'elenco generato dalla soluzione è in [inventario-dataverse.md](../../docs/wiki/inventario-dataverse.md#flussi-cloud).
 
 | ID | Flusso | Avvio | Tipo | Entro |
 |---|---|---|---|---|

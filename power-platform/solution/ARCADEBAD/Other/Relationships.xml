@@ -17,6 +17,8 @@
   <EntityRelationship Name="lk_g5_padiglione_modifiedby" />
   <EntityRelationship Name="lk_g5_riga_contratto_createdby" />
   <EntityRelationship Name="lk_g5_riga_contratto_modifiedby" />
+  <EntityRelationship Name="lk_g5_scansione_stand_createdby" />
+  <EntityRelationship Name="lk_g5_scansione_stand_modifiedby" />
   <EntityRelationship Name="lk_g5_stand_createdby" />
   <EntityRelationship Name="lk_g5_stand_modifiedby" />
   <EntityRelationship Name="lk_g5_voce_listino_createdby" />
@@ -26,6 +28,7 @@
   <EntityRelationship Name="organization_g5_espositore" />
   <EntityRelationship Name="organization_g5_padiglione" />
   <EntityRelationship Name="organization_g5_riga_contratto" />
+  <EntityRelationship Name="organization_g5_scansione_stand" />
   <EntityRelationship Name="organization_g5_stand" />
   <EntityRelationship Name="organization_g5_voce_listino" />
 </EntityRelationships>

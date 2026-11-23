@@ -1,12 +1,12 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<ImportExportXml version="9.2.26104.129" SolutionPackageVersion="9.2" languagecode="1040" generatedBy="CrmLive" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" OrganizationVersion="9.2.26104.129" OrganizationSchemaType="Standard" CRMServerServiceabilityVersion="9.2.26104.00129">
+<ImportExportXml version="9.2.26112.139" SolutionPackageVersion="9.2" languagecode="1040" generatedBy="CrmLive" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" OrganizationVersion="9.2.26112.139" OrganizationSchemaType="Standard" CRMServerServiceabilityVersion="9.2.26113.00135">
   <SolutionManifest>
     <UniqueName>ARCADEBAD</UniqueName>
     <LocalizedNames>
       <LocalizedName description="ARCADE BAD" languagecode="1040" />
     </LocalizedNames>
     <Descriptions />
-    <Version>1.0.0.4</Version>
+    <Version>1.0.0.5</Version>
     <Managed>0</Managed>
     <Publisher>
       <UniqueName>Gruppo5BAD</UniqueName>
@@ -83,8 +83,18 @@
       <RootComponent type="1" schemaName="g5_espositore" behavior="0" />
       <RootComponent type="1" schemaName="g5_padiglione" behavior="0" />
       <RootComponent type="1" schemaName="g5_riga_contratto" behavior="0" />
+      <RootComponent type="1" schemaName="g5_scansione_stand" behavior="0" />
       <RootComponent type="1" schemaName="g5_stand" behavior="0" />
       <RootComponent type="1" schemaName="g5_voce_listino" behavior="0" />
+      <RootComponent type="29" id="{4e90cbbf-4ddf-f111-84e8-000d3ad8aa9c}" behavior="0" />
+      <RootComponent type="29" id="{5b90cbbf-4ddf-f111-84e8-000d3ad8aa9c}" behavior="0" />
+      <RootComponent type="29" id="{8c49f8c5-4ddf-f111-84e8-000d3ad8aa9c}" behavior="0" />
+      <RootComponent type="29" id="{959403b3-6bdf-f111-84e8-000d3ad8aa9c}" behavior="0" />
+      <RootComponent type="29" id="{9a49f8c5-4ddf-f111-84e8-000d3ad8aa9c}" behavior="0" />
+      <RootComponent type="29" id="{ac49f8c5-4ddf-f111-84e8-000d3ad8aa9c}" behavior="0" />
+      <RootComponent type="29" id="{b949f8c5-4ddf-f111-84e8-000d3ad8aa9c}" behavior="0" />
+      <RootComponent type="29" id="{c749f8c5-4ddf-f111-84e8-000d3ad8aa9c}" behavior="0" />
+      <RootComponent type="29" id="{d849f8c5-4ddf-f111-84e8-000d3ad8aa9c}" behavior="0" />
       <RootComponent type="300" schemaName="g5_fusionworkbackofficecommerciale_a52c0" behavior="0" />
     </RootComponents>
     <MissingDependencies />

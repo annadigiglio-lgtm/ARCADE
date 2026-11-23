@@ -1,0 +1,14 @@
+<environmentvariabledefinition schemaname="g5_ModalitaProva">
+  <defaultvalue>yes</defaultvalue>
+  <description default="Sì = le email ai referenti vanno a g5_EmailProva (domanda D19).">
+    <label description="Sì = le email ai referenti vanno a g5_EmailProva (domanda D19)." languagecode="1040" />
+  </description>
+  <displayname default="g5_ModalitaProva">
+    <label description="g5_ModalitaProva" languagecode="1040" />
+  </displayname>
+  <introducedversion>1.0.0.4</introducedversion>
+  <iscustomizable>1</iscustomizable>
+  <isrequired>0</isrequired>
+  <secretstore>0</secretstore>
+  <type>100000002</type>
+</environmentvariabledefinition>

@@ -1,6 +1,6 @@
 # Stato Dataverse – Solution ARCADE BAD
 
-Generato da `power-platform/solution-src/inventario.py` su `ARCADEBAD_1_0_0_4.zip` (versione 1.0.0.4, editore Gruppo5BAD, prefisso `g5`). Sola lettura.
+Generato da `power-platform/solution-src/inventario.py` su `ARCADEBAD_1_0_0_5.zip` (versione 1.0.0.5, editore Gruppo5BAD, prefisso `g5`). Sola lettura.
 
 Colonne di sistema (`createdon`, `ownerid`, `statecode`, GUID `g5_<tabella>id`…) escluse: non fanno parte di `schema.sql`.
 
@@ -94,6 +94,18 @@ Chiavi alternative: `g5_key_riga_contratto` = (g5_contratto, g5_riga)
 
 Relazioni N:1: `g5_contratto` → `g5_contratto` (eliminazione: Cascade)
 
+## `g5_scansione_stand` – Scansione stand
+
+Proprietà: OrgOwned; change tracking: sì; entity set Web API: `g5_scansione_stands`.
+
+| Colonna | Nome | Tipo | Obbl. | Dettaglio |
+|---|---|---|---|---|
+| `g5_g5_id_scansione` **(primaria)** | ID scansione | Testo | No | max 850 |
+
+Chiavi alternative: nessuna
+
+Relazioni N:1: nessuna
+
 ## `g5_stand` – Stand
 
 Proprietà: OrgOwned; change tracking: sì; entity set Web API: `g5_stands`.
@@ -128,4 +140,42 @@ Chiavi alternative: `g5_key_voce_listino` = (g5_codice, g5_edizione)
 
 Relazioni N:1: `g5_edizione` → `g5_edizione` (eliminazione: Restrict)
 
-Totale: 7 tabelle, 47 colonne custom, 9 chiavi, 7 relazioni.
+## Flussi cloud
+
+| Flusso | Stato | Avvio | Connettori |
+|---|---|---|---|
+| ARCADE – FL-00 – Demo conferma contratto (istantaneo) | attivo | manuale (pulsante) | Dataverse, Office 365 Outlook |
+| ARCADE – FL-01 – Promemoria e solleciti di pagamento | attivo | ricorrenza ogni giorno alle 8:00 | Dataverse, Office 365 Outlook |
+| ARCADE – FL-02 – Conferma firma | attivo | riga di `g5_contratto` modificata | Dataverse, Office 365 Outlook |
+| ARCADE – FL-03 – Invio preventivo PDF | attivo | dall'app (Power Apps V2) | Dataverse, OneDrive for Business, Office 365 Outlook |
+| ARCADE – FL-04 – Controllo stand venduto due volte | attivo | riga di `g5_contratto` creata o modificata | Dataverse, Office 365 Outlook |
+| ARCADE – FL-05 – Export dati commerciali per PostgreSQL | attivo | ricorrenza ogni 6 ore | Dataverse, OneDrive for Business, Office 365 Outlook |
+| ARCADE – FL-06 – Invito al rinnovo e prelazione | attivo | dall'app (Power Apps V2) | Dataverse, Office 365 Outlook |
+| ARCADE – FL-07 – Avviso disponibilità esaurita | attivo | riga di `g5_riga_contratto` creata | Dataverse, Office 365 Outlook |
+| ARCADE – FL-08 – Riepilogo settimanale | attivo | ricorrenza ogni settimana (lunedì) alle 8:00 | Dataverse, Office 365 Outlook |
+
+## Riferimenti di connessione
+
+| Nome | Connettore | Usato da |
+|---|---|---|
+| `g5_dataverse_flussi` | Dataverse | FL-00, FL-01, FL-02, FL-03, FL-04, FL-05, FL-06, FL-07, FL-08 |
+| `g5_office365_arcade` | Office 365 Outlook | FL-00, FL-01, FL-02, FL-03, FL-04, FL-05, FL-06, FL-07, FL-08 |
+| `g5_onedriveforbusiness_arcade` | OneDrive for Business | FL-03, FL-05 |
+| `g5_sharedcommondataserviceforapps_5809c` | Dataverse | nessun flusso |
+| `g5_sharedcommondataserviceforapps_cfa98` | Dataverse | nessun flusso |
+| `g5_sharedoffice365_40869` | Office 365 Outlook | nessun flusso |
+| `g5_sharedoffice365_eef66` | Office 365 Outlook | nessun flusso |
+
+## Variabili d'ambiente
+
+I valori non si riportano qui: contengono indirizzi email del team.
+
+| Nome | Tipo | Valore predefinito | Valore corrente nell'export |
+|---|---|---|---|
+| `g5_CartellaExport` | Testo | sì | no |
+| `g5_EmailCommerciale` | Testo | sì | sì |
+| `g5_GiorniPreavviso` | Numero | sì | no |
+| `g5_ModalitaProva` | Sì/No | sì | no |
+| `g5_g5_EmailProva` | Testo | sì | sì |
+
+Totale: 8 tabelle, 48 colonne custom, 9 chiavi, 7 relazioni, 9 flussi.
