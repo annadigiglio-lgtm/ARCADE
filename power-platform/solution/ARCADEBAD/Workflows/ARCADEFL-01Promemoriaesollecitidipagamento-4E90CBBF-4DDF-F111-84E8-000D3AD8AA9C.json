@@ -254,36 +254,51 @@
                 }
               }
             },
-            "Tabella_riepilogo": {
-              "type": "Table",
-              "inputs": {
-                "from": "@variables('Rate')",
-                "format": "HTML"
+            "Se_ci_sono_rate": {
+              "type": "If",
+              "expression": {
+                "greater": [
+                  "@length(variables('Rate'))",
+                  0
+                ]
+              },
+              "actions": {
+                "Tabella_riepilogo": {
+                  "type": "Table",
+                  "inputs": {
+                    "from": "@variables('Rate')",
+                    "format": "HTML"
+                  },
+                  "runAfter": {}
+                },
+                "Riepilogo_al_commerciale": {
+                  "type": "OpenApiConnection",
+                  "inputs": {
+                    "host": {
+                      "connectionName": "shared_office365",
+                      "operationId": "SendEmailV2",
+                      "apiId": "/providers/Microsoft.PowerApps/apis/shared_office365"
+                    },
+                    "parameters": {
+                      "emailMessage/To": "@{parameters('g5_EmailCommerciale (g5_EmailCommerciale)')}",
+                      "emailMessage/Subject": "@{if(or(equals(toLower(string(parameters('g5_ModalitaProva (g5_ModalitaProva)'))),'true'),equals(toLower(string(parameters('g5_ModalitaProva (g5_ModalitaProva)'))),'yes')),'[PROVA] ','')}ARCADE – Scadenze di pagamento del @{formatDateTime(convertFromUtc(utcNow(),'W. Europe Standard Time'),'dd/MM/yyyy')}",
+                      "emailMessage/Body": "<style>table{border-collapse:collapse}th,td{border:1px solid #ccc;padding:4px 8px;font-family:Segoe UI,Arial;font-size:13px}th{background:#f2f2f2}</style><p>Rate in scadenza o scadute dei contratti firmati dell'edizione in corso:</p>@{if(empty(variables('Rate')),'<p>Nessuna rata in scadenza o scaduta.</p>',body('Tabella_riepilogo'))}",
+                      "emailMessage/Importance": "Normal"
+                    },
+                    "authentication": "@parameters('$authentication')"
+                  },
+                  "runAfter": {
+                    "Tabella_riepilogo": [
+                      "Succeeded"
+                    ]
+                  }
+                }
+              },
+              "else": {
+                "actions": {}
               },
               "runAfter": {
                 "Per_ogni_contratto": [
-                  "Succeeded"
-                ]
-              }
-            },
-            "Riepilogo_al_commerciale": {
-              "type": "OpenApiConnection",
-              "inputs": {
-                "host": {
-                  "connectionName": "shared_office365",
-                  "operationId": "SendEmailV2",
-                  "apiId": "/providers/Microsoft.PowerApps/apis/shared_office365"
-                },
-                "parameters": {
-                  "emailMessage/To": "@{parameters('g5_EmailCommerciale (g5_EmailCommerciale)')}",
-                  "emailMessage/Subject": "@{if(or(equals(toLower(string(parameters('g5_ModalitaProva (g5_ModalitaProva)'))),'true'),equals(toLower(string(parameters('g5_ModalitaProva (g5_ModalitaProva)'))),'yes')),'[PROVA] ','')}ARCADE – Scadenze di pagamento del @{formatDateTime(convertFromUtc(utcNow(),'W. Europe Standard Time'),'dd/MM/yyyy')}",
-                  "emailMessage/Body": "<style>table{border-collapse:collapse}th,td{border:1px solid #ccc;padding:4px 8px;font-family:Segoe UI,Arial;font-size:13px}th{background:#f2f2f2}</style><p>Rate in scadenza o scadute dei contratti firmati dell'edizione in corso:</p>@{if(empty(variables('Rate')),'<p>Nessuna rata in scadenza o scaduta.</p>',body('Tabella_riepilogo'))}",
-                  "emailMessage/Importance": "Normal"
-                },
-                "authentication": "@parameters('$authentication')"
-              },
-              "runAfter": {
-                "Tabella_riepilogo": [
                   "Succeeded"
                 ]
               }

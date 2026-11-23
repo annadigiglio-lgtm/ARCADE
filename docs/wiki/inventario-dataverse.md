@@ -1,6 +1,6 @@
 # Stato Dataverse – Solution ARCADE BAD
 
-Generato da `power-platform/solution-src/inventario.py` su `ARCADEBAD_1_0_0_7.zip` (versione 1.0.0.7, editore Gruppo5BAD, prefisso `g5`). Sola lettura.
+Generato da `power-platform/solution-src/inventario.py` su `ARCADEBAD_1_0_0_8.zip` (versione 1.0.0.8, editore Gruppo5BAD, prefisso `g5`). Sola lettura.
 
 Colonne di sistema (`createdon`, `ownerid`, `statecode`, GUID `g5_<tabella>id`…) escluse: non fanno parte di `schema.sql`.
 
@@ -15,7 +15,7 @@ Proprietà: OrgOwned; change tracking: sì; entity set Web API: `g5_contratti`.
 | `g5_data_firma` | Data firma | Data | No | Solo data |
 | `g5_edizione` | Edizione | Lookup | Sì |  |
 | `g5_espositore` | Espositore | Lookup | Sì |  |
-| `g5_id_contratto` **(primaria)** | ID contratto | Testo | Sì | max 12 |
+| `g5_id_contratto` **(primaria)** | ID contratto | Testo | No | max 12 |
 | `g5_imponibile` | Imponibile | Decimale | Sì | precisione 2, min 0, max 9999999999.99 |
 | `g5_imponibile_listino` | Imponibile a listino | Decimale | Sì | precisione 2, min 0, max 9999999999.99 |
 | `g5_rinnovo` | Rinnovo | Sì/No | Sì | Sì, No |
@@ -53,7 +53,7 @@ Proprietà: OrgOwned; change tracking: sì; entity set Web API: `g5_espositori`.
 |---|---|---|---|---|
 | `g5_citta` | Città | Testo | No | max 100 |
 | `g5_email_referente` | Email referente | Testo | No | max 200 (email) |
-| `g5_id_espositore` **(primaria)** | ID espositore | Testo | Sì | max 10 |
+| `g5_id_espositore` **(primaria)** | ID espositore | Testo | No | max 10 |
 | `g5_partita_iva` | Partita IVA | Testo | Sì | max 11 |
 | `g5_ragione_sociale` | Ragione sociale | Testo | Sì | max 200 |
 | `g5_referente` | Referente | Testo | No | max 200 |
@@ -151,7 +151,7 @@ Relazioni N:1: `g5_edizione` → `g5_edizione` (eliminazione: Restrict)
 |---|---|---|---|
 | ARCADE – FL-00 – Demo conferma contratto (istantaneo) | attivo | manuale (pulsante) | Dataverse, Office 365 Outlook |
 | ARCADE – FL-01 – Promemoria e solleciti di pagamento | attivo | ricorrenza ogni giorno alle 8:00 | Dataverse, Office 365 Outlook |
-| ARCADE – FL-02 – Conferma firma | attivo | riga di `g5_contratto` modificata | Dataverse, Office 365 Outlook |
+| ARCADE – FL-02 – Conferma firma | attivo | riga di `g5_contratto` creata o modificata | Dataverse, Office 365 Outlook |
 | ARCADE – FL-03 – Invio preventivo PDF | attivo | dall'app (Power Apps V2) | Dataverse, OneDrive for Business, Office 365 Outlook |
 | ARCADE – FL-04 – Controllo stand venduto due volte | attivo | riga di `g5_contratto` creata o modificata | Dataverse, Office 365 Outlook |
 | ARCADE – FL-05 – Export dati commerciali per PostgreSQL | attivo | ricorrenza ogni 6 ore | Dataverse, OneDrive for Business, Office 365 Outlook |

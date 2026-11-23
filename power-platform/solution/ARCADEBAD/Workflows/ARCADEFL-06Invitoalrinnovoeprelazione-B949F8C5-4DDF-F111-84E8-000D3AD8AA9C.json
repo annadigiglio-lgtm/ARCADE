@@ -390,6 +390,34 @@
               "Succeeded"
             ]
           }
+        },
+        "Rispondi_errore": {
+          "type": "Response",
+          "kind": "PowerApp",
+          "inputs": {
+            "statusCode": 200,
+            "body": {
+              "inviati": "@{variables('Inviati')} (interrotto da un errore)"
+            },
+            "schema": {
+              "type": "object",
+              "properties": {
+                "inviati": {
+                  "title": "inviati",
+                  "x-ms-dynamically-added": true,
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "runAfter": {
+            "Avviso_errore": [
+              "Succeeded",
+              "Failed",
+              "Skipped",
+              "TimedOut"
+            ]
+          }
         }
       }
     },

@@ -324,6 +324,34 @@
               "Succeeded"
             ]
           }
+        },
+        "Rispondi_errore": {
+          "type": "Response",
+          "kind": "PowerApp",
+          "inputs": {
+            "statusCode": 200,
+            "body": {
+              "esito": "errore: dettagli nell'email ERRORE FL-03"
+            },
+            "schema": {
+              "type": "object",
+              "properties": {
+                "esito": {
+                  "title": "esito",
+                  "x-ms-dynamically-added": true,
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "runAfter": {
+            "Avviso_errore": [
+              "Succeeded",
+              "Failed",
+              "Skipped",
+              "TimedOut"
+            ]
+          }
         }
       }
     },

@@ -64,7 +64,7 @@
               "apiId": "/providers/Microsoft.PowerApps/apis/shared_commondataserviceforapps"
             },
             "parameters": {
-              "subscriptionRequest/message": 3,
+              "subscriptionRequest/message": 4,
               "subscriptionRequest/entityname": "g5_contratto",
               "subscriptionRequest/scope": 4,
               "subscriptionRequest/filteringattributes": "g5_stato",
